@@ -4,11 +4,11 @@
 
 ### Top Level
 
-`createGraph(connector: Connector, state: GraphState)`
+`createGraph(connector: Connector, state: GraphState): Graph`
 
 ### Graph
 
-`.data(state: DataState)`
+`.data(state: DataState): Data`
 
 `.getState(): GraphState `
 
