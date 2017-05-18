@@ -6,24 +6,39 @@
 
 `createGraph(connector: Connector, state: GraphState): Graph`
 
+> creates Graph object
+
 ### Graph
 
 `.data(state: DataState): Data`
 
+> creates a Data operator node
+
 `.getState(): GraphState `
 
-`.getNodes(): ArrayOf(Data)`
+> returns the state of the Graph
+
+`.nodes(): ArrayOf(Data)`
+
+> gets all Data operator nodes
 
 ### Data
 
 `.getState(): DataState`
 
+> returns the state of the Data node
+
 `.transform(transform: Transform | ArrayOf(Transform) )`
+
+> adds a transformation or a set of transformations to the Data node
 
 `.toSQL(): string`
 
+> returns a representation of the data pipeline as a SQL string
+
 `.values(): Promise`
 
+> returns a promise that resolves to the results returned by the query
 
 ### Types
 
