@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tape -r babel-register tests/**/*.js"
+    "test": "tape -r babel-register tests/*.js"
   },
   "repository": {
     "type": "git",
@@ -17,8 +17,14 @@
   },
   "homepage": "https://github.com/mrblueblue/mapd-datagraph-sketch#readme",
   "dependencies": {
+    "invariant": "^2.2.2"
+  },
+  "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.24.1",
+    "flow-bin": "^0.46.0",
     "tape": "^4.6.3"
   }
 }

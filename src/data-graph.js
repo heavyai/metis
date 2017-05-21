@@ -1,17 +1,31 @@
+// @flow
 import createDataNode from "./data-node"
+import invariant from "invariant"
 
-export function createDataGraph (connector) {
+export function createDataGraph (connector: Connector, initialState: GraphState = {}): Graph {
+  invariant(
+    typeof connector.query === "function",
+    "invalid connector"
+  )
+
   const context = {
-    state: [],
+    state: initialState,
     connector
   }
 
+  const nodes = []
+
   return {
+    nodes () {
+      return nodes
+    },
     getState () {
       return context.state
     },
-    createDataOperator (initialState) {
-      return createDataNode(context, initialState)
+    data (state) {
+      const dataNode = createDataNode(context, state)
+      nodes.push(dataNode)
+      return dataNode
     }
   }
 }

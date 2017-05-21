@@ -1,5 +1,5 @@
 import tape from "tape"
-import reduceNodes from "../src/reduce-nodes"
+import {reduceNodes} from "../src/graph-utils"
 
 const child = {
   source: "parent",

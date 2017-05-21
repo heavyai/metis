@@ -1,45 +1,44 @@
-export default function createDataOperator (context, initialState = {}) {
-  if (typeof initialState.name !== "string" || typeof initialState.source !== "string") {
-    throw new Error("must have name and source")
+// @flow
+import {nodePathToSQL} from "./graph-utils"
+import invariant from "invariant"
+
+export default function createDataNode (context: GraphContext, initialState: DataState): DataNode {
+  invariant(
+    typeof initialState.name === "string",
+    "must have name and source"
+  )
+
+  invariant(
+    initialState.source,
+    "must have name and source"
+  )
+
+  let state = {
+    ...initialState,
+    transform: initialState.transform || []
   }
 
-  initialState.transform = initialState.transform ? initialState.transform : []
-  let state = initialState
-
-  const api = {
-    getState,
-    transform,
-    toSQL,
-    values
-  }
-
-  function getState () {
-    return state
-  }
-
-  function transform (transform) {
-    if (typeof transform === "function") {
-      state = transform(state)
-      return api
-    } else if (Array.isArray(transform)) {
-      state.transform = state.transform.concat(transform)
-      return api
-    } else if (transform) {
-      state.transform.push(transform)
-      return api
-    } else {
-      return state.transform
+  return {
+    getState (): DataState {
+      return state
+    },
+    transform (transform: {} | Array<{}>): DataNode {
+      if (typeof transform === "function") {
+        state = transform(state)
+      } else if (Array.isArray(transform)) {
+        state.transform = state.transform.concat(transform)
+      } else if (typeof transform === "object") {
+        state.transform.push(transform)
+      } else {
+        invariant(true, "invalid transform")
+      }
+      return this
+    },
+    toSQL (): string {
+      return nodePathToSQL(context.state, state.source)
+    },
+    values (): Promise<Array<any>> {
+      return context.connector.query(nodePathToSQL(context.state, state.source))
     }
   }
-
-  function toSQL () {
-    return ""
-  }
-
-  function values () {
-    const stmt = toSQL()
-    return context.connector.query(stmt())
-  }
-
-  return api
 }
