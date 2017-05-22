@@ -22,7 +22,7 @@ export default function createDataNode (context: GraphContext, initialState: Dat
     getState (): DataState {
       return state
     },
-    transform (transform: {} | Array<{}>): DataNode {
+    transform (transform: Transform | Array<Transform>): DataNode {
       if (typeof transform === "function") {
         state = transform(state)
       } else if (Array.isArray(transform)) {

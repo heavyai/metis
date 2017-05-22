@@ -43,22 +43,41 @@
 ### Types
 
 ```js
-type Connector {
-  query: function(string): Promise
-  tables: ArrayOf(string)
+// @flow
+type Connector = {
+  query: () => Promise<Array<any>>,
+  tables: Array<string>
 }
 
-type GraphState {
-  data: ArrayOf(DataState)
+type DataState = {
+  source: string,
+  name?: string,
+  transform: Array<Transform>
 }
 
-type DataState {
-  source: OneOf(Connector.tables),
-  name: string,
-  transform: ArrayOf(Transform)
+type GraphContext = {
+  connector: Connector,
+  state: GraphState
 }
 
-type Transform = Vega.Transform
+type GraphState = {
+  [string]: DataState
+}
+
+type Graph = {
+  getState: () => GraphState,
+  nodes: () => Array<DataNode>,
+  data: (state: DataState) => DataNode
+}
+
+type DataNode = {
+  getState: () => DataState,
+  transform: (transform: Transform | Array<Transform>) => DataNode,
+  toSQL: () => string,
+  values: () => Promise<Array<any>>
+}
+
+type Transform = Aggregate | Bin | Collect | Filter | Formula | Sample | Crossfilter | ResolveFilter
 // see https://github.com/vega/vega-dataflow/tree/master/definitions
 ```
 

@@ -9,7 +9,6 @@ const identity = a => a
 function createNodeReducer (state: GraphState) {
   return function reduceNode(leftNode: DataState, rightNode: DataState): DataState {
     return {
-      name: "",
       source: state.hasOwnProperty(rightNode.source) ? leftNode.source : rightNode.source,
       transform: leftNode.transform.concat(rightNode.transform)
     }
@@ -26,7 +25,6 @@ export function walk (state: GraphState, name: string, iterator: iterator, xform
 
 export function reduceNodes (state: GraphState, name: string): DataState {
   return walk(state, name, identity, createNodeReducer(state), {
-    name: "",
     source: "",
     transform: []
   })
