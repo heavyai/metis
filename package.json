@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tape -r babel-register tests/*.js"
+    "test": "tape -r babel-register tests/**.spec.js"
   },
   "repository": {
     "type": "git",

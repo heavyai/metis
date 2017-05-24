@@ -2,7 +2,7 @@
 type iterator = (node: DataState) => any
 type xform = (a: any, b: any) => any
 
-import {writeSQL} from "./write-sql"
+import writeSQL from "./sql/write-sql"
 
 const identity = a => a
 

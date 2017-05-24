@@ -34,10 +34,21 @@ declare type DataNode = {
 
 declare type Transform = Aggregate | Bin | Collect | Filter | Formula | Sample | Crossfilter | ResolveFilter
 
+declare type SQL = {
+  select: Array<string>,
+  from: string,
+  where: Array<string>,
+  groupby: Array<string>,
+  having: Array<string>,
+  orderby: Array<string>,
+  limit: string,
+  offset: string
+}
+
 declare type Aggregate = {
   type: "aggregate",
-  fields?: Array<string> | string,
-  ops?: "average" | "count" | "min" | "max" | "sum",
+  fields: Array<string> | string,
+  ops: "average" | "count" | "min" | "max" | "sum",
   as?: Array<string> | string,
   groupby?: Array<string> | string,
   expr?: string
@@ -49,7 +60,7 @@ declare type Bin = {
   extent: Array<number>,
   step?: number,
   maxbins?: number,
-  as?: string 
+  as: string
 }
 
 declare type Collect = Sort | Limit
@@ -67,7 +78,7 @@ type Sort = {
   type: "collect",
   sort: {
     field: Array<string> | string,
-    order: Array<SortOrder> | SortOrder
+    order?: Array<SortOrder> | SortOrder
   }
 }
 

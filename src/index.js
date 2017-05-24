@@ -1,2 +1,2 @@
-export {writeSQL} from "./write-sql"
+export writeSQL from "./sql/write-sql"
 export {createDataGraph} from "./data-graph"
