@@ -1,44 +1,43 @@
 // @flow
-import {nodePathToSQL} from "./node-path-utils"
-import invariant from "invariant"
+import { nodePathToSQL } from "./node-path-utils";
+import invariant from "invariant";
 
-export default function createDataNode (context: GraphContext, initialState: DataState): DataNode {
-  invariant(
-    typeof initialState.name === "string",
-    "must have name and source"
-  )
+export default function createDataNode(
+  context: GraphContext,
+  initialState: DataState
+): DataNode {
+  invariant(typeof initialState.name === "string", "must have name and source");
 
-  invariant(
-    initialState.source,
-    "must have name and source"
-  )
+  invariant(initialState.source, "must have name and source");
 
   let state = {
     ...initialState,
     transform: initialState.transform || []
-  }
+  };
 
   return {
-    getState (): DataState {
-      return state
+    getState(): DataState {
+      return state;
     },
-    transform (transform: Transform | Array<Transform>): DataNode {
+    transform(transform: Transform | Array<Transform>): DataNode {
       if (typeof transform === "function") {
-        state = transform(state)
+        state = transform(state);
       } else if (Array.isArray(transform)) {
-        state.transform = state.transform.concat(transform)
+        state.transform = state.transform.concat(transform);
       } else if (typeof transform === "object") {
-        state.transform.push(transform)
+        state.transform.push(transform);
       } else {
-        invariant(true, "invalid transform")
+        invariant(true, "invalid transform");
       }
-      return this
+      return this;
     },
-    toSQL (): string {
-      return nodePathToSQL(context.state, state.name)
+    toSQL(): string {
+      return nodePathToSQL(context.state, state.name);
     },
-    values (): Promise<Array<any>> {
-      return context.connector.query(nodePathToSQL(context.state, state.source))
+    values(): Promise<Array<any>> {
+      return context.connector.query(
+        nodePathToSQL(context.state, state.source)
+      );
     }
-  }
+  };
 }
