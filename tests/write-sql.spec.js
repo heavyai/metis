@@ -2,7 +2,7 @@ import tape from "tape"
 import {writeSQL} from "../src"
 
 tape("writeSQL", assert => {
-  assert.plan(3)
+  assert.plan(5)
 
   assert.equal(writeSQL({
     source: "flights",
@@ -11,13 +11,19 @@ tape("writeSQL", assert => {
 
   assert.equal(writeSQL({
     source: "flights",
-    transform: [{
-      type: "aggregate",
-      groupby: ["dest_city"],
-      fields: ["depdelay"],
-      ops: ["average"],
-      as: ["val"]
-    }],
+    transform: [
+      {
+        type: "aggregate",
+        fields: ["dest_city"]
+      },
+      {
+        type: "aggregate",
+        groupby: ["dest_city"],
+        fields: ["depdelay"],
+        ops: ["average"],
+        as: ["val"]
+      }
+  ],
   }), "SELECT dest_city, AVG(depdelay) as val FROM flights GROUP BY dest_city")
 
   assert.equal(writeSQL({
@@ -52,7 +58,7 @@ tape("writeSQL", assert => {
     ]
   }), "SELECT airtime as key0, COUNT(*) AS val, COUNT(*) AS color FROM flights_donotmodify WHERE ((airtime >= 0 AND airtime <= 1350) OR (airtime IS NULL)) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 12 OR key0 IS NULL)")
 
-    t.equal(writeSQL({
+    assert.equal(writeSQL({
       source: "contributions",
       transform: [
         {
@@ -61,8 +67,8 @@ tape("writeSQL", assert => {
             "type": "date_trunc",
             "unit": "year",
             "field": "CAST(contrib_date AS TIMESTAMP(0))",
-            "as": "key0",
-          }
+          },
+          "as": "key0"
         },
         {
           "type": "aggregate",
