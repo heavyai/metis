@@ -21,7 +21,7 @@ export default function createDataNode(
     },
     transform(transform: Transform | Array<Transform>): DataNode {
       if (typeof transform === "function") {
-        state = transform(state);
+        state.transform = transform(state.transform);
       } else if (Array.isArray(transform)) {
         state.transform = state.transform.concat(transform);
       } else if (typeof transform === "object") {
@@ -36,7 +36,7 @@ export default function createDataNode(
     },
     values(): Promise<Array<any>> {
       return context.connector.query(
-        nodePathToSQL(context.state, state.source)
+        nodePathToSQL(context.state, state.name)
       );
     }
   };
