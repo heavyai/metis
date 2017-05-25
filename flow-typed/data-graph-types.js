@@ -34,7 +34,7 @@ declare type DataNode = {
 
 declare type Transform = Aggregate | Bin | Collect | Filter | Formula | Sample | Crossfilter | ResolveFilter
 
-declare type SQL = {
+declare type SQL = {|
   select: Array<string>,
   from: string,
   where: Array<string>,
@@ -43,7 +43,7 @@ declare type SQL = {
   orderby: Array<string>,
   limit: string,
   offset: string
-}
+|}
 
 declare type Aggregate = {
   type: "aggregate",
@@ -82,37 +82,18 @@ type Sort = {
   }
 }
 
-declare type Filter = {
-  type: "filter",
-  id: string | number,
-  expr: string,
-}
+declare type Filter = ExpressionFilter | RangeFilter | EqualityFilter
+declare type ExpressionFilter = {| type: "filter", id: string | number, expr: string |}
+declare type RangeFilter = {| type: "filter", id: string | number, field: string, range: Array<number> |}
+declare type EqualityFilter = {| type: "filter", id: string | number, field: string, equals: string | number | Array<string | number> |}
 
 declare type Formula = FormulaExpression | FormulaOperation
-
-type FormulaExpression = {
-  type: "formula",
-  expr: string,
-  as: string
-}
-
-type DateTrunc = {
-  type: "date_trunc",
-  field: string,
-  unit: "decade" | "year" | "quarter" | "month" | "week" | "day" | "hour"
-}
-
-type Extract = {
-  type: "extract",
-  field: string,
-  unit: "year" | "quarter" | "month" | "dom" | "dow" | "hour" | "minute"
-}
-
-type FormulaOperation = {
-  type: "formula",
-  op: DateTrunc | Extract,
-  as: string
-}
+type FormulaExpression = {| type: "formula", expr: string, as: string |}
+type FormulaOperation = {| type: "formula", op: DateTrunc | Extract, as: string |}
+type DateTruncUnits = "decade" | "year" | "quarter" | "month" | "week" | "day" | "hour"
+type DateTrunc = {| type: "date_trunc", field: string, unit: DateTruncUnits |}
+type ExtractUnits = "year" | "quarter" | "month" | "dom" | "dow" | "hour" | "minute"
+type Extract = {| type: "extract", field: string, unit: ExtractUnits |}
 
 declare type Sample = {
   type: "sample",

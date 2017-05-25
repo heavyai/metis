@@ -1,11 +1,8 @@
 // @flow
 import parse from "./parse-transform"
 
-export default function writeSQL ({source, transform}: DataState): string {
-  return write({
-    ...parse(transform),
-    from: source
-  })
+export default function writeSQL (state: DataState): string {
+  return write(parse(state))
 }
 
 function write (sql: SQL): string {

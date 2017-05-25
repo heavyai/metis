@@ -6,10 +6,10 @@ import parseFilter from "./parse-filter"
 import parseFormula from "./parse-formula"
 import parseSample from "./parse-sample"
 
-export default function parse (transforms: Array<Transform>): SQL {
+export default function parse ({source, transform}: DataState): SQL {
   const initialSQL = {
     select: [],
-    from: "",
+    from: source,
     where: [],
     groupby: [],
     having: [],
@@ -18,20 +18,20 @@ export default function parse (transforms: Array<Transform>): SQL {
     offset: ""
   }
 
-  return transforms.reduce((sql: SQL, transform: Transform): SQL => {
-    switch (transform.type) {
+  return transform.reduce((sql: SQL, t: Transform): SQL => {
+    switch (t.type) {
       case "aggregate":
-        return parseAggregate(sql, transform)
+        return parseAggregate(sql, t)
       case "bin":
-        return parseBin(sql, transform)
+        return parseBin(sql, t)
       case "collect":
-        return parseCollect(sql, transform)
+        return parseCollect(sql, t)
       case "filter":
-        return parseFilter(sql, transform)
+        return parseFilter(sql, t)
       case "formula":
-        return parseFormula(sql, transform)
+        return parseFormula(sql, t)
       case "sample":
-        return parseSample(sql, transform)
+        return parseSample(sql, t)
       default:
         return sql
     }

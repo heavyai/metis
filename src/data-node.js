@@ -35,7 +35,7 @@ export default function createDataNode (context: GraphContext, initialState: Dat
       return this
     },
     toSQL (): string {
-      return nodePathToSQL(context.state, state.source)
+      return nodePathToSQL(context.state, state.name)
     },
     values (): Promise<Array<any>> {
       return context.connector.query(nodePathToSQL(context.state, state.source))

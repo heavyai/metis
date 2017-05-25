@@ -37,18 +37,18 @@ tape("Data Operator", (t) => {
     })
   })
 
-  // t.test("toSQL method", (q) => {
-  //   const graph = createDataGraph({query: () => {}})
-  //   const data = graph.data({
-  //     name: "test",
-  //     source: "contributions",
-  //     transform: [
-  //       {type: "filter", expr: "recipient_party = 'R'"},
-  //       {type: "filter", expr: "amount > 1000"},
-  //     ]
-  //   })
-  //
-  //   // q.plan(1)
-  //   // q.equal(data.toSQL(), "SELECT * from contributions WHERE recipient_party = 'R' AND amount > 1000")
-  // })
+  t.test("toSQL method", (q) => {
+    const graph = createDataGraph({query: () => {}})
+    const data = graph.data({
+      name: "test",
+      source: "contributions",
+      transform: [
+        {type: "filter", expr: "recipient_party = 'R'"},
+        {type: "filter", expr: "amount > 1000"},
+      ]
+    })
+
+    q.plan(1)
+    q.equal(data.toSQL(), "SELECT * FROM contributions WHERE (recipient_party = 'R') AND (amount > 1000)")
+  })
 })

@@ -3,6 +3,7 @@ import {reduceNodes} from "../src/graph-utils"
 
 const child = {
   source: "parent",
+  name: "child",
   "transform": [
     {
       "type": "formula",
@@ -21,6 +22,7 @@ const child = {
 
  const grandchild = {
   source: "child",
+  name: "grandchild",
   "transform": [
     {
       "type": "formula",
@@ -39,6 +41,7 @@ const child = {
 
 const parent = {
   source: "table",
+  name: "parent",
   transform: [
     {
       type: "filter",
