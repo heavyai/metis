@@ -1,5 +1,5 @@
 {
-  "name": "mapd-datagraph-sketch",
+  "name": "sql-datagraph",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,8 +10,8 @@
     "type": "git",
     "url": "git+https://github.com/mrblueblue/mapd-datagraph-sketch.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jonathan Huang <grokut@gmail.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/mrblueblue/mapd-datagraph-sketch/issues"
   },

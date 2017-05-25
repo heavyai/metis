@@ -21,10 +21,14 @@ export default function parseAggregate (sql: SQL, {fields, ops, as, groupby}: Ag
   if (typeof fields === "string") {
     sql.select.push(aggregateField(ops, fields, as))
   } else if (Array.isArray(fields)) {
-    as = as || []
     if (ops) {
+      as = as || []
       ops.forEach((operation, index) => {
         sql.select.push(aggregateField(operation, fields[index], as[index]))
+      })
+    } else if (as) {
+      as.forEach((as_string, index) => {
+        sql.select.push(aggregateField(null, fields[index], as_string))
       })
     } else {
       fields.forEach(field => sql.select.push(field))

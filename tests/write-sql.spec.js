@@ -1,5 +1,5 @@
 import tape from "tape"
-import {writeSQL} from "../src"
+import {writeSQL} from "../index"
 
 tape("writeSQL", assert => {
   assert.plan(5)

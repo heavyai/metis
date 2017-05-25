@@ -24,7 +24,7 @@ export function createDataGraph (connector: Connector, initialState: GraphState 
     },
     data (state) {
       const dataNode = createDataNode(context, state)
-      context.state[state.name] = state
+      context.state[state.name] = dataNode.getState()
       nodes.push(dataNode)
       return dataNode
     }

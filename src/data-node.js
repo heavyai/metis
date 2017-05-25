@@ -1,5 +1,5 @@
 // @flow
-import {nodePathToSQL} from "./graph-utils"
+import {nodePathToSQL} from "./node-path-utils"
 import invariant from "invariant"
 
 export default function createDataNode (context: GraphContext, initialState: DataState): DataNode {

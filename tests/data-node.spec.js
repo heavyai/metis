@@ -1,5 +1,5 @@
 import tape from "tape"
-import {createDataGraph} from "../src"
+import {createDataGraph} from "../index"
 
 tape("Data Operator", (t) => {
   t.test("has api", (q) => {
@@ -43,12 +43,37 @@ tape("Data Operator", (t) => {
       name: "test",
       source: "contributions",
       transform: [
-        {type: "filter", expr: "recipient_party = 'R'"},
+        {
+          type: "crossfilter",
+          signal: "group",
+          filter: [
+            {
+              type: "filter",
+              id: "pie",
+              expr: "recipient_party = 'D'"
+            },
+            {
+              type: "filter",
+              id: "row",
+              expr: "recipient_party = 'R'"
+            },
+            {
+              type: "filter",
+              id: "bubble",
+              expr: "recipient_party = 'I'"
+            }
+          ]
+        },
+        {
+          type: "resolvefilter",
+          filter: {signal: "group"},
+          ignore: ["row"]
+        },
         {type: "filter", expr: "amount > 1000"},
       ]
     })
 
     q.plan(1)
-    q.equal(data.toSQL(), "SELECT * FROM contributions WHERE (recipient_party = 'R') AND (amount > 1000)")
+    q.equal(data.toSQL(), "SELECT * FROM contributions WHERE (recipient_party = 'D') AND (recipient_party = 'I') AND (amount > 1000)")
   })
 })
