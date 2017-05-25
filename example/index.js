@@ -1,4 +1,5 @@
 import { createDataGraph } from "../index";
+import createXFilter from "./xfilter-lite";
 
 const connection = new MapdCon()
   .protocol("https")
@@ -110,6 +111,8 @@ const dataScatter = graph.data({
     }
   ]
 });
+
+const crossfilter = createXFilter(xFilter);
 
 const ROW_VEGA_SPEC = {
   $schema: "https://vega.github.io/schema/vega/v3.0.json",
@@ -282,6 +285,19 @@ const SCATTER_VEGA_SPEC = {
   ]
 };
 
+const rowFilters = [];
+
+function filterRow(value) {
+  const index = rowFilters.findIndex(filter => filter === value);
+  if (index !== -1) {
+    rowFilters.splice(index, 1);
+  } else {
+    rowFilters.push(value);
+  }
+  console.log(rowFilters);
+  return rowFilters;
+}
+
 function renderRow(data) {
   ROW_VEGA_SPEC.data = { name: "table", values: data };
   const runtime = vega.parse(ROW_VEGA_SPEC);
@@ -291,28 +307,33 @@ function renderRow(data) {
     .renderer("svg")
     .run();
 
-  // view.addSignalListener('filter', (signal, b) => {
-  //   xFilter.transform(transforms => {
-  //     console.log(transforms)
-  //     const xfilters = transforms[0].filter
-  //
-  //     xfilters.push({
-  //       type: "filter",
-  //       id: "row",
-  //       field: "dest_state",
-  //       equals: [b.datum.dest_state]
-  //     })
-  //
-  //     return transforms
-  //
-  //   })
-  //
-  //   Promise.all([dataRow.values(), dataScatter.values()])
-  //   .then(([rowData, scatterData]) => {
-  //     renderRow(rowData)
-  //     renderScatter(scatterData)
-  //   })
-  // })
+  view.addSignalListener("filter", (signal, b) => {
+    const states = filterRow(b.datum.dest_state);
+
+    if (states.length) {
+      crossfilter.filter("row", {
+        field: "dest_state",
+        equals: states
+      });
+    } else {
+      crossfilter.remove("row");
+    }
+
+    renderAll();
+  });
+}
+
+const scatterFilters = [];
+
+function filterScatter(value) {
+  const index = scatterFilters.findIndex(filter => filter === value);
+  if (index !== -1) {
+    scatterFilters.splice(index, 1);
+  } else {
+    scatterFilters.push(value);
+  }
+  console.log(scatterFilters);
+  return scatterFilters;
 }
 
 function renderScatter(data) {
@@ -323,6 +344,20 @@ function renderScatter(data) {
     .initialize(document.querySelector("#chart2"))
     .renderer("svg")
     .run();
+
+  view.addSignalListener("filter", (signal, b) => {
+    const carriers = filterScatter(b.datum.key0);
+    if (carriers.length) {
+      crossfilter.filter("scatter", {
+        field: "carrier_name",
+        equals: carriers
+      });
+    } else {
+      crossfilter.remove("scatter");
+    }
+
+    renderAll();
+  });
 }
 
 function connect() {
