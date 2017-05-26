@@ -97,4 +97,47 @@ export const scatterDataNode = graph.data({
   ]
 });
 
+/*
+"SELECT date_trunc(month, dep_timestamp) as key0,
+COUNT(*) AS series_1 FROM flights_donotmodify
+WHERE (dep_timestamp >= TIMESTAMP(0) '1987-10-01 00:03:00' AND dep_timestamp <= TIMESTAMP(0) '2008-12-31 23:59:00')
+GROUP BY key0 ORDER BY key0
+
+*/
+
+export const lineDataNode = graph.data({
+  source: "xfilter",
+  name: "line",
+  transform: [
+    {
+      type: "formula",
+      op: {
+        type: "date_trunc",
+        unit: "month",
+        field: "dep_timestamp"
+      },
+      as: "x"
+    },
+    {
+      type: "aggregate",
+      fields: ["*"],
+      ops: ["count"],
+      as: ["y"],
+      groupby: "x"
+    },
+    {
+      type: "collect",
+      sort: {field: "x"}
+    },
+    {
+      type: "filter",
+      field: "dep_timestamp",
+      range: [
+        "TIMESTAMP(0) '1987-10-01 00:03:00'",
+        "TIMESTAMP(0) '2008-12-31 23:59:00'"
+      ]
+    }
+  ]
+})
+
 export default graph;

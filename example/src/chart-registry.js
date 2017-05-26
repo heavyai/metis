@@ -1,6 +1,7 @@
-import { rowDataNode, scatterDataNode } from "./datagraph";
+import { rowDataNode, scatterDataNode, lineDataNode } from "./datagraph";
 import crossfilter from "./crossfilter";
 import * as Row from "./chart-row";
+import * as Line from "./chart-line";
 import * as Scatter from "./chart-scatter";
 import * as constants from "./constants";
 
@@ -24,13 +25,14 @@ export const dispatch = d3.dispatch(
 );
 
 function dataAsync() {
-  return Promise.all([rowDataNode.values(), scatterDataNode.values()]);
+  return Promise.all([rowDataNode.values(), scatterDataNode.values(), lineDataNode.values()]);
 }
 
 function renderAll() {
-  return dataAsync().then(([rowData, scatterData]) => {
+  return dataAsync().then(([rowData, scatterData, a]) => {
     Row.render(rowData);
     Scatter.render(scatterData);
+    Line.render(a)
   });
 }
 
