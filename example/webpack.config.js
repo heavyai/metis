@@ -21,7 +21,7 @@ module.exports = {
         test: /\.js$/,
         include: [
           path.resolve(__dirname, "index.js"),
-          path.resolve(__dirname, "xfilter-lite.js"),
+          path.resolve(__dirname, "./src"),
           path.resolve(__dirname, "../index.js"),
           path.resolve(__dirname, "../src")
         ],
