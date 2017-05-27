@@ -1,12 +1,14 @@
-import { dispatch } from "./chart-registry";
+import { register } from "./chart-registry";
 import * as constants from "./constants";
+import { scatterDataNode } from "./datagraph";
 
 const SCATTER_VEGA_SPEC = {
   $schema: "https://vega.github.io/schema/vega/v3.0.json",
-  width: 400,
-  height: 400,
+  width: 350,
+  height: 350,
   padding: 5,
   autosize: "pad",
+  title: "Average Arrival and Departure Delay by Carrier Name",
   data: [
     { name: constants.DATA_NAME, values: [] },
     {
@@ -47,7 +49,7 @@ const SCATTER_VEGA_SPEC = {
       nice: true,
       zero: true,
       domain: { data: constants.DATA_NAME, field: "x" },
-      range: [0, 400]
+      range: [0, 350]
     },
     {
       name: "y",
@@ -56,7 +58,7 @@ const SCATTER_VEGA_SPEC = {
       nice: true,
       zero: true,
       domain: { data: constants.DATA_NAME, field: "y" },
-      range: [400, 0]
+      range: [350, 0]
     },
     {
       name: "size",
@@ -82,7 +84,7 @@ const SCATTER_VEGA_SPEC = {
       domain: false,
       orient: "bottom",
       tickCount: 5,
-      title: "x"
+      title: "AVG(depdelay)"
     },
     {
       scale: "y",
@@ -90,26 +92,26 @@ const SCATTER_VEGA_SPEC = {
       domain: false,
       orient: "left",
       titlePadding: 5,
-      title: "y"
+      title: "AVG(arrdelay)"
     }
   ],
 
   legends: [
-    {
-      size: "size",
-      title: "size",
-      format: "s",
-      encode: {
-        symbols: {
-          update: {
-            strokeWidth: { value: 2 },
-            opacity: { value: 0.5 },
-            stroke: { value: "#4682b4" },
-            shape: { value: "circle" }
-          }
-        }
-      }
-    }
+    // {
+    //   size: "size",
+    //   title: "size",
+    //   format: "s",
+    //   encode: {
+    //     symbols: {
+    //       update: {
+    //         strokeWidth: { value: 2 },
+    //         opacity: { value: 0.5 },
+    //         stroke: { value: "#4682b4" },
+    //         shape: { value: "circle" }
+    //       }
+    //     }
+    //   }
+    // }
   ],
 
   marks: [
@@ -138,19 +140,70 @@ const SCATTER_VEGA_SPEC = {
   ]
 };
 
-function handleFilterSignal(signal, filter) {
-  dispatch.call("filter", this, {
-    type: "exact",
-    id: constants.SCATTER,
-    field: "carrier_name",
-    filter
+// function handleFilterSignal(signal, filter) {
+//   dispatch.call("filter", this, {
+//     type: "exact",
+//     id: constants.SCATTER,
+//     field: "carrier_name",
+//     filter
+//   });
+// }
+//
+// export function render(data) {
+//   SCATTER_VEGA_SPEC.data[0].values = data;
+//   const runtime = vega.parse(SCATTER_VEGA_SPEC);
+//   const view = new vega.View(runtime);
+//   dispatch.call("render", view, { id: constants.SCATTER, node: "#chart2" });
+//   view.addSignalListener("filter", handleFilterSignal);
+// }
+
+let view = null;
+
+function render(data) {
+  SCATTER_VEGA_SPEC.data[0].values = data;
+  const runtime = vega.parse(SCATTER_VEGA_SPEC);
+  view = new vega.View(runtime);
+
+  view
+    .initialize(document.querySelector("#chart2"))
+    .logLevel(vega.Warn)
+    .renderer("svg")
+    .run();
+
+  view.addSignalListener("filter", (signal, filter) => {
+    this.filter({
+      type: "exact",
+      id: constants.SCATTER,
+      field: "carrier_name",
+      filter
+    });
   });
 }
 
-export function render(data) {
-  SCATTER_VEGA_SPEC.data[0].values = data;
-  const runtime = vega.parse(SCATTER_VEGA_SPEC);
-  const view = new vega.View(runtime);
-  dispatch.call("render", view, { id: constants.SCATTER, node: "#chart2" });
-  view.addSignalListener("filter", handleFilterSignal);
+function redraw(data) {
+  view.setState({ data: { [constants.DATA_NAME]: data } });
+}
+
+function filterAll() {
+  view.setState({ data: { selected: [] } });
+}
+
+function reduceFilters(filters, filterAction) {
+  if (filterAction.filter.selected) {
+    const index = filters.indexOf(filterAction.filter.value);
+    const nextFilters = filters.slice();
+    nextFilters.splice(index, 1);
+    return nextFilters;
+  } else {
+    return filters.concat(filterAction.filter.value);
+  }
+}
+
+export default function create() {
+  const chart = register(constants.SCATTER);
+  chart.on("render", render);
+  chart.on("redraw", redraw);
+  chart.on("filterAll", filterAll);
+  chart.data(scatterDataNode);
+  chart.filterReduce(reduceFilters);
 }

@@ -1,95 +1,91 @@
-import { rowDataNode, scatterDataNode, lineDataNode } from "./datagraph";
 import crossfilter from "./crossfilter";
-import * as Row from "./chart-row";
-import * as Line from "./chart-line";
-import * as Scatter from "./chart-scatter";
 import * as constants from "./constants";
 
-const formatTime = d3.timeFormat("%Y-%m-%d %-I:%M:%S");
-
-const filters = {
-  [constants.ROW]: [],
-  [constants.SCATTER]: []
-};
-
-const views = {
-  [constants.ROW]: null,
-  [constants.SCATTER]: null
-};
+const chartRegistry = {};
+const ids = [];
 
 export const dispatch = d3.dispatch(
-  "render",
-  "redraw",
-  "filter",
+  "xfilter",
   "filterAll",
   "renderAll",
   "redrawAll"
 );
 
-function dataAsync() {
-  return Promise.all([
-    rowDataNode.values(),
-    scatterDataNode.values(),
-    lineDataNode.values()
-  ]);
-}
-
-function renderAll() {
-  return dataAsync().then(([rowData, scatterData, a]) => {
-    Row.render(rowData);
-    Scatter.render(scatterData);
-    Line.render(a);
-  });
-}
-
-function redrawAll() {
-  return dataAsync().then(([rowData, scatterData]) => {
-    dispatch.call("redraw", views[constants.SCATTER], scatterData);
-    dispatch.call("redraw", views[constants.ROW], rowData);
-  });
-}
-
-dispatch.on("redraw", function(data) {
-  this.setState({ data: { [constants.DATA_NAME]: data } });
-});
-
-dispatch.on("render", function({ id, node }) {
-  views[id] = this;
-  this.initialize(document.querySelector(node))
-    .logLevel(vega.Warn)
-    .renderer("svg")
-    .run();
-});
-
-dispatch.on("filter", ({ id, type, field, filter }) => {
-  if (type === "exact") {
-    const state = filters[id];
-    if (filter.selected) {
-      const index = state.indexOf(filter.value);
-      state.splice(index, 1);
-    } else {
-      state.push(filter.value);
-    }
-    crossfilter.filter(id, { field, equals: state });
-  } else if (type === "range") {
-    filters[id] = filter;
-    var range = [
-      `TIMESTAMP(0) '${formatTime(filters[id][0])}'`,
-      `TIMESTAMP(0) '${formatTime(filters[id][1])}'`
-    ];
-    crossfilter.filter(id, { field, range });
-  }
-
-  redrawAll();
-});
-
 dispatch.on("filterAll", () => {
-  Object.keys(filters).forEach(key => (filters[key] = []));
   crossfilter.filterAll();
-  views[constants.ROW].setState({ data: { selected: [] } });
-  views[constants.SCATTER].setState({ data: { selected: [] } });
-  redrawAll();
+  ids.forEach(id => chartRegistry[id].filterAll());
+  dispatch.call("redrawAll");
 });
 
-dispatch.on("renderAll", renderAll);
-dispatch.on("redrawAll", redrawAll);
+dispatch.on("renderAll", () => {
+  return Promise.all(ids.map(id => chartRegistry[id].render()));
+});
+
+dispatch.on("redrawAll", () => {
+  return Promise.all(ids.map(id => chartRegistry[id].redraw()));
+});
+
+dispatch.on("xfilter", ({ type, id, field, filter }) => {
+  if (type === "exact") {
+    crossfilter.filter(id, { field: field, equals: filter });
+  } else if (type === "range") {
+    crossfilter.filter(id, { field: field, range: filter });
+  }
+  dispatch.call("redrawAll");
+});
+
+export function list(id) {
+  return id ? chartRegistry : chartRegistry[id];
+}
+
+export function register(id) {
+  let _data = null;
+  let _filters = [];
+  let _filterReducer = null;
+
+  const _dispatch = d3.dispatch("render", "redraw", "filter", "filterAll");
+
+  _dispatch.on("filter", filterAction => {
+    _filters = _filterReducer(_filters, filterAction);
+    dispatch.call("xfilter", this, { ...filterAction, filter: _filters });
+  });
+
+  const chart = {
+    on(event, handler) {
+      _dispatch.on(event, handler);
+    },
+    trigger(event, context, value) {
+      _dispatch.call(event, context, value);
+    },
+    data(data) {
+      return !arguments.length ? _data : (_data = data);
+    },
+    render() {
+      return _data.values().then(data => {
+        _dispatch.call("render", chart, data);
+      });
+    },
+    redraw() {
+      return _data.values().then(data => {
+        _dispatch.call("redraw", chart, data);
+      });
+    },
+    filterReduce(reducer) {
+      return !arguments.length ? _filterReducer : (_filterReducer = reducer);
+    },
+    filter(filterAction) {
+      return !arguments.length
+        ? _filters
+        : _dispatch.call("filter", chart, filterAction);
+    },
+    filterAll() {
+      _filters = [];
+      _dispatch.call("filterAll", chart);
+    }
+  };
+
+  ids.push(id);
+  chartRegistry[id] = chart;
+
+  return chart;
+}

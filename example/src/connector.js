@@ -23,5 +23,3 @@ export function connect() {
     });
   });
 }
-
-window.query = query;

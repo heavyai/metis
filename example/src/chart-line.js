@@ -1,15 +1,17 @@
-import { dispatch } from "./chart-registry";
+import { register } from "./chart-registry";
 import * as constants from "./constants";
+import { lineDataNode } from "./datagraph";
 
 const LINE_VEGA_SPEC = {
   $schema: "https://vega.github.io/schema/vega/v3.0.json",
-  width: 500,
+  width: 750,
   height: 200,
-  padding: 5,
+  padding: 15,
+  title: "# Records by Departure Month",
   signals: [
     {
       name: "brush",
-      value: [50, 200],
+      value: [50, 100],
       on: [
         {
           events: "@overview:mousedown",
@@ -49,7 +51,7 @@ const LINE_VEGA_SPEC = {
 
   data: [
     {
-      name: "table",
+      name: constants.DATA_NAME,
       values: [],
       parse: { x: 'utc:"%Y"' }
     }
@@ -60,7 +62,7 @@ const LINE_VEGA_SPEC = {
       name: "x",
       type: "utc",
       range: "width",
-      domain: { data: "table", field: "x" }
+      domain: { data: constants.DATA_NAME, field: "x" }
     },
     {
       name: "y",
@@ -68,20 +70,25 @@ const LINE_VEGA_SPEC = {
       range: "height",
       nice: true,
       zero: true,
-      domain: { data: "table", field: "y" }
+      domain: { data: constants.DATA_NAME, field: "y" }
     }
   ],
 
   axes: [
-    { orient: "bottom", scale: "x", format: "%m-%Y" },
-    { orient: "left", scale: "y" }
+    {
+      orient: "bottom",
+      scale: "x",
+      format: "%m-%Y",
+      title: "date_trunc(month, dep_timestamp)"
+    },
+    { orient: "left", scale: "y", title: "# of Records" }
   ],
 
   marks: [
     {
       type: "line",
       name: "overview",
-      from: { data: "table" },
+      from: { data: constants.DATA_NAME },
       encode: {
         enter: {
           x: { scale: "x", field: "x" },
@@ -146,7 +153,7 @@ const LINE_VEGA_SPEC = {
     {
       name: "bubble",
       type: "symbol",
-      from: { data: "table" },
+      from: { data: constants.DATA_NAME },
       encode: {
         update: {
           x: { scale: "x", field: "x" },
@@ -161,21 +168,54 @@ const LINE_VEGA_SPEC = {
   ]
 };
 
-export function render(data) {
+let view = null;
+
+function render(data) {
   LINE_VEGA_SPEC.data[0].values = data;
-  const runtime = vega.parse(LINE_VEGA_SPEC);
-  const view = new vega.View(runtime);
-  dispatch.call("render", view, { id: constants.LINE, node: "#chart3" });
 
   const extent = [data[0].x, data[data.length - 1].x];
-  const scale = d3.scaleTime().domain(extent).range([0, 500]);
+  const scale = d3.scaleTime().domain(extent).range([0, 750]);
+
+  const runtime = vega.parse(LINE_VEGA_SPEC);
+  view = new vega.View(runtime);
+
+  view
+    .initialize(document.querySelector("#chart3"))
+    .logLevel(vega.Warn)
+    .renderer("svg")
+    .run();
 
   view.addSignalListener("brush", (signal, range) => {
-    dispatch.call("filter", this, {
+    this.filter({
       type: "range",
       id: constants.LINE,
       field: "dep_timestamp",
       filter: [scale.invert(range[0]), scale.invert(range[1])]
     });
   });
+}
+
+function redraw(data) {
+  view.setState({ data: { [constants.DATA_NAME]: data } });
+}
+
+function filterAll() {
+  // view.setState({ data: { selected: [] } })
+}
+
+function reduceFilters(filters, { filter }) {
+  const formatTime = d3.timeFormat("%Y-%m-%d %-I:%M:%S");
+  return [
+    `TIMESTAMP(0) '${formatTime(filter[0])}'`,
+    `TIMESTAMP(0) '${formatTime(filter[1])}'`
+  ];
+}
+
+export default function create() {
+  const chart = register(constants.LINE);
+  chart.on("render", render);
+  chart.on("redraw", redraw);
+  chart.on("filterAll", filterAll);
+  chart.data(lineDataNode);
+  chart.filterReduce(reduceFilters);
 }

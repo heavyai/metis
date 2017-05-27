@@ -97,14 +97,6 @@ export const scatterDataNode = graph.data({
   ]
 });
 
-/*
-"SELECT date_trunc(month, dep_timestamp) as key0,
-COUNT(*) AS series_1 FROM flights_donotmodify
-WHERE (dep_timestamp >= TIMESTAMP(0) '1987-10-01 00:03:00' AND dep_timestamp <= TIMESTAMP(0) '2008-12-31 23:59:00')
-GROUP BY key0 ORDER BY key0
-
-*/
-
 export const lineDataNode = graph.data({
   source: "xfilter",
   name: "line",
