@@ -19,7 +19,7 @@ export default function parseFilter(sql: SQL, transform: Filter): SQL {
       sql.where.push(
         "(" + transform.field + " = " + "'" + transform.equals + "'" + ")"
       );
-    } else if (Array.isArray(transform.equals)) {
+    } else if (Array.isArray(transform.equals) && transform.equals.length) {
       const stmt = transform.equals
         .map(equal => transform.field + " = " + "'" + equal + "'")
         .join(" OR ");

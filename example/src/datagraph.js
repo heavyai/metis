@@ -127,7 +127,7 @@ export const lineDataNode = graph.data({
     },
     {
       type: "collect",
-      sort: {field: "x"}
+      sort: { field: "x" }
     },
     {
       type: "filter",
@@ -136,8 +136,13 @@ export const lineDataNode = graph.data({
         "TIMESTAMP(0) '1987-10-01 00:03:00'",
         "TIMESTAMP(0) '2008-12-31 23:59:00'"
       ]
+    },
+    {
+      type: "resolvefilter",
+      filter: { signal: "vega" },
+      ignore: constants.LINE
     }
   ]
-})
+});
 
 export default graph;

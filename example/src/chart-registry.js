@@ -5,6 +5,8 @@ import * as Line from "./chart-line";
 import * as Scatter from "./chart-scatter";
 import * as constants from "./constants";
 
+const formatTime = d3.timeFormat("%Y-%m-%d %-I:%M:%S");
+
 const filters = {
   [constants.ROW]: [],
   [constants.SCATTER]: []
@@ -25,14 +27,18 @@ export const dispatch = d3.dispatch(
 );
 
 function dataAsync() {
-  return Promise.all([rowDataNode.values(), scatterDataNode.values(), lineDataNode.values()]);
+  return Promise.all([
+    rowDataNode.values(),
+    scatterDataNode.values(),
+    lineDataNode.values()
+  ]);
 }
 
 function renderAll() {
   return dataAsync().then(([rowData, scatterData, a]) => {
     Row.render(rowData);
     Scatter.render(scatterData);
-    Line.render(a)
+    Line.render(a);
   });
 }
 
@@ -56,8 +62,8 @@ dispatch.on("render", function({ id, node }) {
 });
 
 dispatch.on("filter", ({ id, type, field, filter }) => {
-  const state = filters[id];
   if (type === "exact") {
+    const state = filters[id];
     if (filter.selected) {
       const index = state.indexOf(filter.value);
       state.splice(index, 1);
@@ -65,9 +71,13 @@ dispatch.on("filter", ({ id, type, field, filter }) => {
       state.push(filter.value);
     }
     crossfilter.filter(id, { field, equals: state });
-  } else if (Array.isArray(value)) {
-    filters[id] = value;
-    // crossfilter.filterRange(id, value)
+  } else if (type === "range") {
+    filters[id] = filter;
+    var range = [
+      `TIMESTAMP(0) '${formatTime(filters[id][0])}'`,
+      `TIMESTAMP(0) '${formatTime(filters[id][1])}'`
+    ];
+    crossfilter.filter(id, { field, range });
   }
 
   redrawAll();

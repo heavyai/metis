@@ -4,6 +4,7 @@ export function filter(id, filter) {
   const { transform } = xfilterDataNode.getState();
   const xfilters = transform[0].filter;
   const index = xfilters.findIndex(f => f.id === id);
+
   if (index !== -1) {
     xfilters[index] = {
       type: "filter",

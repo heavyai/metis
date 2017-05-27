@@ -24,5 +24,4 @@ export function connect() {
   });
 }
 
-
-window.query = query
+window.query = query;
