@@ -1,4 +1,6 @@
-# mapd-datagraph-sketch
+# sql-datagraph
+
+[![Build Status](https://travis-ci.org/mrblueblue/sql-datagraph.svg?branch=master)](https://travis-ci.org/mrblueblue/sql-datagraph)
 
 ## API
 

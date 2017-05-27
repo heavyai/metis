@@ -14,8 +14,8 @@ export default function parseCollect(sql: SQL, { sort, limit }: Collect): SQL {
     if (typeof sort.field === "string") {
       sql.orderby.push(orderField(sort.order, sort.field));
     } else if (Array.isArray(sort.field)) {
-      sort.order.forEach((ordering, index) => {
-        sql.orderby.push(orderField(ordering, sort.field[index]));
+      sort.field.forEach((field, index) => {
+        sql.orderby.push(orderField((sort.order || [])[index], field));
       });
     }
   } else if (limit) {

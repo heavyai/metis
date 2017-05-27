@@ -1,0 +1,3 @@
+language: node_js
+node_js: "6"
+after_success: CODECOV_TOKEN="67ccc997-1f80-4419-a3ea-01c1e16e522a" nyc report --reporter=text-lcov > coverage.lcov
