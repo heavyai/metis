@@ -1,6 +1,7 @@
 # sql-datagraph
 
 [![Build Status](https://travis-ci.org/mrblueblue/sql-datagraph.svg?branch=master)](https://travis-ci.org/mrblueblue/sql-datagraph)
+[![coverage](https://img.shields.io/codecov/c/github/mrblueblue/sql-datagraph.svg?style=flat-square)](https://codecov.io/github/mrblueblue/sql-datagraph)
 
 ## API
 
