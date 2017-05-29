@@ -3,18 +3,14 @@
 [![Build Status](https://travis-ci.org/mrblueblue/sql-datagraph.svg?branch=master)](https://travis-ci.org/mrblueblue/sql-datagraph)
 [![coverage](https://img.shields.io/codecov/c/github/mrblueblue/sql-datagraph.svg?style=flat-square)](https://codecov.io/github/mrblueblue/sql-datagraph)
 
+* [**API Documentation**](docs/API.md)
+* [**Crossfiltering Vega Example**](https://mrblueblue.github.io/sql-datagraph/example/)
+
 Declaratively build SQL data pipelines. Based on the [Vega Transform API](https://vega.github.io/vega/docs/transforms/).
 
-Each node in the graph represents a transformation of data.
+Each node in the graph represents a transformation of data. Root nodes are "scans" of SQL tables.
 
-Root nodes are "scans" of SQL tables.
-
-The path from a child node to its root represents a data transformation pipeline.
-
-This pipeline can be described as a SQL query or a set of transformations described in JSON notation.
-
-[**API Documentation**](docs/API.md)
-[**Crossfiltering Vega Example**](https://mrblueblue.github.io/sql-datagraph/example/)
+The path from a child node to its root represents a data transformation pipeline. This pipeline can be described as a SQL query or a set of transformations described in JSON notation.
 
 
 ### Example
