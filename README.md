@@ -3,86 +3,19 @@
 [![Build Status](https://travis-ci.org/mrblueblue/sql-datagraph.svg?branch=master)](https://travis-ci.org/mrblueblue/sql-datagraph)
 [![coverage](https://img.shields.io/codecov/c/github/mrblueblue/sql-datagraph.svg?style=flat-square)](https://codecov.io/github/mrblueblue/sql-datagraph)
 
-## API
+Declaratively build SQL data pipelines. Based on the [Vega Transform API](https://vega.github.io/vega/docs/transforms/).
 
-### Top Level
+Each node in the graph represents a transformation of data.
 
-`createGraph(connector: Connector, state: GraphState): Graph`
+Root nodes are "scans" of SQL tables.
 
-> creates Graph object
+The path from a child node to its root represents a data transformation pipeline.
 
-### Graph
+This pipeline can be described as a SQL query or a set of transformations described in JSON notation.
 
-`.data(state: DataState): Data`
+[**API Documentation**](docs/API.md)
+[**Crossfiltering Vega Example**](https://mrblueblue.github.io/sql-datagraph/example/)
 
-> creates a Data operator node
-
-`.getState(): GraphState `
-
-> returns the state of the Graph
-
-`.nodes(): ArrayOf(Data)`
-
-> gets all Data operator nodes
-
-### Data
-
-`.getState(): DataState`
-
-> returns the state of the Data node
-
-`.transform(transform: Transform | ArrayOf(Transform) )`
-
-> adds a transformation or a set of transformations to the Data node
-
-`.toSQL(): string`
-
-> returns a representation of the data pipeline as a SQL string
-
-`.values(): Promise`
-
-> returns a promise that resolves to the results returned by the query
-
-### Types
-
-```js
-// @flow
-type Connector = {
-  query: () => Promise<Array<any>>,
-  tables: Array<string>
-}
-
-type DataState = {
-  source: string,
-  name?: string,
-  transform: Array<Transform>
-}
-
-type GraphContext = {
-  connector: Connector,
-  state: GraphState
-}
-
-type GraphState = {
-  [string]: DataState
-}
-
-type Graph = {
-  getState: () => GraphState,
-  nodes: () => Array<DataNode>,
-  data: (state: DataState) => DataNode
-}
-
-type DataNode = {
-  getState: () => DataState,
-  transform: (transform: Transform | Array<Transform>) => DataNode,
-  toSQL: () => string,
-  values: () => Promise<Array<any>>
-}
-
-type Transform = Aggregate | Bin | Collect | Filter | Formula | Sample | Crossfilter | ResolveFilter
-// see https://github.com/vega/vega-dataflow/tree/master/definitions
-```
 
 ### Example
 
@@ -170,3 +103,9 @@ ORDER BY key0
 child.toSQL()
 
 ```
+
+### Resources
+* [Vega Transform](https://vega.github.io/vega/docs/transforms/)
+* [Vega Architecture](http://idl.cs.washington.edu/papers/reactive-vega-architecture/)
+* [Calcite Relational Algebra](https://calcite.apache.org/docs/algebra.html)
+* [Crossfilter API](https://github.com/square/crossfilter/wiki/API-Reference)
