@@ -26,10 +26,10 @@ dispatch.on("redrawAll", () => {
 });
 
 dispatch.on("xfilter", ({ type, id, field, filter }) => {
-  if (type === "exact") {
-    crossfilter.filter(id, { field: field, equals: filter });
-  } else if (type === "range") {
-    crossfilter.filter(id, { field: field, range: filter });
+  if (type === "filter.exact") {
+    crossfilter.filter(id, { type, field: field, equals: filter });
+  } else if (type === "filter.range") {
+    crossfilter.filter(id, { type, field: field, range: filter });
   }
   dispatch.call("redrawAll");
 });

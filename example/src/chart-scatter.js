@@ -172,7 +172,7 @@ function render(data) {
 
   view.addSignalListener("filter", (signal, filter) => {
     this.filter({
-      type: "exact",
+      type: "filter.exact",
       id: constants.SCATTER,
       field: "carrier_name",
       filter

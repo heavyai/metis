@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nyc tape -r babel-register tests/**.spec.js",
+    "test": "flow && nyc tape -r babel-register tests/**.spec.js",
+    "pretty": "prettier --write tests/*.js src/**/*.js src/*.js example/*.js example/src/*.js",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
   },
   "repository": {

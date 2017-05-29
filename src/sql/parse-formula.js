@@ -1,15 +1,26 @@
 // @flow
-export default function formula(sql: SQL, { op, expr, as }: Formula): SQL {
-  if (expr) {
-    sql.select.push(expr + " as " + as);
-  } else if (op) {
-    if (op.type === "extract") {
-      sql.select.push(
-        "extract(" + op.unit + " from " + op.field + ") as " + as
-      );
-    } else if (op.type === "date_trunc") {
-      sql.select.push("date_trunc(" + op.unit + ", " + op.field + ") as " + as);
-    }
+export default function formula(sql: SQL, transform: Formula): SQL {
+  if (transform.type === "formula") {
+    sql.select.push(transform.expr + " as " + transform.as);
+  } else if (transform.type === "formula.date_trunc") {
+    sql.select.push(
+      "date_trunc(" +
+        transform.unit +
+        ", " +
+        transform.field +
+        ") as " +
+        transform.as
+    );
+  } else if (transform.type === "formula.extract") {
+    sql.select.push(
+      "extract(" +
+        transform.unit +
+        " from " +
+        transform.field +
+        ") as " +
+        transform.as
+    );
   }
+
   return sql;
 }

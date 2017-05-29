@@ -24,11 +24,16 @@ export default function parse({ source, transform }: DataState): SQL {
         return parseAggregate(sql, t);
       case "bin":
         return parseBin(sql, t);
-      case "collect":
+      case "collect.sort":
+      case "collect.limit":
         return parseCollect(sql, t);
       case "filter":
+      case "filter.exact":
+      case "filter.range":
         return parseFilter(sql, t);
       case "formula":
+      case "formula.date_trunc":
+      case "formula.extract":
         return parseFormula(sql, t);
       case "sample":
         return parseSample(sql, t);

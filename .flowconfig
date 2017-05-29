@@ -3,6 +3,7 @@
 [include]
 
 [libs]
-./flow-types/data-graph.types.js
+./flow-types/datagraph.flow.js
+./flow-types/transform.flow.js
 
 [options]

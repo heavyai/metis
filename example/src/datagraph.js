@@ -1,8 +1,9 @@
+// @flow
 import * as constants from "./constants";
-import { createDataGraph } from "../../index";
+import { createDataGraph } from "../../src/data-graph";
 import { query } from "./connector";
 
-const graph = createDataGraph({ query });
+const graph = createDataGraph({ query, tables: ["flights_donotmodify"] });
 
 export const xfilterDataNode = graph.data({
   source: "flights_donotmodify",
@@ -32,14 +33,14 @@ export const rowDataNode = graph.data({
       as: ["records"]
     },
     {
-      type: "collect",
+      type: "collect.sort",
       sort: {
-        field: "records",
-        order: "descending"
+        field: ["records"],
+        order: ["descending"]
       }
     },
     {
-      type: "collect",
+      type: "collect.limit",
       limit: {
         row: 20
       }
@@ -70,21 +71,23 @@ export const scatterDataNode = graph.data({
     },
     {
       type: "filter",
+      id: "test",
       expr: "depdelay IS NOT NULL"
     },
     {
       type: "filter",
+      id: "test",
       expr: "arrdelay IS NOT NULL"
     },
     {
-      type: "collect",
+      type: "collect.sort",
       sort: {
-        field: "size",
-        order: "descending"
+        field: ["size"],
+        order: ["descending"]
       }
     },
     {
-      type: "collect",
+      type: "collect.limit",
       limit: {
         row: 15
       }
@@ -102,12 +105,9 @@ export const lineDataNode = graph.data({
   name: "line",
   transform: [
     {
-      type: "formula",
-      op: {
-        type: "date_trunc",
-        unit: "month",
-        field: "dep_timestamp"
-      },
+      type: "formula.date_trunc",
+      unit: "month",
+      field: "dep_timestamp",
       as: "x"
     },
     {
@@ -118,11 +118,12 @@ export const lineDataNode = graph.data({
       groupby: "x"
     },
     {
-      type: "collect",
-      sort: { field: "x" }
+      type: "collect.sort",
+      sort: { field: ["x"] }
     },
     {
-      type: "filter",
+      type: "filter.range",
+      id: "test",
       field: "dep_timestamp",
       range: [
         "TIMESTAMP(0) '1987-10-01 00:03:00'",

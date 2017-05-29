@@ -116,7 +116,7 @@ function render(data) {
 
   view.addSignalListener("filter", (signal, filter) => {
     this.filter({
-      type: "exact",
+      type: "filter.exact",
       id: constants.ROW,
       field: "dest_state",
       filter

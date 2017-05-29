@@ -187,7 +187,7 @@ function render(data) {
 
   view.addSignalListener("brush", (signal, range) => {
     this.filter({
-      type: "range",
+      type: "filter.range",
       id: constants.LINE,
       field: "dep_timestamp",
       filter: [scale.invert(range[0]), scale.invert(range[1])]

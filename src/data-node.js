@@ -35,9 +35,7 @@ export default function createDataNode(
       return nodePathToSQL(context.state, state.name);
     },
     values(): Promise<Array<any>> {
-      return context.connector.query(
-        nodePathToSQL(context.state, state.name)
-      );
+      return context.connector.query(nodePathToSQL(context.state, state.name));
     }
   };
 }

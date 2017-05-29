@@ -16,14 +16,14 @@ export function createDataGraph(
   const nodes = [];
 
   return {
-    nodes() {
+    nodes(): Array<DataNode> {
       return nodes;
     },
-    getState() {
+    getState(): GraphState {
       return context.state;
     },
-    data(state) {
-      const dataNode = createDataNode(context, state);
+    data(state: DataState): DataNode {
+      const dataNode: DataNode = createDataNode(context, state);
       context.state[state.name] = dataNode.getState();
       nodes.push(dataNode);
       return dataNode;

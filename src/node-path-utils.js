@@ -12,6 +12,7 @@ function createNodeReducer(state: GraphState) {
     rightNode: DataState
   ): DataState {
     return {
+      name: "",
       source: state.hasOwnProperty(rightNode.source)
         ? leftNode.source
         : rightNode.source,
@@ -37,6 +38,7 @@ export function walk(
 
 export function reduceNodes(state: GraphState, name: string): DataState {
   return walk(state, name, identity, createNodeReducer(state), {
+    name: "",
     source: "",
     transform: []
   });
@@ -60,8 +62,8 @@ export function resolveFilters(state: DataState): DataState {
   ): Array<Transform> {
     if (transform.type === "crossfilter") {
       const resolved = resolvedFilter(state.transform, transform.signal);
-      if (typeof resolved === "object") {
-        transform.filter.forEach(filter => {
+      if (resolved.type === "resolvefilter") {
+        transform.filter.forEach((filter: Filter) => {
           if (
             Array.isArray(resolved.ignore) &&
             resolved.ignore.indexOf(filter.id) === -1

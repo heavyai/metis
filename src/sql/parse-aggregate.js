@@ -7,42 +7,31 @@ const AGGREGATES = {
   sum: "SUM"
 };
 
-function aggregateField(op, field, as) {
-  let str = "";
-  if (AGGREGATES[op]) {
-    str += AGGREGATES[op] + "(" + field + ")";
-  } else {
-    str += field;
-  }
-  return str + `${as ? " as " + as : ""}`;
-}
-
-export default function parseAggregate(
-  sql: SQL,
-  { fields, ops, as, groupby }: Aggregate
-): SQL {
-  if (typeof fields === "string") {
-    sql.select.push(aggregateField(ops, fields, as));
-  } else if (Array.isArray(fields)) {
-    if (ops) {
-      as = as || [];
-      ops.forEach((operation, index) => {
-        sql.select.push(aggregateField(operation, fields[index], as[index]));
-      });
-    } else if (as) {
-      as.forEach((as_string, index) => {
-        sql.select.push(aggregateField(null, fields[index], as_string));
-      });
+export default function parseAggregate(sql: SQL, transform: Aggregate): SQL {
+  transform.fields.forEach((field: string, index: number): void => {
+    const as = Array.isArray(transform.as) ? transform.as[index] : null;
+    if (Array.isArray(transform.ops)) {
+      sql.select.push(aggregateField(transform.ops[index], field, as));
     } else {
-      fields.forEach(field => sql.select.push(field));
+      sql.select.push(aggregateField(null, field, as));
     }
-  }
+  });
 
-  if (typeof groupby === "string") {
-    sql.groupby.push(groupby);
-  } else if (Array.isArray(groupby)) {
-    sql.groupby = sql.groupby.concat(groupby);
+  if (typeof transform.groupby === "string") {
+    sql.groupby.push(transform.groupby);
+  } else if (Array.isArray(transform.groupby)) {
+    sql.groupby = sql.groupby.concat(transform.groupby);
   }
 
   return sql;
+}
+
+function aggregateField(op, field, as) {
+  let str = "";
+  if (op === null) {
+    str += field;
+  } else if (AGGREGATES[op]) {
+    str += AGGREGATES[op] + "(" + field + ")";
+  }
+  return str + `${as ? " as " + as : ""}`;
 }
