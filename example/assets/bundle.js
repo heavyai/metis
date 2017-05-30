@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "/assets/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 27);
+/******/ 	return __webpack_require__(__webpack_require__.s = 28);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -79,6 +79,7 @@ Object.defineProperty(exports, "__esModule", {
 var ROW = exports.ROW = "ROW";
 var SCATTER = exports.SCATTER = "SCATTER";
 var LINE = exports.LINE = "LINE";
+var FACET_LINE = exports.FACET_LINE = "FACET_LINE";
 var DATA_NAME = exports.DATA_NAME = "SOURCE";
 
 /***/ }),
@@ -98,7 +99,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 exports.list = list;
 exports.register = register;
 
-var _crossfilter = __webpack_require__(15);
+var _crossfilter = __webpack_require__(16);
 
 var _crossfilter2 = _interopRequireDefault(_crossfilter);
 
@@ -113,6 +114,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var chartRegistry = {};
 var ids = [];
 
+var redrawing = false;
+var debounced = false;
+
 var dispatch = exports.dispatch = d3.dispatch("xfilter", "filterAll", "renderAll", "redrawAll");
 
 dispatch.on("filterAll", function () {
@@ -123,16 +127,22 @@ dispatch.on("filterAll", function () {
   dispatch.call("redrawAll");
 });
 
-dispatch.on("renderAll", function () {
-  return Promise.all(ids.map(function (id) {
-    return chartRegistry[id].render();
-  }));
-});
+dispatch.on("renderAll", renderAll);
 
 dispatch.on("redrawAll", function () {
-  return Promise.all(ids.map(function (id) {
-    return chartRegistry[id].redraw();
-  }));
+  if (redrawing) {
+    debounced = true;
+    return;
+  } else {
+    redrawing = true;
+    return redrawAll().then(function () {
+      redrawing = false;
+      if (debounced) {
+        debounced = false;
+        return redrawAll();
+      }
+    });
+  }
 });
 
 dispatch.on("xfilter", function (_ref) {
@@ -148,6 +158,18 @@ dispatch.on("xfilter", function (_ref) {
   }
   dispatch.call("redrawAll");
 });
+
+function renderAll() {
+  return Promise.all(ids.map(function (id) {
+    return chartRegistry[id].render();
+  }));
+}
+
+function redrawAll() {
+  return Promise.all(ids.map(function (id) {
+    return chartRegistry[id].redraw();
+  }));
+}
 
 function list(id) {
   return id ? chartRegistry : chartRegistry[id];
@@ -215,128 +237,18 @@ function register(id) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.lineDataNode = exports.scatterDataNode = exports.rowDataNode = exports.xfilterDataNode = undefined;
 
 var _constants = __webpack_require__(0);
 
 var constants = _interopRequireWildcard(_constants);
 
-var _dataGraph = __webpack_require__(16);
+var _dataGraph = __webpack_require__(17);
 
 var _connector = __webpack_require__(4);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var graph = (0, _dataGraph.createDataGraph)({ query: _connector.query, tables: ["flights_donotmodify"] });
-var xfilterDataNode = exports.xfilterDataNode = graph.data({
-  source: "flights_donotmodify",
-  name: "xfilter",
-  transform: [{
-    type: "crossfilter",
-    signal: "vega",
-    filter: []
-  }]
-});
-
-var rowDataNode = exports.rowDataNode = graph.data({
-  source: "xfilter",
-  name: "row",
-  transform: [{
-    type: "aggregate",
-    fields: ["dest_state"],
-    groupby: ["dest_state"]
-  }, {
-    type: "aggregate",
-    fields: ["*"],
-    ops: ["count"],
-    as: ["records"]
-  }, {
-    type: "collect.sort",
-    sort: {
-      field: ["records"],
-      order: ["descending"]
-    }
-  }, {
-    type: "collect.limit",
-    limit: {
-      row: 20
-    }
-  }, {
-    type: "resolvefilter",
-    filter: { signal: "vega" },
-    ignore: constants.ROW
-  }]
-});
-
-var scatterDataNode = exports.scatterDataNode = graph.data({
-  source: "xfilter",
-  name: "scatter",
-  transform: [{
-    type: "aggregate",
-    fields: ["carrier_name"],
-    as: ["key0"],
-    groupby: "key0"
-  }, {
-    type: "aggregate",
-    fields: ["depdelay", "arrdelay", "*"],
-    as: ["x", "y", "size"],
-    ops: ["average", "average", "count"]
-  }, {
-    type: "filter",
-    id: "test",
-    expr: "depdelay IS NOT NULL"
-  }, {
-    type: "filter",
-    id: "test",
-    expr: "arrdelay IS NOT NULL"
-  }, {
-    type: "collect.sort",
-    sort: {
-      field: ["size"],
-      order: ["descending"]
-    }
-  }, {
-    type: "collect.limit",
-    limit: {
-      row: 15
-    }
-  }, {
-    type: "resolvefilter",
-    filter: { signal: "vega" },
-    ignore: constants.SCATTER
-  }]
-});
-
-var lineDataNode = exports.lineDataNode = graph.data({
-  source: "xfilter",
-  name: "line",
-  transform: [{
-    type: "formula.date_trunc",
-    unit: "month",
-    field: "dep_timestamp",
-    as: "x"
-  }, {
-    type: "aggregate",
-    fields: ["*"],
-    ops: ["count"],
-    as: ["y"],
-    groupby: "x"
-  }, {
-    type: "collect.sort",
-    sort: { field: ["x"] }
-  }, {
-    type: "filter.range",
-    id: "test",
-    field: "dep_timestamp",
-    range: ["TIMESTAMP(0) '1987-10-01 00:03:00'", "TIMESTAMP(0) '2008-12-31 23:59:00'"]
-  }, {
-    type: "resolvefilter",
-    filter: { signal: "vega" },
-    ignore: constants.LINE
-  }]
-});
-
-exports.default = graph;
+exports.default = (0, _dataGraph.createDataGraph)({ query: _connector.query, tables: ["flights_donotmodify"] });
 
 /***/ }),
 /* 3 */
@@ -468,17 +380,21 @@ var _connector = __webpack_require__(4);
 
 var _chartRegistry = __webpack_require__(1);
 
-var _chartRow = __webpack_require__(13);
+var _chartRow = __webpack_require__(14);
 
 var _chartRow2 = _interopRequireDefault(_chartRow);
 
-var _chartScatter = __webpack_require__(14);
+var _chartScatter = __webpack_require__(15);
 
 var _chartScatter2 = _interopRequireDefault(_chartScatter);
 
-var _chartLine = __webpack_require__(12);
+var _chartLine = __webpack_require__(13);
 
 var _chartLine2 = _interopRequireDefault(_chartLine);
+
+var _chartFacet = __webpack_require__(12);
+
+var _chartFacet2 = _interopRequireDefault(_chartFacet);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -486,6 +402,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
   (0, _chartRow2.default)();
   (0, _chartScatter2.default)();
   (0, _chartLine2.default)();
+  (0, _chartFacet2.default)();
   _chartRegistry.dispatch.call("renderAll");
 }).then(function () {
   document.getElementById("filter-all").addEventListener("click", function () {
@@ -715,19 +632,252 @@ var constants = _interopRequireWildcard(_constants);
 
 var _datagraph = __webpack_require__(2);
 
+var _datagraph2 = _interopRequireDefault(_datagraph);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var facetLineDataNode = _datagraph2.default.data({
+  source: "xfilter",
+  name: "facet",
+  transform: [{
+    type: "formula.extract",
+    unit: "month",
+    field: "arr_timestamp",
+    as: "key0"
+  }, {
+    type: "formula.extract",
+    unit: "hour",
+    field: "arr_timestamp",
+    as: "key1"
+  }, {
+    type: "aggregate",
+    fields: ["arrdelay"],
+    ops: ["sum"],
+    as: ["delay"],
+    groupby: ["key0", "key1"]
+  }, {
+    type: "collect",
+    sort: { field: ["key0", "key1"] }
+  }, {
+    type: "filter",
+    expr: "arrdelay IS NOT NULL"
+  }, {
+    type: "resolvefilter",
+    filter: { signal: "vega" },
+    ignore: constants.FACET_LINE
+  }]
+});
+
+var FACET_LINE_VEGA = {
+  $schema: "https://vega.github.io/schema/vega/v3.0.json",
+  width: 350,
+  padding: 5,
+
+  signals: [{ name: "rangeStep", value: 25 }, { name: "height", update: "rangeStep * 24" }],
+
+  data: [{
+    name: constants.DATA_NAME,
+    values: []
+  }],
+
+  scales: [{
+    name: "color",
+    type: "sequential",
+    range: { scheme: "viridis" },
+    domain: { data: constants.DATA_NAME, field: "delay" },
+    zero: false,
+    nice: false
+  }, {
+    name: "row",
+    type: "band",
+    domain: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5],
+    range: { step: { signal: "rangeStep" } }
+  }, {
+    name: "x",
+    type: "linear",
+    zero: false,
+    round: true,
+    nice: true,
+    domain: { data: constants.DATA_NAME, field: "key0" },
+    range: "width"
+  }, {
+    name: "y",
+    type: "linear",
+    zero: false,
+    domain: { data: constants.DATA_NAME, field: "delay" },
+    range: [{ signal: "rangeStep" }, 1]
+  }],
+
+  axes: [{
+    orient: "bottom",
+    scale: "x",
+    domain: false,
+    title: "Month",
+    encode: {
+      labels: {
+        update: {
+          text: { signal: "datum.value" }
+        }
+      }
+    }
+  }, {
+    orient: "left",
+    scale: "row",
+    domain: false,
+    title: "Hour",
+    tickSize: 0,
+    encode: {
+      labels: {
+        update: {
+          text: { signal: "datum.value" }
+        }
+      }
+    }
+  }],
+
+  legends: [
+    // {"fill": "color", "type": "gradient", "title": "dep_delay"}
+  ],
+
+  marks: [{
+    type: "group",
+    from: {
+      facet: {
+        name: "key1",
+        data: constants.DATA_NAME,
+        groupby: "key1"
+      }
+    },
+    encode: {
+      enter: {
+        x: { value: 0 },
+        y: { scale: "row", field: "key1" },
+        width: { signal: "width" },
+        height: { signal: "rangeStep" }
+      }
+    },
+    marks: [{
+      type: "area",
+      from: { data: "key1" },
+      encode: {
+        enter: {
+          x: { scale: "x", field: "key0" },
+          y: { scale: "y", field: "delay" },
+          y2: { signal: "rangeStep" },
+          fill: { scale: "color", field: "delay" }
+        }
+      }
+    }]
+  }, {
+    type: "text",
+    encode: {
+      enter: {
+        x: { value: 0 },
+        y: { value: -4 },
+        text: { value: "Arrival Times Annual Delay" },
+        baseline: { value: "bottom" },
+        fontSize: { value: 14 },
+        fontWeight: { value: "bold" },
+        fill: { value: "black" }
+      }
+    }
+  }]
+};
+
+var view = null;
+
+function render(data) {
+  FACET_LINE_VEGA.data[0].values = data;
+
+  var runtime = vega.parse(FACET_LINE_VEGA);
+  view = new vega.View(runtime);
+
+  view.initialize(document.querySelector("#facet-line")).logLevel(vega.Warn).renderer("canvas").run();
+}
+
+function redraw(data) {
+  view.setState({ data: _defineProperty({}, constants.DATA_NAME, data) });
+}
+
+function create() {
+  var chart = (0, _chartRegistry.register)(constants.FACET_LINE);
+  chart.on("render", render);
+  chart.on("redraw", redraw);
+  chart.on("filterAll", function () {});
+  chart.data(facetLineDataNode);
+  chart.filterReduce(function () {});
+}
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = create;
+
+var _chartRegistry = __webpack_require__(1);
+
+var _constants = __webpack_require__(0);
+
+var constants = _interopRequireWildcard(_constants);
+
+var _datagraph = __webpack_require__(2);
+
+var _datagraph2 = _interopRequireDefault(_datagraph);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var lineDataNode = _datagraph2.default.data({
+  source: "xfilter",
+  name: "line",
+  transform: [{
+    type: "formula.date_trunc",
+    unit: "day",
+    field: "dep_timestamp",
+    as: "x"
+  }, {
+    type: "aggregate",
+    fields: ["*"],
+    ops: ["count"],
+    as: ["y"],
+    groupby: "x"
+  }, {
+    type: "collect.sort",
+    sort: { field: ["x"] }
+  }, {
+    type: "filter.range",
+    id: "test",
+    field: "dep_timestamp",
+    range: ["TIMESTAMP(0) '1987-10-01 00:03:00'", "TIMESTAMP(0) '2008-12-31 23:59:00'"]
+  }, {
+    type: "resolvefilter",
+    filter: { signal: "vega" },
+    ignore: constants.LINE
+  }]
+});
+
 var LINE_VEGA_SPEC = {
   $schema: "https://vega.github.io/schema/vega/v3.0.json",
-  width: 750,
+  width: 500,
   height: 200,
   padding: 15,
   title: "# Records by Departure Month",
   signals: [{
     name: "brush",
-    value: [50, 100],
+    value: [50, 150],
     on: [{
       events: "@overview:mousedown",
       update: "[x(), x()]"
@@ -771,7 +921,7 @@ var LINE_VEGA_SPEC = {
     type: "linear",
     range: "height",
     nice: true,
-    zero: true,
+    zero: false,
     domain: { data: constants.DATA_NAME, field: "y" }
   }],
 
@@ -854,7 +1004,7 @@ var LINE_VEGA_SPEC = {
         size: { value: 20 },
         shape: { value: "circle" },
         strokeWidth: { value: 2 },
-        fill: { value: "red" }
+        fill: { value: "steelblue" }
       }
     }
   }]
@@ -868,7 +1018,7 @@ function render(data) {
   LINE_VEGA_SPEC.data[0].values = data;
 
   var extent = [data[0].x, data[data.length - 1].x];
-  var scale = d3.scaleTime().domain(extent).range([0, 750]);
+  var scale = d3.scaleTime().domain(extent).range([0, 500]);
 
   var runtime = vega.parse(LINE_VEGA_SPEC);
   view = new vega.View(runtime);
@@ -905,12 +1055,12 @@ function create() {
   chart.on("render", render);
   chart.on("redraw", redraw);
   chart.on("filterAll", filterAll);
-  chart.data(_datagraph.lineDataNode);
+  chart.data(lineDataNode);
   chart.filterReduce(reduceFilters);
 }
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -929,14 +1079,48 @@ var constants = _interopRequireWildcard(_constants);
 
 var _datagraph = __webpack_require__(2);
 
+var _datagraph2 = _interopRequireDefault(_datagraph);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var rowDataNode = _datagraph2.default.data({
+  source: "xfilter",
+  name: "row",
+  transform: [{
+    type: "aggregate",
+    fields: ["dest_state"],
+    groupby: ["dest_state"]
+  }, {
+    type: "aggregate",
+    fields: ["*"],
+    ops: ["count"],
+    as: ["records"]
+  }, {
+    type: "collect.sort",
+    sort: {
+      field: ["records"],
+      order: ["descending"]
+    }
+  }, {
+    type: "collect.limit",
+    limit: {
+      row: 12
+    }
+  }, {
+    type: "resolvefilter",
+    filter: { signal: "vega" },
+    ignore: constants.ROW
+  }]
+});
+
 var ROW_VEGA_SPEC = {
   $schema: "https://vega.github.io/schema/vega/v3.0.json",
-  width: 350,
-  height: 350,
+  width: 250,
+  height: 250,
   padding: 5,
   title: "# Records by Destination State",
   data: [{ name: constants.DATA_NAME, values: [] }, {
@@ -1055,12 +1239,12 @@ function create() {
   chart.on("render", render);
   chart.on("redraw", redraw);
   chart.on("filterAll", filterAll);
-  chart.data(_datagraph.rowDataNode);
+  chart.data(rowDataNode);
   chart.filterReduce(reduceFilters);
 }
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1079,14 +1263,57 @@ var constants = _interopRequireWildcard(_constants);
 
 var _datagraph = __webpack_require__(2);
 
+var _datagraph2 = _interopRequireDefault(_datagraph);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+var scatterDataNode = _datagraph2.default.data({
+  source: "xfilter",
+  name: "scatter",
+  transform: [{
+    type: "aggregate",
+    fields: ["carrier_name"],
+    as: ["key0"],
+    groupby: "key0"
+  }, {
+    type: "aggregate",
+    fields: ["depdelay", "arrdelay", "*"],
+    as: ["x", "y", "size"],
+    ops: ["average", "average", "count"]
+  }, {
+    type: "filter",
+    id: "test",
+    expr: "depdelay IS NOT NULL"
+  }, {
+    type: "filter",
+    id: "test",
+    expr: "arrdelay IS NOT NULL"
+  }, {
+    type: "collect.sort",
+    sort: {
+      field: ["size"],
+      order: ["descending"]
+    }
+  }, {
+    type: "collect.limit",
+    limit: {
+      row: 12
+    }
+  }, {
+    type: "resolvefilter",
+    filter: { signal: "vega" },
+    ignore: constants.SCATTER
+  }]
+});
+
 var SCATTER_VEGA_SPEC = {
   $schema: "https://vega.github.io/schema/vega/v3.0.json",
-  width: 350,
-  height: 350,
+  width: 250,
+  height: 250,
   padding: 5,
   autosize: "pad",
   title: "Average Arrival and Departure Delay by Carrier Name",
@@ -1119,7 +1346,7 @@ var SCATTER_VEGA_SPEC = {
     nice: true,
     zero: true,
     domain: { data: constants.DATA_NAME, field: "x" },
-    range: [0, 350]
+    range: [0, 250]
   }, {
     name: "y",
     type: "linear",
@@ -1127,7 +1354,7 @@ var SCATTER_VEGA_SPEC = {
     nice: true,
     zero: true,
     domain: { data: constants.DATA_NAME, field: "y" },
-    range: [350, 0]
+    range: [250, 0]
   }, {
     name: "size",
     type: "linear",
@@ -1260,12 +1487,12 @@ function create() {
   chart.on("render", render);
   chart.on("redraw", redraw);
   chart.on("filterAll", filterAll);
-  chart.data(_datagraph.scatterDataNode);
+  chart.data(scatterDataNode);
   chart.filterReduce(reduceFilters);
 }
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1281,15 +1508,28 @@ exports.filter = filter;
 
 var _datagraph = __webpack_require__(2);
 
+var _datagraph2 = _interopRequireDefault(_datagraph);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var xfilterDataNode = _datagraph2.default.data({
+  source: "flights_donotmodify",
+  name: "xfilter",
+  transform: [{
+    type: "crossfilter",
+    signal: "vega",
+    filter: []
+  }]
+});
+
 function filter(id, filter) {
-  var _xfilterDataNode$getS = _datagraph.xfilterDataNode.getState(),
+  var _xfilterDataNode$getS = xfilterDataNode.getState(),
       transform = _xfilterDataNode$getS.transform;
 
   var xfilters = transform[0].filter;
   var index = xfilters.findIndex(function (f) {
     return f.id === id;
   });
-  console.log(filter);
   if (index !== -1) {
     xfilters[index] = _extends({
       id: id
@@ -1302,7 +1542,7 @@ function filter(id, filter) {
 }
 
 function filterAll() {
-  var _xfilterDataNode$getS2 = _datagraph.xfilterDataNode.getState(),
+  var _xfilterDataNode$getS2 = xfilterDataNode.getState(),
       transform = _xfilterDataNode$getS2.transform;
 
   transform[0].filter = [];
@@ -1314,7 +1554,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1325,7 +1565,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createDataGraph = createDataGraph;
 
-var _dataNode = __webpack_require__(17);
+var _dataNode = __webpack_require__(18);
 
 var _dataNode2 = _interopRequireDefault(_dataNode);
 
@@ -1335,6 +1575,10 @@ var _invariant2 = _interopRequireDefault(_invariant);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Creates a SQL data graph instance.
+* @memberof API
+ */
 function createDataGraph(connector) {
   var initialState = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
@@ -1347,13 +1591,34 @@ function createDataGraph(connector) {
 
   var _nodes = [];
 
+  /**
+   * An instance of a SQL data graph
+   * @namespace Graph
+   */
   return {
+    /**
+     * Returns all data node instances of the graph.
+     * @memberof Graph
+     * @inner
+     */
     nodes: function nodes() {
       return _nodes;
     },
+
+    /**
+     * Returns the state of the graph.
+     * @memberof Graph
+     * @inner
+     */
     getState: function getState() {
       return context.state;
     },
+
+    /**
+     * Creates a data node instance.
+     * @memberof Graph
+     * @inner
+     */
     data: function data(state) {
       var dataNode = (0, _dataNode2.default)(context, state);
       context.state[state.name] = dataNode.getState();
@@ -1364,7 +1629,7 @@ function createDataGraph(connector) {
 }
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1380,7 +1645,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = createDataNode;
 
-var _nodePathUtils = __webpack_require__(18);
+var _nodePathUtils = __webpack_require__(19);
 
 var _invariant = __webpack_require__(5);
 
@@ -1397,10 +1662,25 @@ function createDataNode(context, initialState) {
     transform: initialState.transform || []
   });
 
+  /**
+   * A node in the graph that represents a set of data transformations.
+   * @namespace Data
+   */
   return {
+    /**
+     * Returns the state of the data node.
+     * @memberof Data
+     * @inner
+     */
     getState: function getState() {
       return state;
     },
+
+    /**
+     * Sets the transform state of the data node.
+     * @memberof Data
+     * @inner
+     */
     transform: function transform(_transform) {
       if (typeof _transform === "function") {
         state.transform = _transform(state.transform);
@@ -1413,9 +1693,21 @@ function createDataNode(context, initialState) {
       }
       return this;
     },
+
+    /**
+     * Returns the SQL string representation of the set of data transformations the node embodies.
+     * @memberof Data
+     * @inner
+     */
     toSQL: function toSQL() {
       return (0, _nodePathUtils.nodePathToSQL)(context.state, state.name);
     },
+
+    /**
+     * Executes data node's SQL query representation and returns queried data as a promise.
+     * @memberof Data
+     * @inner
+     */
     values: function values() {
       return context.connector.query((0, _nodePathUtils.nodePathToSQL)(context.state, state.name));
     }
@@ -1423,7 +1715,7 @@ function createDataNode(context, initialState) {
 }
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1437,7 +1729,7 @@ exports.reduceNodes = reduceNodes;
 exports.resolveFilters = resolveFilters;
 exports.nodePathToSQL = nodePathToSQL;
 
-var _writeSql = __webpack_require__(26);
+var _writeSql = __webpack_require__(27);
 
 var _writeSql2 = _interopRequireDefault(_writeSql);
 
@@ -1511,7 +1803,7 @@ function nodePathToSQL(state, source) {
 }
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1559,7 +1851,7 @@ function aggregateField(op, field, as) {
 }
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1583,7 +1875,7 @@ function parseBin(sql, _ref) {
 }
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1619,7 +1911,7 @@ function parseCollect(sql, transform) {
 }
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1663,7 +1955,7 @@ function parseFilter(sql, transform) {
 }
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1686,7 +1978,7 @@ function formula(sql, transform) {
 }
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1701,7 +1993,7 @@ function sample(sql, transform) {
 }
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1712,27 +2004,27 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = parse;
 
-var _parseAggregate = __webpack_require__(19);
+var _parseAggregate = __webpack_require__(20);
 
 var _parseAggregate2 = _interopRequireDefault(_parseAggregate);
 
-var _parseBin = __webpack_require__(20);
+var _parseBin = __webpack_require__(21);
 
 var _parseBin2 = _interopRequireDefault(_parseBin);
 
-var _parseCollect = __webpack_require__(21);
+var _parseCollect = __webpack_require__(22);
 
 var _parseCollect2 = _interopRequireDefault(_parseCollect);
 
-var _parseFilter = __webpack_require__(22);
+var _parseFilter = __webpack_require__(23);
 
 var _parseFilter2 = _interopRequireDefault(_parseFilter);
 
-var _parseFormula = __webpack_require__(23);
+var _parseFormula = __webpack_require__(24);
 
 var _parseFormula2 = _interopRequireDefault(_parseFormula);
 
-var _parseSample = __webpack_require__(24);
+var _parseSample = __webpack_require__(25);
 
 var _parseSample2 = _interopRequireDefault(_parseSample);
 
@@ -1779,7 +2071,7 @@ function parse(_ref) {
 }
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1790,12 +2082,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = writeSQL;
 
-var _parseTransform = __webpack_require__(25);
+var _parseTransform = __webpack_require__(26);
 
 var _parseTransform2 = _interopRequireDefault(_parseTransform);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * Returns a SQL query string based on the DataState passed in.
+* @memberof API
+ */
 function writeSQL(state) {
   return write((0, _parseTransform2.default)(state));
 }
@@ -1838,7 +2134,7 @@ function writeOffset(offset) {
 }
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
