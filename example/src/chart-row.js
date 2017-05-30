@@ -1,11 +1,47 @@
 import { register } from "./chart-registry";
 import * as constants from "./constants";
-import { rowDataNode } from "./datagraph";
+import graph from "./datagraph";
+
+const rowDataNode = graph.data({
+  source: "xfilter",
+  name: "row",
+  transform: [
+    {
+      type: "aggregate",
+      fields: ["dest_state"],
+      groupby: ["dest_state"]
+    },
+    {
+      type: "aggregate",
+      fields: ["*"],
+      ops: ["count"],
+      as: ["records"]
+    },
+    {
+      type: "collect.sort",
+      sort: {
+        field: ["records"],
+        order: ["descending"]
+      }
+    },
+    {
+      type: "collect.limit",
+      limit: {
+        row: 12
+      }
+    },
+    {
+      type: "resolvefilter",
+      filter: { signal: "vega" },
+      ignore: constants.ROW
+    }
+  ]
+});
 
 const ROW_VEGA_SPEC = {
   $schema: "https://vega.github.io/schema/vega/v3.0.json",
-  width: 350,
-  height: 350,
+  width: 250,
+  height: 250,
   padding: 5,
   title: "# Records by Destination State",
   data: [

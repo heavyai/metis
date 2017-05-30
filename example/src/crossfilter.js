@@ -1,4 +1,16 @@
-import { xfilterDataNode } from "./datagraph";
+import graph from "./datagraph";
+
+const xfilterDataNode = graph.data({
+  source: "flights_donotmodify",
+  name: "xfilter",
+  transform: [
+    {
+      type: "crossfilter",
+      signal: "vega",
+      filter: []
+    }
+  ]
+});
 
 export function filter(id, filter) {
   const { transform } = xfilterDataNode.getState();

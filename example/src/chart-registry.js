@@ -4,6 +4,9 @@ import * as constants from "./constants";
 const chartRegistry = {};
 const ids = [];
 
+let redrawing = false;
+let debounced = false;
+
 export const dispatch = d3.dispatch(
   "xfilter",
   "filterAll",
@@ -17,12 +20,22 @@ dispatch.on("filterAll", () => {
   dispatch.call("redrawAll");
 });
 
-dispatch.on("renderAll", () => {
-  return Promise.all(ids.map(id => chartRegistry[id].render()));
-});
+dispatch.on("renderAll", renderAll);
 
 dispatch.on("redrawAll", () => {
-  return Promise.all(ids.map(id => chartRegistry[id].redraw()));
+  if (redrawing) {
+    debounced = true;
+    return;
+  } else {
+    redrawing = true;
+    return redrawAll().then(() => {
+      redrawing = false;
+      if (debounced) {
+        debounced = false;
+        return redrawAll();
+      }
+    });
+  }
 });
 
 dispatch.on("xfilter", ({ type, id, field, filter }) => {
@@ -33,6 +46,14 @@ dispatch.on("xfilter", ({ type, id, field, filter }) => {
   }
   dispatch.call("redrawAll");
 });
+
+function renderAll() {
+  return Promise.all(ids.map(id => chartRegistry[id].render()));
+}
+
+function redrawAll() {
+  return Promise.all(ids.map(id => chartRegistry[id].redraw()));
+}
 
 export function list(id) {
   return id ? chartRegistry : chartRegistry[id];

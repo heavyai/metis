@@ -1,10 +1,48 @@
 import { register } from "./chart-registry";
 import * as constants from "./constants";
-import { lineDataNode } from "./datagraph";
+import graph from "./datagraph";
+
+const lineDataNode = graph.data({
+  source: "xfilter",
+  name: "line",
+  transform: [
+    {
+      type: "formula.date_trunc",
+      unit: "month",
+      field: "dep_timestamp",
+      as: "x"
+    },
+    {
+      type: "aggregate",
+      fields: ["*"],
+      ops: ["count"],
+      as: ["y"],
+      groupby: "x"
+    },
+    {
+      type: "collect.sort",
+      sort: { field: ["x"] }
+    },
+    {
+      type: "filter.range",
+      id: "test",
+      field: "dep_timestamp",
+      range: [
+        "TIMESTAMP(0) '1987-10-01 00:03:00'",
+        "TIMESTAMP(0) '2008-12-31 23:59:00'"
+      ]
+    },
+    {
+      type: "resolvefilter",
+      filter: { signal: "vega" },
+      ignore: constants.LINE
+    }
+  ]
+});
 
 const LINE_VEGA_SPEC = {
   $schema: "https://vega.github.io/schema/vega/v3.0.json",
-  width: 750,
+  width: 500,
   height: 200,
   padding: 15,
   title: "# Records by Departure Month",
@@ -174,7 +212,7 @@ function render(data) {
   LINE_VEGA_SPEC.data[0].values = data;
 
   const extent = [data[0].x, data[data.length - 1].x];
-  const scale = d3.scaleTime().domain(extent).range([0, 750]);
+  const scale = d3.scaleTime().domain(extent).range([0, 500]);
 
   const runtime = vega.parse(LINE_VEGA_SPEC);
   view = new vega.View(runtime);

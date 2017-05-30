@@ -1,11 +1,58 @@
 import { register } from "./chart-registry";
 import * as constants from "./constants";
-import { scatterDataNode } from "./datagraph";
+import graph from "./datagraph";
+
+const scatterDataNode = graph.data({
+  source: "xfilter",
+  name: "scatter",
+  transform: [
+    {
+      type: "aggregate",
+      fields: ["carrier_name"],
+      as: ["key0"],
+      groupby: "key0"
+    },
+    {
+      type: "aggregate",
+      fields: ["depdelay", "arrdelay", "*"],
+      as: ["x", "y", "size"],
+      ops: ["average", "average", "count"]
+    },
+    {
+      type: "filter",
+      id: "test",
+      expr: "depdelay IS NOT NULL"
+    },
+    {
+      type: "filter",
+      id: "test",
+      expr: "arrdelay IS NOT NULL"
+    },
+    {
+      type: "collect.sort",
+      sort: {
+        field: ["size"],
+        order: ["descending"]
+      }
+    },
+    {
+      type: "collect.limit",
+      limit: {
+        row: 12
+      }
+    },
+    {
+      type: "resolvefilter",
+      filter: { signal: "vega" },
+      ignore: constants.SCATTER
+    }
+  ]
+});
 
 const SCATTER_VEGA_SPEC = {
   $schema: "https://vega.github.io/schema/vega/v3.0.json",
-  width: 350,
-  height: 350,
+  width: 250,
+  height: 250,
   padding: 5,
   autosize: "pad",
   title: "Average Arrival and Departure Delay by Carrier Name",
@@ -49,7 +96,7 @@ const SCATTER_VEGA_SPEC = {
       nice: true,
       zero: true,
       domain: { data: constants.DATA_NAME, field: "x" },
-      range: [0, 350]
+      range: [0, 250]
     },
     {
       name: "y",
@@ -58,7 +105,7 @@ const SCATTER_VEGA_SPEC = {
       nice: true,
       zero: true,
       domain: { data: constants.DATA_NAME, field: "y" },
-      range: [350, 0]
+      range: [250, 0]
     },
     {
       name: "size",
