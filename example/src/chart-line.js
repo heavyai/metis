@@ -8,7 +8,7 @@ const lineDataNode = graph.data({
   transform: [
     {
       type: "formula.date_trunc",
-      unit: "month",
+      unit: "day",
       field: "dep_timestamp",
       as: "x"
     },
@@ -49,7 +49,7 @@ const LINE_VEGA_SPEC = {
   signals: [
     {
       name: "brush",
-      value: [50, 100],
+      value: [50, 150],
       on: [
         {
           events: "@overview:mousedown",
@@ -107,7 +107,7 @@ const LINE_VEGA_SPEC = {
       type: "linear",
       range: "height",
       nice: true,
-      zero: true,
+      zero: false,
       domain: { data: constants.DATA_NAME, field: "y" }
     }
   ],
@@ -199,7 +199,7 @@ const LINE_VEGA_SPEC = {
           size: { value: 20 },
           shape: { value: "circle" },
           strokeWidth: { value: 2 },
-          fill: { value: "red" }
+          fill: { value: "steelblue" }
         }
       }
     }
