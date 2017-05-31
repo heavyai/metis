@@ -33,7 +33,7 @@ declare type Aggregate = {|
   fields: Array<string>,
   ops?: Array<Aggregation>,
   as?: Array<string> | string,
-  groupby?: Array<string> | string,
+  groupby?: Array<string | Formula> | string | Formula,
 |}
 
 declare type Bin = {|

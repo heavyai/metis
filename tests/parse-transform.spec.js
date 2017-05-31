@@ -62,7 +62,43 @@ tape("parse", assert => {
 });
 
 tape("aggregate", assert => {
-  assert.plan(3);
+  assert.plan(4);
+  assert.deepEqual(
+    aggregate(
+      {
+        select: [],
+        from: "",
+        where: [],
+        groupby: [],
+        having: [],
+        orderby: [],
+        limit: "",
+        offset: ""
+      },
+      {
+        type: "aggregate",
+        fields: ["*"],
+        ops: ["count"],
+        as: ["y"],
+        groupby: {
+          type: "formula.date_trunc",
+          unit: "day",
+          field: "dep_timestamp",
+          as: "x"
+        }
+      }
+    ),
+    {
+      select: ["COUNT(*) as y", "date_trunc(day, dep_timestamp) as x"],
+      from: "",
+      where: [],
+      groupby: ["x"],
+      having: [],
+      orderby: [],
+      limit: "",
+      offset: ""
+    }
+  );
   assert.deepEqual(
     aggregate(
       {

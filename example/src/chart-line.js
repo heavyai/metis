@@ -7,17 +7,16 @@ const lineDataNode = graph.data({
   name: "line",
   transform: [
     {
-      type: "formula.date_trunc",
-      unit: "day",
-      field: "dep_timestamp",
-      as: "x"
-    },
-    {
       type: "aggregate",
       fields: ["*"],
       ops: ["count"],
       as: ["y"],
-      groupby: "x"
+      groupby: {
+        type: "formula.date_trunc",
+        unit: "day",
+        field: "dep_timestamp",
+        as: "x"
+      }
     },
     {
       type: "collect.sort",
