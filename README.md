@@ -1,7 +1,7 @@
 # sql-datagraph
 
-[![Build Status](https://travis-ci.org/mrblueblue/sql-datagraph.svg?branch=master)](https://travis-ci.org/mrblueblue/sql-datagraph)
-[![coverage](https://img.shields.io/codecov/c/github/mrblueblue/sql-datagraph.svg?style=flat-square)](https://codecov.io/github/mrblueblue/sql-datagraph)
+[![Build Status](https://travis-ci.com/mapd/mapd-data-layer.svg?token=PevoQNBcptry9Dnrqejy&branch=master)](https://travis-ci.com/mapd/mapd-data-layer)
+[![codecov](https://codecov.io/gh/mapd/mapd-data-layer/branch/master/graph/badge.svg?token=J68Anjg8je)](https://codecov.io/gh/mapd/mapd-data-layer)
 
 * [**API Documentation**](docs/API.md)
 * [**Crossfiltering Vega Example**](https://mrblueblue.github.io/sql-datagraph/example/)
