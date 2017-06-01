@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/mapd/mapd-data-layer/branch/master/graph/badge.svg?token=J68Anjg8je)](https://codecov.io/gh/mapd/mapd-data-layer)
 
 * [**API Documentation**](docs/API.md)
-* [**Crossfiltering Vega Example**](https://mrblueblue.github.io/sql-datagraph/example/)
+* [**Crossfiltering Vega Example**](https://mapd.github.io/mapd-data-layer/example/)
 
 Declaratively build SQL data pipelines. Based on the [Vega Transform API](https://vega.github.io/vega/docs/transforms/).
 
