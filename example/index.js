@@ -4,6 +4,8 @@ import createRow from "./src/chart-row";
 import createScatter from "./src/chart-scatter";
 import createLine from "./src/chart-line";
 import createFacet from "./src/chart-facet";
+import createParallel from "./src/chart-parallel";
+import graph from "./src/datagraph";
 
 connect()
   .then(() => {
