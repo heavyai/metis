@@ -1,7 +1,4 @@
-# sql-datagraph
-
-[![Build Status](https://travis-ci.com/mapd/mapd-data-layer.svg?token=PevoQNBcptry9Dnrqejy&branch=master)](https://travis-ci.com/mapd/mapd-data-layer)
-[![codecov](https://codecov.io/gh/mapd/mapd-data-layer/branch/master/graph/badge.svg?token=J68Anjg8je)](https://codecov.io/gh/mapd/mapd-data-layer)
+# sql-datagraph &middot; [![Build Status](https://travis-ci.com/mapd/mapd-data-layer.svg?token=PevoQNBcptry9Dnrqejy&branch=master)](https://travis-ci.com/mapd/mapd-data-layer) [![codecov](https://codecov.io/gh/mapd/mapd-data-layer/branch/master/graph/badge.svg?token=J68Anjg8je)](https://codecov.io/gh/mapd/mapd-data-layer)
 
 * [**API Documentation**](docs/API.md)
 * [**Crossfiltering Vega Example**](https://mapd.github.io/mapd-data-layer/example/)
@@ -13,7 +10,7 @@ Each node in the graph represents a transformation of data. Root nodes are "scan
 The path from a child node to its root represents a data transformation pipeline. This pipeline can be described as a SQL query or a set of transformations described in JSON notation.
 
 
-### Example
+# Example
 
 ```js
 
@@ -100,8 +97,16 @@ child.toSQL()
 
 ```
 
-### Resources
+# Prior Art
 * [Vega Transform](https://vega.github.io/vega/docs/transforms/)
 * [Vega Architecture](http://idl.cs.washington.edu/papers/reactive-vega-architecture/)
 * [Calcite Relational Algebra](https://calcite.apache.org/docs/algebra.html)
 * [Crossfilter API](https://github.com/square/crossfilter/wiki/API-Reference)
+
+# License
+
+This project is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+# Contributing
+
+In order to clarify the intellectual property license granted with Contributions from any person or entity, MapD must have a Contributor License Agreement ("CLA") on file that has been signed by each Contributor, indicating agreement to the [Contributor License Agreement](CLA.md). If you have not already done so, please complete and sign, then scan and email a pdf file of this Agreement to [contributors@mapd.com](mailto:contributors@mapd.com). Please read the agreement carefully before signing and keep a copy for your records.
