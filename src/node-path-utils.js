@@ -47,7 +47,7 @@ export function reduceNodes(state: GraphState, name: string): DataState {
 const resolvedFilter = (
   transforms: Array<Transform>,
   signal: string
-): Transform => {
+): ?Transform => {
   return transforms.filter((transform: Transform): boolean => {
     return (
       transform.type === "resolvefilter" && transform.filter.signal === signal
@@ -62,7 +62,11 @@ export function resolveFilters(state: DataState): DataState {
   ): Array<Transform> {
     if (transform.type === "crossfilter") {
       const resolved = resolvedFilter(state.transform, transform.signal);
-      if (resolved.type === "resolvefilter") {
+      if (
+        resolved !== null &&
+        typeof resolved === "object" &&
+        resolved.type === "resolvefilter"
+      ) {
         transform.filter.forEach((filter: Filter) => {
           if (
             Array.isArray(resolved.ignore) &&
