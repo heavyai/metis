@@ -11,7 +11,9 @@ export default function createDataNode(
   invariant(initialState.source, "must have name and source");
 
   let state = {
-    ...initialState,
+    type: "data",
+    name: initialState.name,
+    source: initialState.source,
     transform: initialState.transform || []
   };
 

@@ -12,6 +12,7 @@ function createNodeReducer(state: GraphState) {
     rightNode: DataState
   ): DataState {
     return {
+      type: "data",
       name: "",
       source: state.hasOwnProperty(rightNode.source)
         ? leftNode.source
@@ -31,13 +32,14 @@ export function walk(
   const node = state[name];
   const { source } = node;
   accum = xform(accum, iterator(node));
-  return state.hasOwnProperty(source)
+  return typeof source === "string" && state.hasOwnProperty(source)
     ? walk(state, source, iterator, xform, accum)
     : accum;
 }
 
 export function reduceNodes(state: GraphState, name: string): DataState {
   return walk(state, name, identity, createNodeReducer(state), {
+    type: "data",
     name: "",
     source: "",
     transform: []

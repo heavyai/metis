@@ -23,6 +23,10 @@ declare type TransformType =
   "crossfilter" |
   "resolvefilter"
 
+declare type SourceTransform = Scan | Join
+
+declare type JoinRelation = "join" | "join.inner" | "join.left" | "join.right"
+
 declare type SortOrder = "ascending" | "descending"
 declare type ExtractUnits = "year" | "quarter" | "month" | "dom" | "dow" | "hour" | "minute"
 declare type DateTruncUnits = "decade" | "year" | "quarter" | "month" | "week" | "day" | "hour"
@@ -106,10 +110,21 @@ declare type FormulaExtract = {|
   as: string
 |}
 
+declare type Join = {|
+  type: JoinRelation,
+  on?: Filter | Array<Filter>,
+  as?: string
+|}
+
 declare type Sample = {
   type: "sample",
   size: number
 }
+
+declare type Scan = {|
+  type: "scan",
+  table: string,
+|}
 
 declare type Crossfilter = {|
   type: "crossfilter",

@@ -3,10 +3,11 @@ import tape from "tape";
 import writeSQL from "../src/sql/write-sql";
 
 tape("writeSQL", assert => {
-  assert.plan(5);
+  assert.plan(6);
 
   assert.equal(
     writeSQL({
+      type: "data",
       source: "flights",
       name: "test",
       transform: []
@@ -16,6 +17,7 @@ tape("writeSQL", assert => {
 
   assert.equal(
     writeSQL({
+      type: "data",
       source: "flights",
       name: "test",
       transform: [
@@ -37,6 +39,7 @@ tape("writeSQL", assert => {
 
   assert.equal(
     writeSQL({
+      type: "data",
       source: "contributions",
       name: "test",
       transform: [
@@ -52,6 +55,7 @@ tape("writeSQL", assert => {
 
   assert.equal(
     writeSQL({
+      type: "data",
       source: "flights",
       name: "test",
       transform: [
@@ -93,6 +97,7 @@ tape("writeSQL", assert => {
 
   assert.equal(
     writeSQL({
+      type: "data",
       source: "contributions",
       name: "test",
       transform: [
@@ -130,5 +135,36 @@ tape("writeSQL", assert => {
       ]
     }),
     "SELECT date_trunc(year, CAST(contrib_date AS TIMESTAMP(0))) as key0, AVG(amount) as series_1 FROM contributions WHERE (CAST(contrib_date AS TIMESTAMP(0)) >= TIMESTAMP(0) '1996-11-05 17:47:30' AND CAST(contrib_date AS TIMESTAMP(0)) <= TIMESTAMP(0) '2010-10-21 10:54:07') AND (amount IS NOT NULL) GROUP BY key0 ORDER BY key0"
+  );
+
+  assert.equal(
+    writeSQL({
+      type: "data",
+      source: [
+        {
+          type: "scan",
+          table: "flights"
+        },
+        {
+          type: "scan",
+          table: "zipcode"
+        },
+        {
+          type: "join",
+          as: "table1"
+        },
+        {
+          type: "scan",
+          table: "contrib"
+        },
+        {
+          type: "join",
+          as: "table2"
+        }
+      ],
+      name: "test",
+      transform: []
+    }),
+    "SELECT * FROM flights JOIN zipcode as table1 JOIN contrib as table2"
   );
 });

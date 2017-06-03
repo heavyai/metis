@@ -7,6 +7,7 @@ import {
 } from "../src/node-path-utils";
 
 const child = {
+  type: "data",
   source: "parent",
   name: "child",
   transform: [
@@ -26,6 +27,7 @@ const child = {
 };
 
 const grandchild = {
+  type: "data",
   source: "child",
   name: "grandchild",
   transform: [
@@ -45,7 +47,13 @@ const grandchild = {
 };
 
 const parent = {
-  source: "table",
+  type: "data",
+  source: [
+    {
+      type: "scan",
+      table: "flights"
+    }
+  ],
   name: "parent",
   transform: [
     {
@@ -66,8 +74,14 @@ tape("Reduce Nodes", t => {
   t.plan(3);
 
   t.deepEqual(reduceNodes(state, "grandchild"), {
+    type: "data",
     name: "",
-    source: "table",
+    source: [
+      {
+        type: "scan",
+        table: "flights"
+      }
+    ],
     transform: [
       {
         as: "key0",
@@ -102,8 +116,14 @@ tape("Reduce Nodes", t => {
   });
 
   t.deepEqual(reduceNodes(state, "child"), {
+    type: "data",
     name: "",
-    source: "table",
+    source: [
+      {
+        type: "scan",
+        table: "flights"
+      }
+    ],
     transform: [
       {
         as: "key0",
@@ -126,8 +146,14 @@ tape("Reduce Nodes", t => {
   });
 
   t.deepEqual(reduceNodes(state, "parent"), {
+    type: "data",
     name: "",
-    source: "table",
+    source: [
+      {
+        type: "scan",
+        table: "flights"
+      }
+    ],
     transform: [
       {
         expr: "FILTER",
@@ -142,6 +168,7 @@ tape("resolveFilters", assert => {
   assert.plan(1);
   assert.deepEqual(
     resolveFilters({
+      type: "data",
       source: "parent",
       name: "child",
       transform: [
@@ -181,6 +208,7 @@ tape("resolveFilters", assert => {
       ]
     }),
     {
+      type: "data",
       source: "parent",
       name: "child",
       transform: [

@@ -7,11 +7,13 @@ import collect from "../src/sql/parse-collect";
 import filter from "../src/sql/parse-filter";
 import formula from "../src/sql/parse-formula";
 import sample from "../src/sql/parse-sample";
+import source from "../src/sql/parse-source";
 
 tape("parse", assert => {
   assert.plan(1);
   assert.deepEqual(
     parse({
+      type: "data",
       name: "test",
       source: "taxis",
       transform: [
@@ -568,5 +570,74 @@ tape("sample", assert => {
       limit: "",
       offset: ""
     }
+  );
+});
+
+tape("source", assert => {
+  assert.plan(2);
+  assert.deepEqual(
+    source([
+      {
+        type: "scan",
+        table: "flights"
+      },
+      {
+        type: "scan",
+        table: "zipcode"
+      },
+      {
+        type: "join",
+        as: "table1"
+      },
+      {
+        type: "scan",
+        table: "contrib"
+      },
+      {
+        type: "join.right",
+        as: "table2"
+      }
+    ]),
+    "flights JOIN zipcode as table1 RIGHT JOIN contrib as table2"
+  );
+
+  assert.deepEqual(
+    source([
+      {
+        type: "scan",
+        table: "flights"
+      },
+      {
+        type: "scan",
+        table: "zipcode"
+      },
+      {
+        type: "join.inner",
+        as: "table1"
+      },
+      {
+        type: "data",
+        source: "flights",
+        name: "test",
+        transform: [
+          {
+            type: "aggregate",
+            fields: ["dest_city"]
+          },
+          {
+            type: "aggregate",
+            groupby: ["dest_city"],
+            fields: ["depdelay"],
+            ops: ["average"],
+            as: ["val"]
+          }
+        ]
+      },
+      {
+        type: "join.left",
+        as: "table2"
+      }
+    ]),
+    "flights INNER JOIN zipcode as table1 LEFT JOIN (SELECT dest_city, AVG(depdelay) as val FROM flights GROUP BY dest_city) as table2"
   );
 });

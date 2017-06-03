@@ -4,11 +4,12 @@ declare type Connector = {
   tables: Array<string>
 }
 
-declare type DataState = {
-  source: string,
+declare type DataState = {|
+  type: "data",
+  source: string | Array<SourceTransform | DataState>,
   name: string,
   transform: Array<Transform>
-}
+|}
 
 declare type GraphContext = {
   connector: Connector,

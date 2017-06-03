@@ -5,11 +5,12 @@ import parseCollect from "./parse-collect";
 import parseFilter from "./parse-filter";
 import parseFormula from "./parse-formula";
 import parseSample from "./parse-sample";
+import parseSource from "./parse-source";
 
 export default function parse({ source, transform }: DataState): SQL {
   const initialSQL = {
     select: [],
-    from: source,
+    from: typeof source === "string" ? source : parseSource(source),
     where: [],
     groupby: [],
     having: [],

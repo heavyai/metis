@@ -19,6 +19,7 @@ tape("Data Operator", t => {
   t.test("transform method", q => {
     const graph = createDataGraph({ query: () => {} });
     const data = graph.data({
+      type: "data",
       name: "test",
       source: "table"
     });
@@ -31,8 +32,9 @@ tape("Data Operator", t => {
     ];
 
     data.transform(transformArray);
-    data.transform("lkjlkjl")
+    data.transform("lkjlkjl");
     q.deepEqual(data.getState(), {
+      type: "data",
       name: "test",
       source: "table",
       transform: transformArray
@@ -47,6 +49,7 @@ tape("Data Operator", t => {
     );
 
     q.deepEqual(data.getState(), {
+      type: "data",
       name: "test",
       source: "table",
       transform: [
@@ -59,6 +62,7 @@ tape("Data Operator", t => {
   t.test("toSQL method", q => {
     const graph = createDataGraph({ query: () => {} });
     const data = graph.data({
+      type: "data",
       name: "test",
       source: "contributions",
       transform: [
