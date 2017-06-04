@@ -10,7 +10,9 @@ import {
   countGroup,
   pointmapGroup,
   xDim,
-  yDim
+  yDim,
+  tweetTime,
+  lineDimension
 } from "./src/crossfilter";
 import * as dc from "@mapd/mapdc";
 const d3 = dc.d3;
@@ -155,38 +157,61 @@ function createCharts(crossFilter, con, tableName) {
     }
   }
 
-  pointMapChart
-    .pushLayer("points", pointLayer)
-    .init()
-    .then(chart => {
-      // custom click handler with just event data (no network calls)
-      pointMapChart.map().on("mouseup", logClick);
-      function logClick(result) {
-        console.log("clicked!", result);
-      }
-      // disable with pointMapChart.map().off('mouseup', logClick)
-      // custom click handler with event and nearest row data
-      pointMapChart.map().on("mouseup", logClickWithData);
-      function logClickWithData(event) {
-        pointMapChart.getClosestResult(event.point, function(result) {
-          console.log(result && result.row_set[0]);
-        });
-      }
-      // hover effect with popup
-      var debouncedPopup = _.debounce(displayPopupWithData, 250);
-      pointMapChart.map().on("mousewheel", pointMapChart.hidePopup);
-      pointMapChart.map().on("mousemove", pointMapChart.hidePopup);
-      pointMapChart.map().on("mousemove", debouncedPopup);
-      function displayPopupWithData(event) {
-        pointMapChart.getClosestResult(event.point, pointMapChart.displayPopup);
-      }
+  pointMapChart.pushLayer("points", pointLayer).init().then(chart => {
+    // custom click handler with just event data (no network calls)
+    pointMapChart.map().on("mouseup", logClick);
+    function logClick(result) {
+      console.log("clicked!", result);
+    }
+    // disable with pointMapChart.map().off('mouseup', logClick)
+    // custom click handler with event and nearest row data
+    pointMapChart.map().on("mouseup", logClickWithData);
+    function logClickWithData(event) {
+      pointMapChart.getClosestResult(event.point, function(result) {
+        console.log(result && result.row_set[0]);
+      });
+    }
+    // hover effect with popup
+    var debouncedPopup = _.debounce(displayPopupWithData, 250);
+    pointMapChart.map().on("mousewheel", pointMapChart.hidePopup);
+    pointMapChart.map().on("mousemove", pointMapChart.hidePopup);
+    pointMapChart.map().on("mousemove", debouncedPopup);
+    function displayPopupWithData(event) {
+      pointMapChart.getClosestResult(event.point, pointMapChart.displayPopup);
+    }
 
-      /* Calling dc.renderAll() will render all of the charts we set up.  Any
-              crossFilters applied by the user (via clicking the bar chart, scatter plot or dragging the time brush) will automagically call redraw on the charts without any intervention from us
-            */
+    return tweetTime.minMax().then(function(timeChartBounds) {
+      var dcTimeChart = dc
+        .lineChart(".chart2-example")
+        .width(w)
+        .height(h / 2.5)
+        .elasticY(true)
+        .renderHorizontalGridLines(true)
+        .brushOn(true)
+        .xAxisLabel("Time of Day")
+        .yAxisLabel("Number of Tweets")
+        .dimension(lineDimension)
+        .group(lineDimension);
+
+      dcTimeChart.binParams({
+        extract: false,
+        timeBin: "hour",
+        numBins: 288, // 288 * 5 = number of minutes in a day
+        binBounds: [timeChartBounds[0], timeChartBounds[1]]
+      });
+
+      dcTimeChart
+        .x(d3.time.scale.utc().domain([timeChartBounds[0], timeChartBounds[1]]))
+        .yAxis()
+        .ticks(5);
+      dcTimeChart
+        .xAxis()
+        .scale(dcTimeChart.x())
+        .tickFormat(dc.utils.customTimeFormat)
+        .orient("top");
+
       dc.renderAllAsync();
-      /*--------------------------RESIZE EVENT------------------------------*/
-      /* Here we listen to any resizes of the main window.  On resize we resize the corresponding widgets and call dc.renderAll() to refresh everything */
+
       window.addEventListener("resize", _.debounce(reSizeAll, 500));
       function reSizeAll() {
         var w = document.documentElement.clientWidth - 30;
@@ -197,11 +222,12 @@ function createCharts(crossFilter, con, tableName) {
           ) - 200;
         pointMapChart.map().resize();
         pointMapChart.isNodeAnimate = false;
-        pointMapChart.width(w).height(h / 1.5).render();
+        pointMapChart.width(w).height(h / 1.5);
+        dcTimeChart.width(w).height(h / 2.5);
         dc.redrawAllAsync();
       }
-    })
-    .catch(e => console.log(e));
+    });
+  });
 }
 
 function init() {

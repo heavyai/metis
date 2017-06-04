@@ -2,8 +2,12 @@ import {
   countDimensionNode,
   countGroupNode,
   crossfilter,
-  pointmapNode
+  pointmapNode,
+  minMaxNode,
+  timeDimensionNode
 } from "./datagraph";
+
+import { d3 } from "@mapd/mapdc";
 
 export const countDimension = {
   sizeAsync() {
@@ -98,5 +102,69 @@ export const yDim = {
         return filter;
       });
     }
+  }
+};
+
+export const tweetTime = {
+  toSQL() {
+    return minMaxNode.toSQL();
+  },
+  minMax() {
+    return minMaxNode
+      .values()
+      .then(([{ minimum, maximum }]) => [minimum, maximum]);
+  }
+};
+
+export const lineDimension = {
+  filter() {
+    return;
+  },
+  filterMulti([[min, max]]) {
+    crossfilter.transform(filter => {
+      filter[2] = {
+        type: "crossfilter",
+        signal: "mapd",
+        filter: [
+          {
+            type: "filter.range",
+            id: "range",
+            field: "tweet_time",
+            range: [
+              "TIMESTAMP(0) '" +
+                min.toISOString().slice(0, 19).replace("T", " ") +
+                "'",
+              "TIMESTAMP(0) '" +
+                max.toISOString().slice(0, 19).replace("T", " ") +
+                "'"
+            ]
+          }
+        ]
+      };
+
+      return filter;
+    });
+  },
+  filterAll() {
+    return;
+  },
+  value() {
+    return ["tweet_time"];
+  },
+  binParams(a, b) {
+    return [
+      {
+        extract: false,
+        timeBin: "hour",
+        numBins: 288,
+        binBounds: []
+      },
+      null
+    ];
+  },
+  all(callback) {
+    timeDimensionNode.values().then(a => {
+      callback(null, a);
+    });
   }
 };

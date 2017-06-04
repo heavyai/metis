@@ -1,3 +1,4 @@
+// @flow
 import { createDataGraph } from "../../../index";
 import { query } from "./connector";
 
@@ -10,6 +11,19 @@ export const rootScan = graph.data({
   source: "tweets_nov_feb",
   name: "root",
   transform: []
+});
+
+export const minMaxNode = graph.data({
+  source: "root",
+  name: "minmax",
+  transform: [
+    {
+      type: "aggregate",
+      fields: ["tweet_time", "tweet_time"],
+      ops: ["min", "max"],
+      as: ["minimum", "maximum"]
+    }
+  ]
 });
 
 export const countDimensionNode = graph.data({
@@ -38,6 +52,11 @@ export const countGroupNode = graph.data({
       type: "formula",
       expr: "COUNT(*)",
       as: "records"
+    },
+    {
+      type: "resolvefilter",
+      filter: { signal: "mapd" },
+      ignore: ""
     }
   ]
 });
@@ -79,6 +98,34 @@ export const pointmapNode = graph.data({
       method: "multiplicative",
       size: 0,
       limit: 500000
+    },
+    {
+      type: "resolvefilter",
+      filter: { signal: "mapd" },
+      ignore: ""
+    }
+  ]
+});
+
+export const timeDimensionNode = graph.data({
+  source: "crossfilter",
+  name: "line.dimension",
+  transform: [
+    {
+      type: "aggregate",
+      fields: ["*"],
+      ops: ["count"],
+      as: ["val"],
+      groupby: {
+        type: "formula.date_trunc",
+        unit: "hour",
+        field: "tweet_time",
+        as: "key0"
+      }
+    },
+    {
+      type: "collect.sort",
+      sort: { field: ["key0"] }
     }
   ]
 });
