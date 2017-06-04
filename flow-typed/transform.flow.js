@@ -66,7 +66,7 @@ declare type CollectSort = {|
   }
 |}
 
-declare type Filter = FilterExpression | FilterExact | FilterRange
+declare type Filter = FilterExpression | FilterExact | FilterRange | FilterOperation
 
 declare type FilterExpression = {|
   type: "filter",
@@ -86,6 +86,12 @@ declare type FilterRange = {|
   id: string | number,
   field: string,
   range: Array<string | number>
+|}
+
+declare type FilterOperation = {|
+  type: "filter.operation",
+  id: string | number,
+  filters: OperationExpression | Array<OperationExpression | Array<OperationExpression>>
 |}
 
 declare type Formula = FormulaExpression | FormulaDateTrunc | FormulaExtract
@@ -118,7 +124,9 @@ declare type Join = {|
 
 declare type Sample = {
   type: "sample",
-  size: number
+  method: "multiplicative",
+  size: number,
+  limit: number
 }
 
 declare type Scan = {|
