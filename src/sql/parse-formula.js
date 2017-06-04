@@ -23,6 +23,7 @@ export function toExpression(formula: Formula): string {
         formula.as
       );
     default:
+      /* istanbul ignore next */
       throw new Error();
   }
 }

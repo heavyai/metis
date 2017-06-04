@@ -26,7 +26,7 @@ tape("Data Graph API", function(t) {
 });
 
 tape("Data Graph Integration Tests", assert => {
-  assert.plan(11);
+  assert.plan(12);
   const graph = createDataGraph({ query: () => {} });
 
   const globalFilterNode = graph.data({ source: "flights", name: "global" });
@@ -78,6 +78,8 @@ tape("Data Graph Integration Tests", assert => {
       }
     ]
   });
+
+  assert.equal(graph.nodes().length, 4);
 
   assert.equal(
     globalFilterNode.toSQL(),

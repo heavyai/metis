@@ -11,6 +11,7 @@ export default function parseFilter(sql: SQL, transform: Filter): SQL {
       return parseFilterExact(sql, transform);
     case "filter.operation":
       return parseFilterOperation(sql, transform);
+    /* istanbul ignore next */
     default:
       return sql;
   }
@@ -97,8 +98,7 @@ function operationExpression(operation: OperationExpression): string {
         operation.right +
         '"%';
       return operation.not ? "NOT(" + comparisonExpr + ")" : comparisonExpr;
-    case "between":
-      return "BETWEEN " + operation.right + " AND " + operation.left;
+    /* istanbul ignore next */
     default:
       return "";
   }

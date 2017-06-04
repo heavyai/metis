@@ -3,6 +3,7 @@ const GOLDEN_RATIO = 265445761;
 const THIRTY_TWO_BITS = 4294967296;
 
 export default function sample(sql: SQL, transform: Sample): SQL {
+  /* istanbul ignore else */
   if (transform.method === "multiplicative") {
     const { size, limit } = transform;
     const ratio = Math.min(limit / size, 1.0);

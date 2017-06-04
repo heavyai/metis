@@ -40,6 +40,12 @@ tape("parse", assert => {
           id: "test",
           field: "dropoff_latitude",
           range: [40.63646686110235, 40.81468768513369]
+        },
+        {
+          type: "sample",
+          method: "multiplicative",
+          size: 688850,
+          limit: 2000000
         }
       ]
     }),
@@ -64,7 +70,55 @@ tape("parse", assert => {
 });
 
 tape("aggregate", assert => {
-  assert.plan(4);
+  assert.plan(5);
+  assert.deepEqual(
+    aggregate(
+      {
+        select: [],
+        from: "",
+        where: [],
+        groupby: [],
+        having: [],
+        orderby: [],
+        limit: "",
+        offset: ""
+      },
+      {
+        type: "aggregate",
+        fields: ["*"],
+        ops: ["count"],
+        as: ["y"],
+        groupby: [
+          {
+            type: "formula.date_trunc",
+            unit: "day",
+            field: "dep_timestamp",
+            as: "x"
+          },
+          {
+            type: "formula.extract",
+            unit: "month",
+            field: "dep_timestamp",
+            as: "z"
+          }
+        ]
+      }
+    ),
+    {
+      select: [
+        "COUNT(*) as y",
+        "date_trunc(day, dep_timestamp) as x",
+        "extract(month from dep_timestamp) as z"
+      ],
+      from: "",
+      where: [],
+      groupby: ["x", "z"],
+      having: [],
+      orderby: [],
+      limit: "",
+      offset: ""
+    }
+  );
   assert.deepEqual(
     aggregate(
       {
@@ -442,7 +496,7 @@ tape("formula", assert => {
 });
 
 tape("filter", assert => {
-  assert.plan(4);
+  assert.plan(5);
   assert.deepEqual(
     filter(
       {
@@ -581,6 +635,40 @@ tape("filter", assert => {
       where: [
         `((recipient_party = 'R' OR recipient_party = 'D') AND (state ILIKE %"dakota"%))`
       ],
+      groupby: [],
+      having: [],
+      orderby: [],
+      limit: "",
+      offset: ""
+    }
+  );
+  assert.deepEqual(
+    filter(
+      {
+        select: [],
+        from: "",
+        where: [],
+        groupby: [],
+        having: [],
+        orderby: [],
+        limit: "",
+        offset: ""
+      },
+      {
+        type: "filter.operation",
+        id: "test",
+        filters: {
+          type: "<>",
+          not: true,
+          left: "recipient_party",
+          right: "R"
+        }
+      }
+    ),
+    {
+      select: [],
+      from: "",
+      where: [`NOT(recipient_party <> 'R')`],
       groupby: [],
       having: [],
       orderby: [],
