@@ -5,6 +5,7 @@
 
 [libs]
 ./flow-types/datagraph.flow.js
+./flow-types/expression.flow.js
 ./flow-types/transform.flow.js
 
 [options]

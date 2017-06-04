@@ -36,14 +36,10 @@ export default function parseSource(
         ) {
           const right = stmt.pop();
           const left = stmt.pop();
-          const joinStmt =
-            left +
-            " " +
-            joinRelation(
-              typeof transform.type === "string" ? transform.type : "join"
-            ) +
-            " " +
-            right;
+          const joinType = typeof transform.type === "string"
+            ? transform.type
+            : "join";
+          const joinStmt = left + " " + joinRelation(joinType) + " " + right;
           const aliasStmt = transform.as ? " as " + transform.as : "";
           return stmt.concat(joinStmt + aliasStmt);
         } else if (transform.type === "data") {

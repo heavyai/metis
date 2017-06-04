@@ -442,7 +442,7 @@ tape("formula", assert => {
 });
 
 tape("filter", assert => {
-  assert.plan(3);
+  assert.plan(4);
   assert.deepEqual(
     filter(
       {
@@ -539,12 +539,8 @@ tape("filter", assert => {
       offset: ""
     }
   );
-});
-
-tape("sample", assert => {
-  assert.plan(1);
   assert.deepEqual(
-    sample(
+    filter(
       {
         select: [],
         from: "",
@@ -556,13 +552,98 @@ tape("sample", assert => {
         offset: ""
       },
       {
-        type: "sample",
-        size: 10
+        type: "filter.operation",
+        id: "test",
+        filters: [
+          [
+            {
+              type: "=",
+              left: "recipient_party",
+              right: "R"
+            },
+            {
+              type: "=",
+              left: "recipient_party",
+              right: "D"
+            }
+          ],
+          {
+            type: "ilike",
+            left: "state",
+            right: "dakota"
+          }
+        ]
       }
     ),
     {
       select: [],
       from: "",
+      where: [
+        `((recipient_party = 'R' OR recipient_party = 'D') AND (state ILIKE %"dakota"%))`
+      ],
+      groupby: [],
+      having: [],
+      orderby: [],
+      limit: "",
+      offset: ""
+    }
+  );
+});
+
+tape("sample", assert => {
+  assert.plan(2);
+  assert.deepEqual(
+    sample(
+      {
+        select: [],
+        from: "taxis",
+        where: [],
+        groupby: [],
+        having: [],
+        orderby: [],
+        limit: "",
+        offset: ""
+      },
+      {
+        type: "sample",
+        method: "multiplicative",
+        size: 688850518,
+        limit: 2000000
+      }
+    ),
+    {
+      select: [],
+      from: "taxis",
+      where: ["MOD(taxis.rowid * 265445761, 4294967296) < 12469954"],
+      groupby: [],
+      having: [],
+      orderby: [],
+      limit: "",
+      offset: ""
+    }
+  );
+  assert.deepEqual(
+    sample(
+      {
+        select: [],
+        from: "taxis",
+        where: [],
+        groupby: [],
+        having: [],
+        orderby: [],
+        limit: "",
+        offset: ""
+      },
+      {
+        type: "sample",
+        method: "multiplicative",
+        size: 688850,
+        limit: 2000000
+      }
+    ),
+    {
+      select: [],
+      from: "taxis",
       where: [],
       groupby: [],
       having: [],
