@@ -6,8 +6,9 @@
   "scripts": {
     "docs": "documentation build index.js -f md -o docs/API.md",
     "test": "flow && nyc tape -r babel-register tests/**.spec.js",
-    "pretty": "prettier --write tests/*.js src/**/*.js src/*.js example/*.js example/src/*.js",
+    "pretty": "find . -name \"*.js\" | grep -v -f .gitignore | xargs prettier --write",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
+
   },
   "repository": {
     "type": "git",

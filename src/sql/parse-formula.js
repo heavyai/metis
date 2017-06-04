@@ -3,7 +3,11 @@
 export function toExpression(formula: Formula): string {
   switch (formula.type) {
     case "formula":
-      return formula.expr + " as " + formula.as;
+      if (formula.as) {
+        return formula.expr + " as " + formula.as;
+      } else {
+        return formula.expr;
+      }
     case "formula.extract":
       return (
         "extract(" +
