@@ -1,7 +1,8 @@
 # sql-datagraph &middot; [![Build Status](https://travis-ci.com/mapd/mapd-data-layer.svg?token=PevoQNBcptry9Dnrqejy&branch=master)](https://travis-ci.com/mapd/mapd-data-layer) [![codecov](https://codecov.io/gh/mapd/mapd-data-layer/branch/master/graph/badge.svg?token=J68Anjg8je)](https://codecov.io/gh/mapd/mapd-data-layer)
 
 * [**API Documentation**](docs/API.md)
-* [**Crossfiltering Vega Example**](https://mapd.github.io/mapd-data-layer/example/)
+* [**Crossfiltering Vega Example**](https://mapd.github.io/mapd-data-layer/example/vega)
+* [**MapD Raster Chart Example**](https://mapd.github.io/mapd-data-layer/example/mapd-charting)
 
 Declaratively build SQL data pipelines. Based on the [Vega Transform API](https://vega.github.io/vega/docs/transforms/).
 
@@ -28,19 +29,18 @@ const child = graph.data({
   name: "child",
   source: "parent",
   transform: [
-     {
-      "type": "formula",
-      "field": "contrib_date",
-      "as": "key0",
-      "dateTrunc": "year",
-      "cast": "timestamp"
-    },
     {
       "type": "aggregate",
-      "groupby": ["key0"],
       "fields": ["amount"],
       "ops": ["average"],
-      "as": ["series_1"]
+      "as": ["series_1"],
+      "groupby": {
+        "type": "formula",
+        "field": "contrib_date",
+        "as": "key0",
+        "dateTrunc": "year",
+        "cast": "timestamp"
+      }
     },
     {
       "type": "collect",
