@@ -2,7 +2,7 @@ require("script-loader!mapbox-gl/dist/mapbox-gl.js");
 require("script-loader!mapbox-gl/dist/mapboxgl-overrides.js");
 require("mapbox-gl/dist/mapbox-gl.css");
 require("@mapd/mapdc/mapdc.css");
-require("./style/chart.css");
+require("@mapd/mapdc/scss/chart.scss");
 
 import { connect } from "./src/connector";
 import {
