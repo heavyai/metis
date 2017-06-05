@@ -401,7 +401,35 @@ tape("collect", assert => {
 });
 
 tape("formula", assert => {
-  assert.plan(3);
+  assert.plan(4);
+  assert.deepEqual(
+    formula(
+      {
+        select: [],
+        from: "",
+        where: [],
+        groupby: [],
+        having: [],
+        orderby: [],
+        limit: "",
+        offset: ""
+      },
+      {
+        type: "formula",
+        expr: "COUNT(*)"
+      }
+    ),
+    {
+      select: ["COUNT(*)"],
+      from: "",
+      where: [],
+      groupby: [],
+      having: [],
+      orderby: [],
+      limit: "",
+      offset: ""
+    }
+  );
   assert.deepEqual(
     formula(
       {

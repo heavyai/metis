@@ -22,8 +22,8 @@ module.exports = {
         include: [
           path.resolve(__dirname, "index.js"),
           path.resolve(__dirname, "./src"),
-          path.resolve(__dirname, "../index.js"),
-          path.resolve(__dirname, "../src")
+          path.resolve(__dirname, "../../index.js"),
+          path.resolve(__dirname, "../../src")
         ],
         loader: "babel-loader"
       }

@@ -10,5 +10,5 @@
   * @see {@link https://github.com/mrblueblue/sql-datagraph/blob/master/flow-typed/transform.flow.js|Transform Types}
   */
 
-export writeSQL from "./src/sql/write-sql"
-export {createDataGraph} from "./src/data-graph"
+export writeSQL from "./src/sql/write-sql";
+export { createDataGraph } from "./src/data-graph";

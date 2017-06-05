@@ -52,7 +52,9 @@ export default function parseAggregate(sql: SQL, transform: Aggregate): SQL {
         sql.groupby.push(group);
       } else if (isFormula(group)) {
         sql.select.push(toExpression(group));
-        sql.groupby.push(group.as);
+        if (group.as) {
+          sql.groupby.push(group.as);
+        }
       }
     });
   } else if (
@@ -63,7 +65,7 @@ export default function parseAggregate(sql: SQL, transform: Aggregate): SQL {
     if (
       !Array.isArray(transform.groupby) &&
       typeof transform.groupby === "object" &&
-      transform.groupby.hasOwnProperty("as")
+      transform.groupby.as
     ) {
       sql.groupby.push(transform.groupby.as);
     }
