@@ -1,5 +1,5 @@
 // @flow
-import { toExpression } from "./parse-formula";
+import parseExpression from "./parse-expression";
 
 const AGGREGATES = {
   average: "AVG",
@@ -9,15 +9,10 @@ const AGGREGATES = {
   sum: "SUM"
 };
 
-function isFormula(transform: Formula): boolean {
+function isFormula(transform: Project): boolean {
   if (typeof transform !== "object") {
     return false;
-  } else if (
-    transform.hasOwnProperty("type") &&
-    (transform.type === "formula" ||
-      transform.type === "formula.date_trunc" ||
-      transform.type === "formula.extract")
-  ) {
+  } else if (transform.hasOwnProperty("type") && transform.type === "project") {
     return true;
   } else {
     return false;
@@ -47,11 +42,13 @@ export default function parseAggregate(sql: SQL, transform: Aggregate): SQL {
   if (typeof transform.groupby === "string") {
     sql.groupby.push(transform.groupby);
   } else if (Array.isArray(transform.groupby)) {
-    transform.groupby.forEach((group: string | Formula) => {
+    transform.groupby.forEach((group: string | Project) => {
       if (typeof group === "string") {
         sql.groupby.push(group);
-      } else if (isFormula(group)) {
-        sql.select.push(toExpression(group));
+      } else if (group.type === "project") {
+        sql.select.push(
+          parseExpression(group.expr) + (group.as ? " as " + group.as : "")
+        );
         if (group.as) {
           sql.groupby.push(group.as);
         }
@@ -59,9 +56,15 @@ export default function parseAggregate(sql: SQL, transform: Aggregate): SQL {
     });
   } else if (
     typeof transform.groupby === "object" &&
-    isFormula(transform.groupby)
+    transform.groupby.type === "project"
   ) {
-    sql.select.push(toExpression(transform.groupby));
+    sql.select.push(
+      parseExpression(transform.groupby.expr) +
+        (typeof transform.groupby === "object" && transform.groupby.as
+          // $FlowFixMe
+          ? " as " + transform.groupby.as
+          : "")
+    );
     if (
       !Array.isArray(transform.groupby) &&
       typeof transform.groupby === "object" &&

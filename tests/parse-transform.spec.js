@@ -3,9 +3,6 @@ import tape from "tape";
 import parse from "../src/sql/parse-transform";
 import aggregate from "../src/sql/parse-aggregate";
 import bin from "../src/sql/parse-bin";
-import collect from "../src/sql/parse-collect";
-import filter from "../src/sql/parse-filter";
-import formula from "../src/sql/parse-formula";
 import sample from "../src/sql/parse-sample";
 import source from "../src/sql/parse-source";
 
@@ -36,10 +33,14 @@ tape("parse", assert => {
           expr: "dropoff_longitude >= -73.99460014891815 AND dropoff_longitude <= -73.78028987584129"
         },
         {
-          type: "filter.range",
+          type: "filter",
           id: "test",
-          field: "dropoff_latitude",
-          range: [40.63646686110235, 40.81468768513369]
+          expr: {
+            type: "between",
+            field: "dropoff_latitude",
+            left: 40.63646686110235,
+            right: 40.81468768513369
+          }
         },
         {
           type: "sample",
@@ -58,7 +59,7 @@ tape("parse", assert => {
       where: [
         "((total_amount >= -21474830 AND total_amount <= 3950611.6) OR (total_amount IS NULL))",
         "(dropoff_longitude >= -73.99460014891815 AND dropoff_longitude <= -73.78028987584129)",
-        "(dropoff_latitude >= 40.63646686110235 AND dropoff_latitude <= 40.81468768513369)"
+        "(dropoff_latitude BETWEEN 40.63646686110235 AND 40.81468768513369)"
       ],
       groupby: ["key0"],
       having: ["(key0 >= 0 AND key0 < 12 OR key0 IS NULL)"],
@@ -90,15 +91,21 @@ tape("aggregate", assert => {
         as: ["y"],
         groupby: [
           {
-            type: "formula.date_trunc",
-            unit: "day",
-            field: "dep_timestamp",
+            type: "project",
+            expr: {
+              type: "date_trunc",
+              unit: "day",
+              field: "dep_timestamp"
+            },
             as: "x"
           },
           {
-            type: "formula.extract",
-            unit: "month",
-            field: "dep_timestamp",
+            type: "project",
+            expr: {
+              type: "extract",
+              unit: "month",
+              field: "dep_timestamp"
+            },
             as: "z"
           }
         ]
@@ -137,9 +144,12 @@ tape("aggregate", assert => {
         ops: ["count"],
         as: ["y"],
         groupby: {
-          type: "formula.date_trunc",
-          unit: "day",
-          field: "dep_timestamp",
+          type: "project",
+          expr: {
+            type: "date_trunc",
+            unit: "day",
+            field: "dep_timestamp"
+          },
           as: "x"
         }
       }
@@ -277,428 +287,6 @@ tape("bin", assert => {
       where: ["((airtime >= 0 AND airtime <= 1350) OR (airtime IS NULL))"],
       groupby: ["key0"],
       having: ["(key0 >= 0 AND key0 < 12 OR key0 IS NULL)"],
-      orderby: [],
-      limit: "",
-      offset: ""
-    }
-  );
-});
-
-tape("collect", assert => {
-  assert.plan(4);
-  assert.deepEqual(
-    collect(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "collect.sort",
-        sort: { field: ["amount"], order: ["ascending"] }
-      }
-    ),
-    {
-      select: [],
-      from: "",
-      where: [],
-      groupby: [],
-      having: [],
-      orderby: ["amount ASC"],
-      limit: "",
-      offset: ""
-    }
-  );
-  assert.deepEqual(
-    collect(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "collect.sort",
-        sort: { field: ["amount"] }
-      }
-    ),
-    {
-      select: [],
-      from: "",
-      where: [],
-      groupby: [],
-      having: [],
-      orderby: ["amount"],
-      limit: "",
-      offset: ""
-    }
-  );
-  assert.deepEqual(
-    collect(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "collect.sort",
-        sort: { field: ["amount", "key0"], order: ["descending", "descending"] }
-      }
-    ),
-    {
-      select: [],
-      from: "",
-      where: [],
-      groupby: [],
-      having: [],
-      orderby: ["amount DESC", "key0 DESC"],
-      limit: "",
-      offset: ""
-    }
-  );
-  assert.deepEqual(
-    collect(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "collect.limit",
-        limit: { row: 1000, offset: 10 }
-      }
-    ),
-    {
-      select: [],
-      from: "",
-      where: [],
-      groupby: [],
-      having: [],
-      orderby: [],
-      limit: "1000",
-      offset: "10"
-    }
-  );
-});
-
-tape("formula", assert => {
-  assert.plan(4);
-  assert.deepEqual(
-    formula(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "formula",
-        expr: "COUNT(*)"
-      }
-    ),
-    {
-      select: ["COUNT(*)"],
-      from: "",
-      where: [],
-      groupby: [],
-      having: [],
-      orderby: [],
-      limit: "",
-      offset: ""
-    }
-  );
-  assert.deepEqual(
-    formula(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "formula.extract",
-        field: "arr_timestamp",
-        unit: "year",
-        as: "key0"
-      }
-    ),
-    {
-      select: ["extract(year from arr_timestamp) as key0"],
-      from: "",
-      where: [],
-      groupby: [],
-      having: [],
-      orderby: [],
-      limit: "",
-      offset: ""
-    }
-  );
-  assert.deepEqual(
-    formula(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "formula.date_trunc",
-        field: "arr_timestamp",
-        unit: "quarter",
-        as: "key0"
-      }
-    ),
-    {
-      select: ["date_trunc(quarter, arr_timestamp) as key0"],
-      from: "",
-      where: [],
-      groupby: [],
-      having: [],
-      orderby: [],
-      limit: "",
-      offset: ""
-    }
-  );
-  assert.deepEqual(
-    formula(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "formula",
-        expr: "cast((cast(total_amount as float) - -21474830) * 4.719682036909046e-7 as int)",
-        as: "key0"
-      }
-    ),
-    {
-      select: [
-        "cast((cast(total_amount as float) - -21474830) * 4.719682036909046e-7 as int) as key0"
-      ],
-      from: "",
-      where: [],
-      groupby: [],
-      having: [],
-      orderby: [],
-      limit: "",
-      offset: ""
-    }
-  );
-});
-
-tape("filter", assert => {
-  assert.plan(5);
-  assert.deepEqual(
-    filter(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "filter.range",
-        id: "test",
-        field: "dropoff_longitude",
-        range: [-73.99460014891815, -73.78028987584129]
-      }
-    ),
-    {
-      select: [],
-      from: "",
-      where: [
-        "(dropoff_longitude >= -73.99460014891815 AND dropoff_longitude <= -73.78028987584129)"
-      ],
-      groupby: [],
-      having: [],
-      orderby: [],
-      limit: "",
-      offset: ""
-    }
-  );
-
-  assert.deepEqual(
-    filter(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "filter.exact",
-        id: "test",
-        field: "recipient_party",
-        equals: "R"
-      }
-    ),
-    {
-      select: [],
-      from: "",
-      where: ["(recipient_party = 'R')"],
-      groupby: [],
-      having: [],
-      orderby: [],
-      limit: "",
-      offset: ""
-    }
-  );
-
-  assert.deepEqual(
-    filter(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "filter.exact",
-        id: "test",
-        field: "recipient_party",
-        equals: ["R", "D", "I"]
-      }
-    ),
-    {
-      select: [],
-      from: "",
-      where: [
-        "(recipient_party = 'R' OR recipient_party = 'D' OR recipient_party = 'I')"
-      ],
-      groupby: [],
-      having: [],
-      orderby: [],
-      limit: "",
-      offset: ""
-    }
-  );
-  assert.deepEqual(
-    filter(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "filter.operation",
-        id: "test",
-        filters: [
-          [
-            {
-              type: "=",
-              left: "recipient_party",
-              right: "R"
-            },
-            {
-              type: "=",
-              left: "recipient_party",
-              right: "D"
-            }
-          ],
-          {
-            type: "ilike",
-            left: "state",
-            right: "dakota"
-          }
-        ]
-      }
-    ),
-    {
-      select: [],
-      from: "",
-      where: [
-        `((recipient_party = 'R' OR recipient_party = 'D') AND (state ILIKE %"dakota"%))`
-      ],
-      groupby: [],
-      having: [],
-      orderby: [],
-      limit: "",
-      offset: ""
-    }
-  );
-  assert.deepEqual(
-    filter(
-      {
-        select: [],
-        from: "",
-        where: [],
-        groupby: [],
-        having: [],
-        orderby: [],
-        limit: "",
-        offset: ""
-      },
-      {
-        type: "filter.operation",
-        id: "test",
-        filters: {
-          type: "<>",
-          not: true,
-          left: "recipient_party",
-          right: "R"
-        }
-      }
-    ),
-    {
-      select: [],
-      from: "",
-      where: [`NOT(recipient_party <> 'R')`],
-      groupby: [],
-      having: [],
       orderby: [],
       limit: "",
       offset: ""

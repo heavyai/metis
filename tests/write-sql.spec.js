@@ -80,15 +80,13 @@ tape("writeSQL", assert => {
           as: ["val"]
         },
         {
-          type: "collect.sort",
-          sort: {
-            field: ["val"],
-            order: ["descending"]
-          }
+          type: "sort",
+          field: ["val"],
+          order: ["descending"]
         },
         {
-          type: "collect.limit",
-          limit: { row: 10 }
+          type: "limit",
+          row: 10
         }
       ]
     }),
@@ -102,9 +100,12 @@ tape("writeSQL", assert => {
       name: "test",
       transform: [
         {
-          type: "formula.date_trunc",
-          unit: "year",
-          field: "CAST(contrib_date AS TIMESTAMP(0))",
+          type: "project",
+          expr: {
+            type: "date_trunc",
+            unit: "year",
+            field: "CAST(contrib_date AS TIMESTAMP(0))"
+          },
           as: "key0"
         },
         {
@@ -115,17 +116,18 @@ tape("writeSQL", assert => {
           as: ["series_1"]
         },
         {
-          type: "collect.sort",
-          sort: { field: ["key0"] }
+          type: "sort",
+          field: ["key0"]
         },
         {
-          type: "filter.range",
+          type: "filter",
           id: "test",
-          field: "CAST(contrib_date AS TIMESTAMP(0))",
-          range: [
-            "TIMESTAMP(0) '1996-11-05 17:47:30'",
-            "TIMESTAMP(0) '2010-10-21 10:54:07'"
-          ]
+          expr: {
+            type: "between",
+            field: "CAST(contrib_date AS TIMESTAMP(0))",
+            left: "TIMESTAMP(0) '1996-11-05 17:47:30'",
+            right: "TIMESTAMP(0) '2010-10-21 10:54:07'"
+          }
         },
         {
           type: "filter",
@@ -134,7 +136,7 @@ tape("writeSQL", assert => {
         }
       ]
     }),
-    "SELECT date_trunc(year, CAST(contrib_date AS TIMESTAMP(0))) as key0, AVG(amount) as series_1 FROM contributions WHERE (CAST(contrib_date AS TIMESTAMP(0)) >= TIMESTAMP(0) '1996-11-05 17:47:30' AND CAST(contrib_date AS TIMESTAMP(0)) <= TIMESTAMP(0) '2010-10-21 10:54:07') AND (amount IS NOT NULL) GROUP BY key0 ORDER BY key0"
+    "SELECT date_trunc(year, CAST(contrib_date AS TIMESTAMP(0))) as key0, AVG(amount) as series_1 FROM contributions WHERE (CAST(contrib_date AS TIMESTAMP(0)) BETWEEN TIMESTAMP(0) '1996-11-05 17:47:30' AND TIMESTAMP(0) '2010-10-21 10:54:07') AND (amount IS NOT NULL) GROUP BY key0 ORDER BY key0"
   );
 
   assert.equal(

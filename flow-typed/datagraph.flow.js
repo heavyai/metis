@@ -28,7 +28,7 @@ declare type Graph = {
 
 declare type DataNode = {
   getState: () => DataState,
-  transform: (transform: Transform | Array<Transform>) => DataNode,
+  transform: (transform: Transform | Array<Transform> | Function) => DataNode,
   toSQL: () => string,
   values: () => Promise<Array<any>>
 };

@@ -6,7 +6,10 @@ tape("Data Graph API", function(t) {
   t.test("Graph object", function(q) {
     q.plan(3);
 
-    const graph = createDataGraph({ query: () => {} });
+    const graph = createDataGraph({
+      query: () => Promise.resolve([]),
+      tables: []
+    });
 
     q.equal(typeof graph, "object", "should be object");
     q.equal(typeof graph.getState, "function", "should have getState method");
@@ -17,7 +20,9 @@ tape("Data Graph API", function(t) {
     q.plan(1);
 
     try {
+      // $FlowFixMe
       const graph = createDataGraph();
+      // $FlowFixMe
       graph.data();
     } catch (e) {
       q.ok(true, "should throw error when state is not passed in");
@@ -27,12 +32,26 @@ tape("Data Graph API", function(t) {
 
 tape("Data Graph Integration Tests", assert => {
   assert.plan(12);
-  const graph = createDataGraph({ query: () => {} });
+  const graph = createDataGraph({
+    query: () => Promise.resolve([]),
+    tables: []
+  });
 
-  const globalFilterNode = graph.data({ source: "flights", name: "global" });
-  const xFilterNode = graph.data({ source: "global", name: "xfilter" });
+  const globalFilterNode = graph.data({
+    source: "flights",
+    name: "global",
+    type: "data",
+    transform: []
+  });
+  const xFilterNode = graph.data({
+    source: "global",
+    name: "xfilter",
+    type: "data",
+    transform: []
+  });
 
   const chartNode1 = graph.data({
+    type: "data",
     source: "xfilter",
     name: "1",
     transform: [
@@ -49,17 +68,19 @@ tape("Data Graph Integration Tests", assert => {
         as: ["val"]
       },
       {
-        type: "collect.sort",
-        sort: { field: ["val"], order: ["ascending"] }
+        type: "sort",
+        field: ["val"],
+        order: ["ascending"]
       },
       {
-        type: "collect.limit",
-        limit: { row: 10 }
+        type: "limit",
+        row: 10
       }
     ]
   });
 
   const chartNode2 = graph.data({
+    type: "data",
     source: "xfilter",
     name: "2",
     transform: [
@@ -106,20 +127,30 @@ tape("Data Graph Integration Tests", assert => {
   );
 
   globalFilterNode.transform({
-    type: "filter.range",
-    field: "dropoff_longitude",
-    range: [-73.99828105055514, -73.7766089742046]
+    type: "filter",
+    id: "test",
+    expr: {
+      type: "between",
+      field: "dropoff_longitude",
+      left: -73.99828105055514,
+      right: -73.7766089742046
+    }
   });
 
   globalFilterNode.transform({
-    type: "filter.range",
-    field: "dropoff_latitude",
-    range: [40.63646686110235, 40.81468768513369]
+    type: "filter",
+    id: "test",
+    expr: {
+      type: "between",
+      field: "dropoff_latitude",
+      left: 40.63646686110235,
+      right: 40.81468768513369
+    }
   });
 
   assert.equal(
     globalFilterNode.toSQL(),
-    "SELECT * FROM flights WHERE (dropoff_longitude >= -73.99828105055514 AND dropoff_longitude <= -73.7766089742046) AND (dropoff_latitude >= 40.63646686110235 AND dropoff_latitude <= 40.81468768513369)",
+    "SELECT * FROM flights WHERE (dropoff_longitude BETWEEN -73.99828105055514 AND -73.7766089742046) AND (dropoff_latitude BETWEEN 40.63646686110235 AND 40.81468768513369)",
     "globalFilterNode SQL should include added filter transforms"
   );
 
@@ -128,16 +159,23 @@ tape("Data Graph Integration Tests", assert => {
     signal: "group",
     filter: [
       {
-        type: "filter.exact",
+        type: "filter",
         id: "row",
-        field: "payment_type",
-        equals: "cash"
+        expr: {
+          type: "=",
+          left: "payment_type",
+          right: "cash"
+        }
       },
       {
-        type: "filter.range",
+        type: "filter",
         id: "histogram",
-        field: "trip_distance",
-        range: [12, 20]
+        expr: {
+          type: "between",
+          field: "trip_distance",
+          left: 12,
+          right: 20
+        }
       }
     ]
   });
@@ -156,24 +194,24 @@ tape("Data Graph Integration Tests", assert => {
 
   assert.equal(
     chartNode1.toSQL(),
-    "SELECT payment_type as key0, COUNT(*) as val FROM flights WHERE (trip_distance >= 12 AND trip_distance <= 20) AND (dropoff_longitude >= -73.99828105055514 AND dropoff_longitude <= -73.7766089742046) AND (dropoff_latitude >= 40.63646686110235 AND dropoff_latitude <= 40.81468768513369) GROUP BY key0 ORDER BY val ASC LIMIT 10",
+    "SELECT payment_type as key0, COUNT(*) as val FROM flights WHERE (trip_distance BETWEEN 12 AND 20) AND (dropoff_longitude BETWEEN -73.99828105055514 AND -73.7766089742046) AND (dropoff_latitude BETWEEN 40.63646686110235 AND 40.81468768513369) GROUP BY key0 ORDER BY val ASC LIMIT 10",
     "chartNode1 SQL should resolve the proper crossfilters"
   );
 
   assert.equal(
     chartNode2.toSQL(),
-    "SELECT cast((cast(trip_distance as float) - 0) * 1 as int) as key0, COUNT(*) as val FROM flights WHERE ((trip_distance >= 0 AND trip_distance <= 30) OR (trip_distance IS NULL)) AND (payment_type = 'cash') AND (dropoff_longitude >= -73.99828105055514 AND dropoff_longitude <= -73.7766089742046) AND (dropoff_latitude >= 40.63646686110235 AND dropoff_latitude <= 40.81468768513369) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 30 OR key0 IS NULL)",
+    "SELECT cast((cast(trip_distance as float) - 0) * 1 as int) as key0, COUNT(*) as val FROM flights WHERE ((trip_distance >= 0 AND trip_distance <= 30) OR (trip_distance IS NULL)) AND (payment_type = 'cash') AND (dropoff_longitude BETWEEN -73.99828105055514 AND -73.7766089742046) AND (dropoff_latitude BETWEEN 40.63646686110235 AND 40.81468768513369) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 30 OR key0 IS NULL)",
     "chartNode2 SQL should resolve the proper crossfilters"
   );
 
   const state = graph.getState();
   assert.deepEqual(
-    state[1],
+    state["1"],
     chartNode1.getState(),
     "chartNode1 state should equal the corresponding graph state slice"
   );
   assert.deepEqual(
-    state[2],
+    state["2"],
     chartNode2.getState(),
     "chartNode2 state should equal the corresponding graph state slice"
   );

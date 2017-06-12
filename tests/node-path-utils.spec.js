@@ -12,7 +12,7 @@ const child = {
   name: "child",
   transform: [
     {
-      type: "formula",
+      type: "project",
       as: "key0",
       expr: "date_trunc(year, CAST(datum.contrib_date AS TIMESTAMP(0)))"
     },
@@ -32,7 +32,7 @@ const grandchild = {
   name: "grandchild",
   transform: [
     {
-      type: "formula",
+      type: "project",
       as: "key0",
       expr: "date_trunc(year, CAST(datum.contrib_date AS TIMESTAMP(0)))"
     },
@@ -86,7 +86,7 @@ tape("Reduce Nodes", t => {
       {
         as: "key0",
         expr: "date_trunc(year, CAST(datum.contrib_date AS TIMESTAMP(0)))",
-        type: "formula"
+        type: "project"
       },
       {
         as: ["series_1"],
@@ -98,7 +98,7 @@ tape("Reduce Nodes", t => {
       {
         as: "key0",
         expr: "date_trunc(year, CAST(datum.contrib_date AS TIMESTAMP(0)))",
-        type: "formula"
+        type: "project"
       },
       {
         as: ["series_1"],
@@ -128,7 +128,7 @@ tape("Reduce Nodes", t => {
       {
         as: "key0",
         expr: "date_trunc(year, CAST(datum.contrib_date AS TIMESTAMP(0)))",
-        type: "formula"
+        type: "project"
       },
       {
         as: ["series_1"],

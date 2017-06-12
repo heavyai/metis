@@ -1,16 +1,76 @@
 declare type Expression =
+  | LogicalExpression
+  | ComparisonExpression
+  | InExpression
   | ConditionalExpression
-  | OperationExpression
+  | CastExpresssion
+  | StatisticalFunctionExpression
+  | AggregateFunctionExpression
+  | PatternMatchingExpression
+  | TimeFunctionExpression
   | DataState;
 
-declare type OperationExpression = {
-  type: "=" | "<>" | "<" | ">" | "<=" | ">=" | "ilike" | "like" | "between",
-  not?: boolean,
+declare type BooleanExpression =
+  | ComparisonExpression
+  | LogicalExpression
+  | ConditionalExpression
+  | InExpression;
+
+declare type LogicalExpression = NotExpression | AndExpression | OrExpression;
+
+declare type NotExpression = {|
+  type: "not",
+  expr: string | BooleanExpression
+|};
+
+declare type AndExpression = {|
+  type: "and",
+  left: string | BooleanExpression,
+  right: string | BooleanExpression
+|};
+
+declare type OrExpression = {|
+  type: "or",
+  left: string | BooleanExpression,
+  right: string | BooleanExpression
+|};
+
+declare type ComparisonExpression =
+  | ComparisonOperatorExpression
+  | BetweenExpression
+  | NullExpression;
+
+declare type ComparisonOperatorExpression = {|
+  type: "=" | "<>" | "<" | ">" | "<=" | ">=",
   left: string | number,
   right: string | number
-};
+|};
 
-declare type ConditionalExpression = CoalesceExpression | CaseExpression;
+declare type BetweenExpression = {|
+  type: "between" | "not between",
+  field: string,
+  left: number | string,
+  right: number | string
+|};
+
+declare type NullExpression = {|
+  type: "is null" | "is not null",
+  field: string
+|};
+
+declare type PatternMatchingExpression = {|
+  type: "like" | "not like" | "ilike",
+  left: string,
+  right: string
+|};
+
+declare type InExpression = {|
+  type: "in" | "not in",
+  expr: string,
+  set: string | DataState | Array<string | number>
+|};
+
+declare type ConditionalExpression = CaseExpression | CoalesceExpression;
 
 declare type CoalesceExpression = {|
   type: "coalesce",
@@ -19,6 +79,53 @@ declare type CoalesceExpression = {|
 
 declare type CaseExpression = {|
   type: "case",
-  cond: Array<[Expression | string, string]>,
+  cond: Array<[BooleanExpression | string, string]>,
   else: string
 |};
+
+declare type CastExpresssion = {|
+  type: "cast",
+  expr: string,
+  as: string
+|};
+
+declare type StatisticalFunctionExpression =
+  | StatisticalValueFunction
+  | StatisticalPairFunction;
+
+declare type StatisticalValueFunction = {|
+  type: "stddev_pop" | "stddev_samp" | "var_pop" | "var_samp",
+  x: string
+|};
+
+declare type StatisticalPairFunction = {|
+  type: "corr" | "covar_pop" | "covar_samp",
+  x: string,
+  y: string
+|};
+
+declare type AggregateFunctionExpression =
+  | {|
+      type: "average" | "min" | "max" | "sum",
+      field: string
+    |}
+  | {|
+      type: "count",
+      distinct: boolean,
+      approx: boolean,
+      field: string
+    |};
+
+declare type TimeFunctionExpression = DateTruncExpression | ExtractExpression;
+
+declare type DateTruncExpression = {
+  type: "date_trunc",
+  unit: DateTruncUnits,
+  field: string
+};
+
+declare type ExtractExpression = {
+  type: "extract",
+  unit: ExtractUnits,
+  field: string
+};

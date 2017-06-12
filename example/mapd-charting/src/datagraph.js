@@ -1,4 +1,3 @@
-// @flow
 import { createDataGraph } from "../../../index";
 import { query } from "./connector";
 

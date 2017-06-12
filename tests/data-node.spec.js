@@ -4,10 +4,15 @@ import { createDataGraph } from "../index";
 
 tape("Data Operator", t => {
   t.test("has api", q => {
-    const graph = createDataGraph({ query: () => {} });
+    const graph = createDataGraph({
+      query: () => Promise.resolve([]),
+      tables: []
+    });
     const data = graph.data({
+      type: "data",
       name: "test",
-      source: "table"
+      source: "table",
+      transform: []
     });
 
     q.plan(3);
@@ -17,22 +22,26 @@ tape("Data Operator", t => {
   });
 
   t.test("transform method", q => {
-    const graph = createDataGraph({ query: () => {} });
+    const graph = createDataGraph({
+      query: () => Promise.resolve([]),
+      tables: []
+    });
     const data = graph.data({
       type: "data",
       name: "test",
-      source: "table"
+      source: "table",
+      transform: []
     });
 
     q.plan(2);
 
     const transformArray = [
-      { type: "filter", expr: "custom" },
-      { type: "filter", expr: "custom" }
+      { type: "filter", id: "test", expr: "custom" },
+      { type: "filter", id: "test", expr: "custom" }
     ];
 
     data.transform(transformArray);
-    data.transform("lkjlkjl");
+
     q.deepEqual(data.getState(), {
       type: "data",
       name: "test",
@@ -53,14 +62,17 @@ tape("Data Operator", t => {
       name: "test",
       source: "table",
       transform: [
-        { type: "filter", expr: "test" },
-        { type: "filter", expr: "test" }
+        { type: "filter", id: "test", expr: "test" },
+        { type: "filter", id: "test", expr: "test" }
       ]
     });
   });
 
   t.test("toSQL method", q => {
-    const graph = createDataGraph({ query: () => {} });
+    const graph = createDataGraph({
+      query: () => Promise.resolve([]),
+      tables: []
+    });
     const data = graph.data({
       type: "data",
       name: "test",
@@ -92,7 +104,7 @@ tape("Data Operator", t => {
           filter: { signal: "group" },
           ignore: ["row"]
         },
-        { type: "filter", expr: "amount > 1000" }
+        { type: "filter", id: "test", expr: "amount > 1000" }
       ]
     });
 
@@ -106,11 +118,14 @@ tape("Data Operator", t => {
   t.test("values method", assert => {
     const graph = createDataGraph({
       query: query => {
+        // $FlowFixMe
         return Promise.resolve(query);
-      }
+      },
+      tables: []
     });
 
     const child = graph.data({
+      type: "data",
       source: "flights",
       name: "parallel",
       transform: [
@@ -142,11 +157,12 @@ tape("Data Operator", t => {
 
 tape("Crossfiltering Graph", assert => {
   const graph = createDataGraph({
-    query: () => {},
+    query: () => Promise.resolve([]),
     tables: ["flights_donotmodify"]
   });
 
   const xfilterDataNode = graph.data({
+    type: "data",
     source: "flights_donotmodify",
     name: "xfilter",
     transform: [
@@ -170,6 +186,7 @@ tape("Crossfiltering Graph", assert => {
   });
 
   const rowDataNode = graph.data({
+    type: "data",
     source: "xfilter",
     name: "row",
     transform: [
@@ -185,17 +202,13 @@ tape("Crossfiltering Graph", assert => {
         as: ["records"]
       },
       {
-        type: "collect.sort",
-        sort: {
-          field: ["records"],
-          order: ["descending"]
-        }
+        type: "sort",
+        field: ["records"],
+        order: ["descending"]
       },
       {
-        type: "collect.limit",
-        limit: {
-          row: 12
-        }
+        type: "limit",
+        row: 12
       },
       {
         type: "resolvefilter",
@@ -206,6 +219,7 @@ tape("Crossfiltering Graph", assert => {
   });
 
   const lineDataNode = graph.data({
+    type: "data",
     source: "xfilter",
     name: "line",
     transform: [
@@ -215,24 +229,28 @@ tape("Crossfiltering Graph", assert => {
         ops: ["count"],
         as: ["y"],
         groupby: {
-          type: "formula.date_trunc",
-          unit: "day",
-          field: "dep_timestamp",
+          type: "project",
+          expr: {
+            type: "date_trunc",
+            unit: "day",
+            field: "dep_timestamp"
+          },
           as: "x"
         }
       },
       {
-        type: "collect.sort",
-        sort: { field: ["x"] }
+        type: "sort",
+        field: ["x"]
       },
       {
-        type: "filter.range",
+        type: "filter",
         id: "test",
-        field: "dep_timestamp",
-        range: [
-          "TIMESTAMP(0) '1987-10-01 00:03:00'",
-          "TIMESTAMP(0) '2008-12-31 23:59:00'"
-        ]
+        expr: {
+          type: "between",
+          field: "dep_timestamp",
+          left: "TIMESTAMP(0) '1987-10-01 00:03:00'",
+          right: "TIMESTAMP(0) '2008-12-31 23:59:00'"
+        }
       }
     ]
   });
@@ -244,6 +262,6 @@ tape("Crossfiltering Graph", assert => {
   );
   assert.equal(
     lineDataNode.toSQL(),
-    "SELECT COUNT(*) as y, date_trunc(day, dep_timestamp) as x FROM flights_donotmodify WHERE (dep_timestamp >= TIMESTAMP(0) '1987-10-01 00:03:00' AND dep_timestamp <= TIMESTAMP(0) '2008-12-31 23:59:00') GROUP BY x ORDER BY x"
+    "SELECT COUNT(*) as y, date_trunc(day, dep_timestamp) as x FROM flights_donotmodify WHERE (dep_timestamp BETWEEN TIMESTAMP(0) '1987-10-01 00:03:00' AND TIMESTAMP(0) '2008-12-31 23:59:00') GROUP BY x ORDER BY x"
   );
 });

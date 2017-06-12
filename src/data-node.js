@@ -35,7 +35,7 @@ export default function createDataNode(
      * @memberof Data
      * @inner
      */
-    transform(transform: Transform | Array<Transform>): DataNode {
+    transform(transform: Transform | Array<Transform> | Function): DataNode {
       if (typeof transform === "function") {
         state.transform = transform(state.transform);
       } else if (Array.isArray(transform)) {
