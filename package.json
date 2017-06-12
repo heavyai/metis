@@ -7,8 +7,9 @@
     "docs": "documentation build index.js -f md -o docs/API.md",
     "test": "flow && nyc tape -r babel-register tests/**.spec.js",
     "pretty": "find . -name \"*.js\" | grep -v -f .gitignore | xargs prettier --write",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
-
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "bs-watch": "bsb -make-world -w",
+    "bs-clean": "bsb -clean-world"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.24.1",
+    "bs-platform": "^1.7.3",
     "codecov": "^2.2.0",
     "documentation": "^4.0.0-rc.1",
     "flow-bin": "^0.46.0",
@@ -40,6 +42,7 @@
   "nyc": {
     "exclude": [
       "**/*.spec.js"
+      "lib"
     ]
   }
 }
