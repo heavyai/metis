@@ -1,27 +1,13 @@
 declare type Transform =
   | Aggregate
   | Bin
-  | Collect
+  | Sort
+  | Limit
   | Filter
-  | Formula
+  | Project
   | Sample
   | Crossfilter
   | ResolveFilter;
-
-declare type TransformType =
-  | "aggregate"
-  | "bin"
-  | "collect.sort"
-  | "collect.limit"
-  | "filter"
-  | "filter.exact"
-  | "filter.range"
-  | "formula"
-  | "formula.date_trunc"
-  | "formula.extract"
-  | "sample"
-  | "crossfilter"
-  | "resolvefilter";
 
 declare type SourceTransform = Scan | Join;
 
@@ -51,7 +37,7 @@ declare type Aggregate = {|
   fields: Array<string>,
   ops?: Array<Aggregation>,
   as?: Array<string> | string,
-  groupby?: Array<string | Formula> | string | Formula
+  groupby?: Array<string | Project> | string | Project
 |};
 
 declare type Bin = {|
@@ -62,78 +48,28 @@ declare type Bin = {|
   as: string
 |};
 
-declare type Collect = CollectSort | CollectLimit;
-
-declare type CollectLimit = {
-  type: "collect.limit",
-  limit: {
-    row: number,
-    offset?: number
-  }
+declare type Limit = {
+  type: "limit",
+  row: number,
+  offset?: number
 };
 
-declare type CollectSort = {|
-  type: "collect.sort",
-  sort: {
-    field: Array<string>,
-    order?: Array<SortOrder>
-  }
+declare type Sort = {|
+  type: "sort",
+  field: Array<string>,
+  order?: Array<SortOrder>
 |};
 
-declare type Filter =
-  | FilterExpression
-  | FilterExact
-  | FilterRange
-  | FilterOperation;
-
-declare type FilterExpression = {|
+declare type Filter = {|
   type: "filter",
   id: string | number,
-  expr: string
+  expr: string | Expression | Array<string | Expression>
 |};
 
-declare type FilterExact = {|
-  type: "filter.exact",
-  id: string | number,
-  field: string,
-  equals: string | number | Array<string | number>
-|};
-
-declare type FilterRange = {|
-  type: "filter.range",
-  id: string | number,
-  field: string,
-  range: Array<string | number>
-|};
-
-declare type FilterOperation = {|
-  type: "filter.operation",
-  id: string | number,
-  filters:
-    | OperationExpression
-    | Array<OperationExpression | Array<OperationExpression>>
-|};
-
-declare type Formula = FormulaExpression | FormulaDateTrunc | FormulaExtract;
-
-declare type FormulaExpression = {|
-  type: "formula",
-  expr: string,
+declare type Project = {|
+  type: "project",
+  expr: string | Expression,
   as?: string
-|};
-
-declare type FormulaDateTrunc = {|
-  type: "formula.date_trunc",
-  field: string,
-  unit: DateTruncUnits,
-  as: string
-|};
-
-declare type FormulaExtract = {|
-  type: "formula.extract",
-  field: string,
-  unit: ExtractUnits,
-  as: string
 |};
 
 declare type Join = {|

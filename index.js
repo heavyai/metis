@@ -1,3 +1,5 @@
+// @flow
+
 /**
  * The exported module
  * @namespace API
@@ -10,5 +12,8 @@
   * @see {@link https://github.com/mrblueblue/sql-datagraph/blob/master/flow-typed/transform.flow.js|Transform Types}
   */
 
-export writeSQL from "./src/sql/write-sql";
-export { createDataGraph } from "./src/data-graph";
+import write from "./src/sql/write-sql";
+import { createDataGraph as createGraph } from "./src/data-graph";
+
+export const writeSQL = write;
+export const createDataGraph = createGraph;
