@@ -1,25 +1,20 @@
 {
-  "name": "sql-datagraph",
+  "name": "mapd-data-layer",
   "version": "1.0.0",
-  "description": "",
+  "author": "MapD Technologies",
+  "license": "Apache-2.0",
+  "description": "SQL data-layer for the MapD frontend",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mapd/mapd-data-layer.git"
+  },
   "main": "index.js",
   "scripts": {
     "docs": "documentation build index.js -f md -o docs/API.md",
     "test": "flow && nyc tape -r babel-register tests/**.spec.js",
     "pretty": "find . -name \"*.js\" | grep -v -f .gitignore | xargs prettier --write",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
-
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mrblueblue/mapd-datagraph-sketch.git"
-  },
-  "author": "Jonathan Huang <grokut@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/mrblueblue/mapd-datagraph-sketch/issues"
-  },
-  "homepage": "https://github.com/mrblueblue/mapd-datagraph-sketch#readme",
   "dependencies": {
     "invariant": "^2.2.2"
   },
