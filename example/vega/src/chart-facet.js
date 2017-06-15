@@ -1,21 +1,29 @@
+// @flow
 import { register } from "./chart-registry";
 import * as constants from "./constants";
 import graph from "./datagraph";
 
 const facetLineDataNode = graph.data({
+  type: "data",
   source: "xfilter",
   name: "facet",
   transform: [
     {
-      type: "formula.extract",
-      unit: "month",
-      field: "arr_timestamp",
+      type: "project",
+      expr: {
+        type: "extract",
+        unit: "month",
+        field: "arr_timestamp"
+      },
       as: "key0"
     },
     {
-      type: "formula.extract",
-      unit: "hour",
-      field: "arr_timestamp",
+      type: "project",
+      expr: {
+        type: "extract",
+        unit: "hour",
+        field: "arr_timestamp"
+      },
       as: "key1"
     },
     {
@@ -26,11 +34,12 @@ const facetLineDataNode = graph.data({
       groupby: ["key0", "key1"]
     },
     {
-      type: "collect",
-      sort: { field: ["key0", "key1"] }
+      type: "sort",
+      field: ["key0", "key1"]
     },
     {
       type: "filter",
+      id: "test",
       expr: "arrdelay IS NOT NULL"
     },
     {
@@ -204,7 +213,7 @@ let view = null;
 
 function render(data) {
   FACET_LINE_VEGA.data[0].values = data;
-
+  // $FlowFixMe
   const runtime = vega.parse(FACET_LINE_VEGA);
   view = new vega.View(runtime);
 
@@ -216,6 +225,7 @@ function render(data) {
 }
 
 function redraw(data) {
+  // $FlowFixMe
   view.setState({ data: { [constants.DATA_NAME]: data } });
 }
 

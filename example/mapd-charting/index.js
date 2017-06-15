@@ -14,6 +14,7 @@ import {
   tweetTime,
   lineDimension
 } from "./src/crossfilter";
+import _ from "lodash";
 import * as dc from "@mapd/mapdc";
 const d3 = dc.d3;
 
@@ -237,8 +238,3 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init, false);
-
-function mapApiLoaded() {
-  globalGeocoder = new google.maps.Geocoder();
-  geocoderObject.geocoder = globalGeocoder;
-}

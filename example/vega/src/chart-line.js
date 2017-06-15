@@ -1,8 +1,10 @@
+// @flow
 import { register } from "./chart-registry";
 import * as constants from "./constants";
 import graph from "./datagraph";
 
 const lineDataNode = graph.data({
+  type: "data",
   source: "xfilter",
   name: "line",
   transform: [
@@ -12,24 +14,28 @@ const lineDataNode = graph.data({
       ops: ["count"],
       as: ["y"],
       groupby: {
-        type: "formula.date_trunc",
-        unit: "day",
-        field: "dep_timestamp",
+        type: "project",
+        expr: {
+          type: "date_trunc",
+          unit: "day",
+          field: "dep_timestamp"
+        },
         as: "x"
       }
     },
     {
-      type: "collect.sort",
-      sort: { field: ["x"] }
+      type: "sort",
+      field: ["x"]
     },
     {
-      type: "filter.range",
+      type: "filter",
       id: "test",
-      field: "dep_timestamp",
-      range: [
-        "TIMESTAMP(0) '1987-10-01 00:03:00'",
-        "TIMESTAMP(0) '2008-12-31 23:59:00'"
-      ]
+      expr: {
+        type: "between",
+        field: "dep_timestamp",
+        left: "TIMESTAMP(0) '1987-10-01 00:03:00'",
+        right: "TIMESTAMP(0) '2008-12-31 23:59:00'"
+      }
     },
     {
       type: "resolvefilter",
@@ -211,8 +217,9 @@ function render(data) {
   LINE_VEGA_SPEC.data[0].values = data;
 
   const extent = [data[0].x, data[data.length - 1].x];
+  // $FlowFixMe
   const scale = d3.scaleTime().domain(extent).range([0, 500]);
-
+  // $FlowFixMe
   const runtime = vega.parse(LINE_VEGA_SPEC);
   view = new vega.View(runtime);
 
@@ -233,6 +240,7 @@ function render(data) {
 }
 
 function redraw(data) {
+  // $FlowFixMe
   view.setState({ data: { [constants.DATA_NAME]: data } });
 }
 
@@ -241,6 +249,7 @@ function filterAll() {
 }
 
 function reduceFilters(filters, { filter }) {
+  // $FlowFixMe
   const formatTime = d3.timeFormat("%Y-%m-%d %-I:%M:%S");
   return [
     `TIMESTAMP(0) '${formatTime(filter[0])}'`,

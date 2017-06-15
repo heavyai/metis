@@ -1,3 +1,4 @@
+// @flow
 import { createDataGraph } from "../../../index";
 import { query } from "./connector";
 
@@ -7,12 +8,14 @@ export const graph = createDataGraph({
 });
 
 export const rootScan = graph.data({
+  type: "data",
   source: "tweets_nov_feb",
   name: "root",
   transform: []
 });
 
 export const minMaxNode = graph.data({
+  type: "data",
   source: "root",
   name: "minmax",
   transform: [
@@ -26,11 +29,12 @@ export const minMaxNode = graph.data({
 });
 
 export const countDimensionNode = graph.data({
+  type: "data",
   source: "root",
   name: "count.dimension",
   transform: [
     {
-      type: "formula",
+      type: "project",
       expr: "COUNT(*)",
       as: "records"
     }
@@ -38,17 +42,19 @@ export const countDimensionNode = graph.data({
 });
 
 export const crossfilter = graph.data({
+  type: "data",
   source: "root",
   name: "crossfilter",
   transform: []
 });
 
 export const countGroupNode = graph.data({
+  type: "data",
   source: "crossfilter",
   name: "count.group",
   transform: [
     {
-      type: "formula",
+      type: "project",
       expr: "COUNT(*)",
       as: "records"
     },
@@ -61,36 +67,37 @@ export const countGroupNode = graph.data({
 });
 
 export const pointmapNode = graph.data({
+  type: "data",
   source: "crossfilter",
   name: "pointmap.group",
   transform: [
     {
-      type: "formula",
+      type: "project",
       expr: "conv_4326_900913_x(lon)",
       as: "x"
     },
     {
-      type: "formula",
+      type: "project",
       expr: "conv_4326_900913_y(lat)",
       as: "y"
     },
     {
-      type: "formula",
+      type: "project",
       expr: "lang",
       as: "color"
     },
     {
-      type: "formula",
+      type: "project",
       expr: "followers",
       as: "size"
     },
     {
-      type: "formula",
+      type: "project",
       expr: "tweets_nov_feb.rowid"
     },
     {
-      type: "collect.limit",
-      limit: { row: 500000 }
+      type: "limit",
+      row: 500000
     },
     {
       type: "sample",
@@ -107,6 +114,7 @@ export const pointmapNode = graph.data({
 });
 
 export const timeDimensionNode = graph.data({
+  type: "data",
   source: "crossfilter",
   name: "line.dimension",
   transform: [
@@ -116,15 +124,18 @@ export const timeDimensionNode = graph.data({
       ops: ["count"],
       as: ["val"],
       groupby: {
-        type: "formula.date_trunc",
-        unit: "hour",
-        field: "tweet_time",
+        type: "project",
+        expr: {
+          type: "date_trunc",
+          unit: "hour",
+          field: "tweet_time"
+        },
         as: "key0"
       }
     },
     {
-      type: "collect.sort",
-      sort: { field: ["key0"] }
+      type: "sort",
+      field: ["key0"]
     }
   ]
 });

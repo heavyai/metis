@@ -1,8 +1,10 @@
+// @flow
 import { register } from "./chart-registry";
 import * as constants from "./constants";
 import graph from "./datagraph";
 
 const parallelDataNode = graph.data({
+  type: "data",
   source: "xfilter",
   name: "parallel",
   transform: [
@@ -194,6 +196,7 @@ let view = null;
 
 function render(data) {
   PARALLEL_SPEC.data[0].values = data;
+  // $FlowFixMe
   const runtime = vega.parse(PARALLEL_SPEC);
   view = new vega.View(runtime);
 
@@ -207,6 +210,7 @@ function render(data) {
 }
 
 function redraw(data) {
+  // $FlowFixMe
   view.setState({ data: { [constants.DATA_NAME]: data } });
 }
 

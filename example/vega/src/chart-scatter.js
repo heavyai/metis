@@ -1,8 +1,10 @@
+// @flow
 import { register } from "./chart-registry";
 import * as constants from "./constants";
 import graph from "./datagraph";
 
 const scatterDataNode = graph.data({
+  type: "data",
   source: "xfilter",
   name: "scatter",
   transform: [
@@ -29,17 +31,13 @@ const scatterDataNode = graph.data({
       expr: "arrdelay IS NOT NULL"
     },
     {
-      type: "collect.sort",
-      sort: {
-        field: ["size"],
-        order: ["descending"]
-      }
+      type: "sort",
+      field: ["size"],
+      order: ["descending"]
     },
     {
-      type: "collect.limit",
-      limit: {
-        row: 12
-      }
+      type: "limit",
+      row: 12
     },
     {
       type: "resolvefilter",
@@ -208,6 +206,7 @@ let view = null;
 
 function render(data) {
   SCATTER_VEGA_SPEC.data[0].values = data;
+  // $FlowFixMe
   const runtime = vega.parse(SCATTER_VEGA_SPEC);
   view = new vega.View(runtime);
 
@@ -228,10 +227,12 @@ function render(data) {
 }
 
 function redraw(data) {
+  // $FlowFixMe
   view.setState({ data: { [constants.DATA_NAME]: data } });
 }
 
 function filterAll() {
+  // $FlowFixMe
   view.setState({ data: { selected: [] } });
 }
 
