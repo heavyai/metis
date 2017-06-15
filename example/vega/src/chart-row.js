@@ -1,8 +1,10 @@
+// @flow
 import { register } from "./chart-registry";
 import * as constants from "./constants";
 import graph from "./datagraph";
 
 const rowDataNode = graph.data({
+  type: "data",
   source: "xfilter",
   name: "row",
   transform: [
@@ -18,17 +20,13 @@ const rowDataNode = graph.data({
       as: ["records"]
     },
     {
-      type: "collect.sort",
-      sort: {
-        field: ["records"],
-        order: ["descending"]
-      }
+      type: "sort",
+      field: ["records"],
+      order: ["descending"]
     },
     {
-      type: "collect.limit",
-      limit: {
-        row: 12
-      }
+      type: "limit",
+      row: 12
     },
     {
       type: "resolvefilter",
@@ -141,6 +139,7 @@ let view = null;
 
 function render(data) {
   ROW_VEGA_SPEC.data[0].values = data;
+  // $FlowFixMe
   const runtime = vega.parse(ROW_VEGA_SPEC);
   view = new vega.View(runtime);
 
@@ -161,10 +160,12 @@ function render(data) {
 }
 
 function redraw(data) {
+  // $FlowFixMe
   view.setState({ data: { [constants.DATA_NAME]: data } });
 }
 
 function filterAll() {
+  // $FlowFixMe
   view.setState({ data: { selected: [] } });
 }
 

@@ -7,8 +7,9 @@
 [include]
 
 [libs]
-./flow-types/datagraph.flow.js
-./flow-types/expression.flow.js
-./flow-types/transform.flow.js
+./flow-types/datagraph.js.flow
+./flow-types/expression.js.flow
+./flow-types/transform.js.flow
+./flow-types/module.js.flow
 
 [options]

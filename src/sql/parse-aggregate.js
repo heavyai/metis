@@ -9,16 +9,6 @@ const AGGREGATES = {
   sum: "SUM"
 };
 
-function isFormula(transform: Project): boolean {
-  if (typeof transform !== "object") {
-    return false;
-  } else if (transform.hasOwnProperty("type") && transform.type === "project") {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 function aggregateField(op, field, as) {
   let str = "";
   if (op === null) {
@@ -61,8 +51,8 @@ export default function parseAggregate(sql: SQL, transform: Aggregate): SQL {
     sql.select.push(
       parseExpression(transform.groupby.expr) +
         (typeof transform.groupby === "object" && transform.groupby.as
-          // $FlowFixMe
-          ? " as " + transform.groupby.as
+          ? // $FlowFixMe
+            " as " + transform.groupby.as
           : "")
     );
     if (

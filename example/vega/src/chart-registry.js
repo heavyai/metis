@@ -40,9 +40,24 @@ dispatch.on("redrawAll", () => {
 
 dispatch.on("xfilter", ({ type, id, field, filter }) => {
   if (type === "filter.exact") {
-    crossfilter.filter(id, { type, field: field, equals: filter });
+    crossfilter.filter(id, {
+      type: "filter",
+      expr: {
+        type: "in",
+        expr: field,
+        set: filter
+      }
+    });
   } else if (type === "filter.range") {
-    crossfilter.filter(id, { type, field: field, range: filter });
+    crossfilter.filter(id, {
+      type: "filter",
+      expr: {
+        type: "between",
+        field: field,
+        left: filter[0],
+        right: filter[1]
+      }
+    });
   }
   dispatch.call("redrawAll");
 });

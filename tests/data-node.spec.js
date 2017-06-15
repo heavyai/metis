@@ -57,6 +57,9 @@ tape("Data Operator", t => {
       )
     );
 
+    // $FlowFixMe
+    data.transform(""); // this is just to test the else block
+
     q.deepEqual(data.getState(), {
       type: "data",
       name: "test",

@@ -1,6 +1,8 @@
+// @flow
 import graph from "./datagraph";
 
 const xfilterDataNode = graph.data({
+  type: "data",
   source: "flights_donotmodify",
   name: "xfilter",
   transform: [
@@ -12,26 +14,33 @@ const xfilterDataNode = graph.data({
   ]
 });
 
-export function filter(id, filter) {
+export function filter(id: string, filter: Object) {
   const { transform } = xfilterDataNode.getState();
-  const xfilters = transform[0].filter;
-  const index = xfilters.findIndex(f => f.id === id);
-  if (index !== -1) {
-    xfilters[index] = {
-      id: id,
-      ...filter
-    };
-  } else {
-    xfilters.push({
-      id: id,
-      ...filter
-    });
+
+  if (transform[0].type === "crossfilter") {
+    const xfilters = transform[0].filter;
+    const index = xfilters.findIndex(f => f.id === id);
+    if (index !== -1) {
+      xfilters[index] = {
+        type: "filter",
+        id: id,
+        expr: filter.expr
+      };
+    } else {
+      xfilters.push({
+        type: "filter",
+        id: id,
+        expr: filter.expr
+      });
+    }
   }
 }
 
 function filterAll() {
   const { transform } = xfilterDataNode.getState();
-  transform[0].filter = [];
+  if (transform[0].type === "crossfilter") {
+    transform[0].filter = [];
+  }
 }
 
 export default {

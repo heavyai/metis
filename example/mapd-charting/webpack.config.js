@@ -22,6 +22,7 @@ module.exports = {
           path.resolve(__dirname, "../../src"),
           path.resolve(__dirname, "../../index.js"),
           path.resolve(__dirname, "index.js"),
+          path.resolve(__dirname, "./src"),
           path.resolve(__dirname, "node_modules/@mapd/mapdc")
         ],
         loader: "babel-loader"

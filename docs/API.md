@@ -18,8 +18,9 @@
 
 ## Types
 
--   **See: [Data Graph Types](https://github.com/mrblueblue/sql-datagraph/blob/master/flow-typed/datagraph.flow.js)**
--   **See: [Transform Types](https://github.com/mrblueblue/sql-datagraph/blob/master/flow-typed/transform.flow.js)**
+-   **See: [Data Graph Types](https://github.com/mapd/mapd-data-layer/blob/master/flow-typed/datagraph.js.flow)**
+-   **See: [Expression Types](https://github.com/mapd/mapd-data-layer/blob/master/flow-typed/expression.js.flow)**
+-   **See: [Transform Types](https://github.com/mapd/mapd-data-layer/blob/master/flow-typed/transform.js.flow)**
 
 Library type definitions are declared in the `flow-typed/` folder.
 
@@ -33,10 +34,10 @@ Creates a SQL data graph instance.
 
 **Parameters**
 
--   `connector` **Connector** 
+-   `connector` **Connector**
 -   `initialState` **GraphState**  (optional, default `{}`)
 
-Returns **[Graph](#graph)** 
+Returns **[Graph](#graph)**
 
 ### writeSQL
 
@@ -44,9 +45,9 @@ Returns a SQL query string based on the DataState passed in.
 
 **Parameters**
 
--   `state` **DataState** 
+-   `state` **DataState**
 
-Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)**
 
 ## Graph
 
@@ -56,13 +57,13 @@ An instance of a SQL data graph
 
 Returns all data node instances of the graph.
 
-Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;DataNode>** 
+Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;DataNode>**
 
 ### getState
 
 Returns the state of the graph.
 
-Returns **GraphState** 
+Returns **GraphState**
 
 ### data
 
@@ -70,9 +71,9 @@ Creates a data node instance.
 
 **Parameters**
 
--   `state` **DataState** 
+-   `state` **DataState**
 
-Returns **DataNode** 
+Returns **DataNode**
 
 ## Data
 
@@ -82,7 +83,7 @@ A node in the graph that represents a set of data transformations.
 
 Returns the state of the data node.
 
-Returns **DataState** 
+Returns **DataState**
 
 ### transform
 
@@ -90,18 +91,18 @@ Sets the transform state of the data node.
 
 **Parameters**
 
--   `transform` **(Transform | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Transform>)** 
+-   `transform` **(Transform | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Transform>)**
 
-Returns **DataNode** 
+Returns **DataNode**
 
 ### toSQL
 
 Returns the SQL string representation of the set of data transformations the node embodies.
 
-Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)**
 
 ### values
 
 Executes data node's SQL query representation and returns queried data as a promise.
 
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>>** 
+Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>>**

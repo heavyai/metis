@@ -41,7 +41,7 @@ export const pointmapGroup = {
   writeTopQuery() {
     return pointmapNode.toSQL();
   },
-  samplingRatio(a) {
+  samplingRatio() {
     return;
   },
   getCrossfilterId() {
@@ -61,19 +61,29 @@ export const xDim = {
   value() {
     return ["lon"];
   },
-  filter(range) {
+  filter(range: Array<number>) {
     if (!crossfilter.getState().transform.length) {
       crossfilter.transform({
-        type: "filter.range",
-        field: "lon",
-        range
+        type: "filter",
+        id: "range",
+        expr: {
+          type: "between",
+          field: "lon",
+          left: range[0],
+          right: range[1]
+        }
       });
     } else {
       crossfilter.transform(filter => {
         filter[0] = {
-          type: "filter.range",
-          field: "lon",
-          range
+          type: "filter",
+          id: "range",
+          expr: {
+            type: "between",
+            field: "lon",
+            left: range[0],
+            right: range[1]
+          }
         };
         return filter;
       });
@@ -85,19 +95,29 @@ export const yDim = {
   value() {
     return ["lat"];
   },
-  filter(range) {
+  filter(range: Array<number>) {
     if (!crossfilter.getState().transform.length) {
       crossfilter.transform({
-        type: "filter.range",
-        field: "lat",
-        range
+        type: "filter",
+        id: "range",
+        expr: {
+          type: "between",
+          field: "lat",
+          left: range[0],
+          right: range[1]
+        }
       });
     } else {
       crossfilter.transform(filter => {
         filter[1] = {
-          type: "filter.range",
-          field: "lat",
-          range
+          type: "filter",
+          id: "range",
+          expr: {
+            type: "between",
+            field: "lat",
+            left: range[0],
+            right: range[1]
+          }
         };
         return filter;
       });
@@ -120,24 +140,25 @@ export const lineDimension = {
   filter() {
     return;
   },
-  filterMulti([[min, max]]) {
+  filterMulti([[min, max]]: [[Date, Date]]) {
     crossfilter.transform(filter => {
       filter[2] = {
         type: "crossfilter",
         signal: "mapd",
         filter: [
           {
-            type: "filter.range",
+            type: "filter",
             id: "range",
-            field: "tweet_time",
-            range: [
-              "TIMESTAMP(0) '" +
+            expr: {
+              type: "between",
+              field: "tweet_time",
+              left: "TIMESTAMP(0) '" +
                 min.toISOString().slice(0, 19).replace("T", " ") +
                 "'",
-              "TIMESTAMP(0) '" +
+              right: "TIMESTAMP(0) '" +
                 max.toISOString().slice(0, 19).replace("T", " ") +
                 "'"
-            ]
+            }
           }
         ]
       };
@@ -151,7 +172,7 @@ export const lineDimension = {
   value() {
     return ["tweet_time"];
   },
-  binParams(a, b) {
+  binParams() {
     return [
       {
         extract: false,
@@ -162,7 +183,7 @@ export const lineDimension = {
       null
     ];
   },
-  all(callback) {
+  all(callback: Function) {
     timeDimensionNode.values().then(a => {
       callback(null, a);
     });
