@@ -32,14 +32,3 @@ declare type DataNode = {
   toSQL: () => string,
   values: () => Promise<Array<any>>
 };
-
-declare type SQL = {|
-  select: Array<string>,
-  from: string,
-  where: Array<string>,
-  groupby: Array<string>,
-  having: Array<string>,
-  orderby: Array<string>,
-  limit: string,
-  offset: string
-|};

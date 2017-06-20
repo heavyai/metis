@@ -1,13 +1,13 @@
 // @flow
-import parseExpression from "./parse-expression";
+import Parser from "./parser";
 
-export default function parseFilter(sql: SQL, transform: Filter): SQL {
+export default function parseFilter(sql: SQL, transform: Filter, parser: any = Parser): SQL {
   switch (transform.type) {
     case "filter":
       sql.where.push(
         "(" +
           (typeof transform.expr === "object"
-            ? parseExpression(transform.expr)
+            ? parser.parseExpression(transform.expr)
             : transform.expr) +
           ")"
       );

@@ -1,7 +1,7 @@
-import writeSQL from "./write-sql";
+import Parser from "./parser";
 
 export default function parseExpression(
-  expression: string | Expression
+  expression: string | Expression, parser: any = Parser
 ): string {
   if (typeof expression === "string" || !typeof expression === "object") {
     return expression;
@@ -73,7 +73,7 @@ export default function parseExpression(
           " " +
           expression.type.toUpperCase() +
           " (" +
-          writeSQL(expression.set) +
+          parser.writeSQL(expression.set) +
           ")"
         );
       } else {

@@ -1,11 +1,12 @@
 // @flow
-import parse from "./parse-transform";
+import Parser from "./parser";
 /**
  * Returns a SQL query string based on the DataState passed in.
 * @memberof API
  */
-export default function writeSQL(state: DataState): string {
-  return write(parse(state));
+export default function writeSQL(state: DataState, parser: any = Parser): string {
+  console.log(parser)
+  return write(parser.parseTransform(state));
 }
 
 function write(sql: SQL): string {
