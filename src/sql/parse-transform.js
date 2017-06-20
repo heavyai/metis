@@ -7,8 +7,9 @@ import parseFilter from "./parse-filter";
 import parseProject from "./parse-project";
 import parseSample from "./parse-sample";
 import parseSource from "./parse-source";
+import Parser from "./parser";
 
-export default function parse({ source, transform }: DataState): SQL {
+export default function parse({ source, transform }: DataState, parser: any = Parser): SQL {
   const initialSQL = {
     select: [],
     from: typeof source === "string" ? source : parseSource(source),
@@ -23,7 +24,7 @@ export default function parse({ source, transform }: DataState): SQL {
   return transform.reduce((sql: SQL, t: Transform): SQL => {
     switch (t.type) {
       case "aggregate":
-        return parseAggregate(sql, t);
+        return parseAggregate(sql, t, parser);
       case "bin":
         return parseBin(sql, t);
       case "sort":
@@ -31,9 +32,9 @@ export default function parse({ source, transform }: DataState): SQL {
       case "limit":
         return parseLimit(sql, t);
       case "filter":
-        return parseFilter(sql, t);
+        return parseFilter(sql, t, parser);
       case "project":
-        return parseProject(sql, t);
+        return parseProject(sql, t, parser);
       case "sample":
         return parseSample(sql, t);
       default:

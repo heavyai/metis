@@ -1,8 +1,8 @@
-import parseExpression from "./parse-expression";
+import Parser from "./parser";
 
-export default function parseProject(sql, transform) {
+export default function parseProject(sql, transform, parser: any = Parser) {
   sql.select.push(
-    parseExpression(transform.expr) +
+    parser.parseExpression(transform.expr) +
       (transform.as ? " as " + transform.as : "")
   );
   return sql;

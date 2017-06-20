@@ -1,5 +1,5 @@
 // @flow
-import writeSQL from "./write-sql";
+import Parser from "./parser";
 
 type JoinRelationSQL = "JOIN" | "INNER JOIN" | "LEFT JOIN" | "RIGHT JOIN";
 function joinRelation(type: JoinRelation): JoinRelationSQL {
@@ -17,7 +17,7 @@ function joinRelation(type: JoinRelation): JoinRelationSQL {
 }
 
 export default function parseSource(
-  transforms: Array<SourceTransform | DataState>
+  transforms: Array<SourceTransform | DataState>, parser: any = Parser
 ): string {
   return transforms
     .reduce(
@@ -43,7 +43,7 @@ export default function parseSource(
           const aliasStmt = transform.as ? " as " + transform.as : "";
           return stmt.concat(joinStmt + aliasStmt);
         } else if (transform.type === "data") {
-          const subquery = writeSQL(transform);
+          const subquery = parser.writeSQL(transform);
           return stmt.concat("(" + subquery + ")");
         } else {
           return stmt;

@@ -11,5 +11,6 @@
 ./flow-types/expression.js.flow
 ./flow-types/transform.js.flow
 ./flow-types/module.js.flow
+./flow-types/sql-writer.js.flow
 
 [options]
