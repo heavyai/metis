@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import parse from "../src/sql/parse-transform";
+import parse from "../src/sql/parse-datastate";
 import aggregate from "../src/sql/parse-aggregate";
 import bin from "../src/sql/parse-bin";
 import sample from "../src/sql/parse-sample";

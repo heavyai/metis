@@ -8,7 +8,7 @@ export default function writeSQL(
   state: DataState,
   parser: any = Parser
 ): string {
-  return write(parser.parseTransform(state, parser));
+  return write(parser.parseDataState(state, parser));
 }
 
 export function write(sql: SQL): string {
