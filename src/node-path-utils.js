@@ -7,7 +7,7 @@ const identity = a => a;
 
 function createNodeReducer(parser: any) {
   return function reduceNode(accum: SQL, rightNode: DataState): SQL {
-    return parser.parseTransform(rightNode, parser, accum);
+    return parser.parseDataState(rightNode, parser, accum);
   };
 }
 

@@ -33,3 +33,19 @@ declare type DataNode = {
   toSQL: () => string,
   values: () => Promise<Array<any>>
 };
+
+
+declare type TypeDefinition = {
+  meta: string,
+  type: string
+}
+
+declare type Parser = {
+  parseExpression: Function,
+  parseTransform: Function,
+  parseDataState: Function,
+  parseSource: Function,
+  writeSQL: Function,
+  write: Function,
+  registerParser: Function
+}

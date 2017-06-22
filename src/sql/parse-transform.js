@@ -11,7 +11,11 @@ import parseSample from "./parse-sample";
 import parseSource from "./parse-source";
 import Parser from "./parser";
 
-function parseTransform(sql: SQL, t: Transform, parser: any = Parser): SQL {
+export default function parseTransform(
+  sql: SQL,
+  t: Transform,
+  parser: any = Parser
+): SQL {
   switch (t.type) {
     case "aggregate":
       return parseAggregate(sql, t, parser);
@@ -35,37 +39,4 @@ function parseTransform(sql: SQL, t: Transform, parser: any = Parser): SQL {
     default:
       return sql;
   }
-}
-
-export default function parse(
-  { source, transform }: DataState,
-  parser: any = Parser,
-  initialSQL?: SQL = {
-    select: [],
-    from: "",
-    where: [],
-    groupby: [],
-    having: [],
-    orderby: [],
-    limit: "",
-    offset: "",
-    unresolved: {}
-  }
-): SQL {
-  return transform.reduce(
-    (sql: SQL, t: Transform): SQL => {
-      return parseTransform(sql, t, parser);
-    },
-    {
-      select: initialSQL.select,
-      from: typeof source === "string" ? source : parseSource(source),
-      where: initialSQL.where,
-      groupby: initialSQL.groupby,
-      having: initialSQL.having,
-      orderby: initialSQL.orderby,
-      limit: initialSQL.limit,
-      offset: initialSQL.offset,
-      unresolved: initialSQL.unresolved
-    }
-  );
 }
