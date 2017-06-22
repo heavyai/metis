@@ -65,7 +65,8 @@ tape("parse", assert => {
       having: ["(key0 >= 0 AND key0 < 12 OR key0 IS NULL)"],
       orderby: [],
       limit: "",
-      offset: ""
+      offset: "",
+      unresolved: {}
     }
   );
 });

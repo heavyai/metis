@@ -1,10 +1,6 @@
 // @flow
 import tape from "tape";
-import {
-  reduceNodes,
-  resolveFilters,
-  nodePathToSQL
-} from "../src/node-path-utils";
+import { reduceNodes, nodePathToSQL } from "../src/node-path-utils";
 
 const child = {
   type: "data",
@@ -74,162 +70,46 @@ tape("Reduce Nodes", t => {
   t.plan(3);
 
   t.deepEqual(reduceNodes(state, "grandchild"), {
-    type: "data",
-    name: "",
-    source: [
-      {
-        type: "scan",
-        table: "flights"
-      }
+    from: "flights",
+    groupby: ["key0", "key0"],
+    having: [],
+    limit: "",
+    offset: "",
+    orderby: [],
+    select: [
+      "date_trunc(year, CAST(datum.contrib_date AS TIMESTAMP(0))) as key0",
+      "AVG(amount) as series_1",
+      "date_trunc(year, CAST(datum.contrib_date AS TIMESTAMP(0))) as key0",
+      "AVG(amount) as series_1"
     ],
-    transform: [
-      {
-        as: "key0",
-        expr: "date_trunc(year, CAST(datum.contrib_date AS TIMESTAMP(0)))",
-        type: "project"
-      },
-      {
-        as: ["series_1"],
-        fields: ["amount"],
-        groupby: ["key0"],
-        ops: ["average"],
-        type: "aggregate"
-      },
-      {
-        as: "key0",
-        expr: "date_trunc(year, CAST(datum.contrib_date AS TIMESTAMP(0)))",
-        type: "project"
-      },
-      {
-        as: ["series_1"],
-        fields: ["amount"],
-        groupby: ["key0"],
-        ops: ["average"],
-        type: "aggregate"
-      },
-      {
-        expr: "FILTER",
-        id: "test",
-        type: "filter"
-      }
-    ]
+    unresolved: {},
+    where: ["(FILTER)"]
   });
 
   t.deepEqual(reduceNodes(state, "child"), {
-    type: "data",
-    name: "",
-    source: [
-      {
-        type: "scan",
-        table: "flights"
-      }
+    from: "flights",
+    groupby: ["key0"],
+    having: [],
+    limit: "",
+    offset: "",
+    orderby: [],
+    select: [
+      "date_trunc(year, CAST(datum.contrib_date AS TIMESTAMP(0))) as key0",
+      "AVG(amount) as series_1"
     ],
-    transform: [
-      {
-        as: "key0",
-        expr: "date_trunc(year, CAST(datum.contrib_date AS TIMESTAMP(0)))",
-        type: "project"
-      },
-      {
-        as: ["series_1"],
-        fields: ["amount"],
-        groupby: ["key0"],
-        ops: ["average"],
-        type: "aggregate"
-      },
-      {
-        expr: "FILTER",
-        id: "test",
-        type: "filter"
-      }
-    ]
+    unresolved: {},
+    where: ["(FILTER)"]
   });
 
   t.deepEqual(reduceNodes(state, "parent"), {
-    type: "data",
-    name: "",
-    source: [
-      {
-        type: "scan",
-        table: "flights"
-      }
-    ],
-    transform: [
-      {
-        expr: "FILTER",
-        id: "test",
-        type: "filter"
-      }
-    ]
+    select: [],
+    from: "flights",
+    where: ["(FILTER)"],
+    groupby: [],
+    having: [],
+    orderby: [],
+    limit: "",
+    offset: "",
+    unresolved: {}
   });
-});
-
-tape("resolveFilters", assert => {
-  assert.plan(1);
-  assert.deepEqual(
-    resolveFilters({
-      type: "data",
-      source: "parent",
-      name: "child",
-      transform: [
-        {
-          type: "aggregate",
-          groupby: ["dest_city"],
-          fields: ["depdelay"],
-          ops: ["average"],
-          as: ["val"]
-        },
-        {
-          type: "crossfilter",
-          signal: "group",
-          filter: [
-            {
-              type: "filter",
-              id: "pie",
-              expr: "recipient_party = 'D'"
-            },
-            {
-              type: "filter",
-              id: "row",
-              expr: "recipient_party = 'R'"
-            },
-            {
-              type: "filter",
-              id: "bubble",
-              expr: "recipient_party = 'I'"
-            }
-          ]
-        },
-        {
-          type: "resolvefilter",
-          filter: { signal: "group" },
-          ignore: ["bubble"]
-        }
-      ]
-    }),
-    {
-      type: "data",
-      source: "parent",
-      name: "child",
-      transform: [
-        {
-          type: "aggregate",
-          groupby: ["dest_city"],
-          fields: ["depdelay"],
-          ops: ["average"],
-          as: ["val"]
-        },
-        {
-          type: "filter",
-          id: "pie",
-          expr: "recipient_party = 'D'"
-        },
-        {
-          type: "filter",
-          id: "row",
-          expr: "recipient_party = 'R'"
-        }
-      ]
-    }
-  );
 });

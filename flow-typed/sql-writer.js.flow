@@ -14,5 +14,8 @@ declare type SQL = {|
   having: Array<string>,
   orderby: Array<string>,
   limit: string,
-  offset: string
+  offset: string,
+  unresolved?: {
+    [string]: ResolveFilter
+  }
 |};
