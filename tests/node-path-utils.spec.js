@@ -1,6 +1,7 @@
 // @flow
 import tape from "tape";
 import { reduceNodes, nodePathToSQL } from "../src/node-path-utils";
+import parser from "../src/sql/parser";
 
 const child = {
   type: "data",
@@ -66,10 +67,21 @@ const state = {
   grandchild
 };
 
+const connector = {
+  tables: [],
+  query: () => Promise.resolve([])
+};
+
+const context = {
+  state,
+  connector,
+  parser
+};
+
 tape("Reduce Nodes", t => {
   t.plan(3);
 
-  t.deepEqual(reduceNodes(state, "grandchild"), {
+  t.deepEqual(reduceNodes(context, "grandchild"), {
     from: "flights",
     groupby: ["key0", "key0"],
     having: [],
@@ -86,7 +98,7 @@ tape("Reduce Nodes", t => {
     where: ["(FILTER)"]
   });
 
-  t.deepEqual(reduceNodes(state, "child"), {
+  t.deepEqual(reduceNodes(context, "child"), {
     from: "flights",
     groupby: ["key0"],
     having: [],
@@ -101,7 +113,7 @@ tape("Reduce Nodes", t => {
     where: ["(FILTER)"]
   });
 
-  t.deepEqual(reduceNodes(state, "parent"), {
+  t.deepEqual(reduceNodes(context, "parent"), {
     select: [],
     from: "flights",
     where: ["(FILTER)"],

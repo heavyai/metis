@@ -1,5 +1,6 @@
 // @flow
 import createDataNode from "./data-node";
+import { createParser } from "./sql/parser";
 import invariant from "invariant";
 
 /**
@@ -14,7 +15,8 @@ export function createDataGraph(
 
   const context = {
     state: initialState,
-    connector
+    connector,
+    parser: createParser()
   };
 
   const nodes = [];

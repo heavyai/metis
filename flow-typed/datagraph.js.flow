@@ -13,7 +13,8 @@ declare type DataState = {|
 
 declare type GraphContext = {
   connector: Connector,
-  state: GraphState
+  state: GraphState,
+  parser: any,
 };
 
 declare type GraphState = {

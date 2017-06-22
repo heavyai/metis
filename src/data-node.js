@@ -53,7 +53,7 @@ export default function createDataNode(
      * @inner
      */
     toSQL(): string {
-      return nodePathToSQL(context.state, state.name);
+      return nodePathToSQL(context, state.name);
     },
     /**
      * Executes data node's SQL query representation and returns queried data as a promise.
@@ -61,7 +61,7 @@ export default function createDataNode(
      * @inner
      */
     values(): Promise<Array<any>> {
-      return context.connector.query(nodePathToSQL(context.state, state.name));
+      return context.connector.query(nodePathToSQL(context, state.name));
     }
   };
 }

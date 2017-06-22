@@ -11,7 +11,7 @@ import parseSample from "./parse-sample";
 import parseSource from "./parse-source";
 import Parser from "./parser";
 
-function parseTransform (sql: SQL, t: Transform, parser: any = Parser): SQL {
+function parseTransform(sql: SQL, t: Transform, parser: any = Parser): SQL {
   switch (t.type) {
     case "aggregate":
       return parseAggregate(sql, t, parser);
@@ -31,6 +31,7 @@ function parseTransform (sql: SQL, t: Transform, parser: any = Parser): SQL {
       return parseResolvefilter(sql, t);
     case "crossfilter":
       return parseCrossfilter(sql, t);
+    /* istanbul ignore next */
     default:
       return sql;
   }
@@ -53,7 +54,7 @@ export default function parse(
 ): SQL {
   return transform.reduce(
     (sql: SQL, t: Transform): SQL => {
-      return parseTransform(sql, t, parser)
+      return parseTransform(sql, t, parser);
     },
     {
       select: initialSQL.select,
