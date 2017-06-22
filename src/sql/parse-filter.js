@@ -1,7 +1,11 @@
 // @flow
 import Parser from "./parser";
 
-export default function parseFilter(sql: SQL, transform: Filter, parser: any = Parser): SQL {
+export default function parseFilter(
+  sql: SQL,
+  transform: Filter,
+  parser: any = Parser
+): SQL {
   switch (transform.type) {
     case "filter":
       sql.where.push(

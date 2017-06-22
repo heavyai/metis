@@ -19,7 +19,11 @@ function aggregateField(op, field, as) {
   return str + `${as ? " as " + as : ""}`;
 }
 
-export default function parseAggregate(sql: SQL, transform: Aggregate, parser: any = Parser): SQL {
+export default function parseAggregate(
+  sql: SQL,
+  transform: Aggregate,
+  parser: any = Parser
+): SQL {
   transform.fields.forEach((field: string, index: number): void => {
     const as = Array.isArray(transform.as) ? transform.as[index] : null;
     if (Array.isArray(transform.ops)) {
@@ -37,7 +41,8 @@ export default function parseAggregate(sql: SQL, transform: Aggregate, parser: a
         sql.groupby.push(group);
       } else if (group.type === "project") {
         sql.select.push(
-          parser.parseExpression(group.expr) + (group.as ? " as " + group.as : "")
+          parser.parseExpression(group.expr) +
+            (group.as ? " as " + group.as : "")
         );
         if (group.as) {
           sql.groupby.push(group.as);

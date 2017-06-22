@@ -17,7 +17,8 @@ function joinRelation(type: JoinRelation): JoinRelationSQL {
 }
 
 export default function parseSource(
-  transforms: Array<SourceTransform | DataState>, parser: any = Parser
+  transforms: Array<SourceTransform | DataState>,
+  parser: any = Parser
 ): string {
   return transforms
     .reduce(

@@ -102,18 +102,26 @@ tape("Data Operator", t => {
             }
           ]
         },
+        { type: "filter", id: "test", expr: "amount > 1000" }
+      ]
+    });
+
+    const child = graph.data({
+      type: "data",
+      name: "child",
+      source: "test",
+      transform: [
         {
           type: "resolvefilter",
           filter: { signal: "group" },
           ignore: ["row"]
-        },
-        { type: "filter", id: "test", expr: "amount > 1000" }
+        }
       ]
     });
 
     q.plan(1);
     q.equal(
-      data.toSQL(),
+      child.toSQL(),
       "SELECT * FROM contributions WHERE (recipient_party = 'D') AND (recipient_party = 'I') AND (amount > 1000)"
     );
   });

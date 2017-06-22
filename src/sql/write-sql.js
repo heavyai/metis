@@ -4,12 +4,14 @@ import Parser from "./parser";
  * Returns a SQL query string based on the DataState passed in.
 * @memberof API
  */
-export default function writeSQL(state: DataState, parser: any = Parser): string {
-  console.log(parser)
-  return write(parser.parseTransform(state));
+export default function writeSQL(
+  state: DataState,
+  parser: any = Parser
+): string {
+  return write(parser.parseTransform(state, parser));
 }
 
-function write(sql: SQL): string {
+export function write(sql: SQL): string {
   return (
     writeSelect(sql.select) +
     writeFrom(sql.from) +

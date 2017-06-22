@@ -1,7 +1,8 @@
 import Parser from "./parser";
 
 export default function parseExpression(
-  expression: string | Expression, parser: any = Parser
+  expression: string | Expression,
+  parser: any = Parser
 ): string {
   if (typeof expression === "string" || !typeof expression === "object") {
     return expression;
