@@ -3,16 +3,11 @@
 type iterator = (node: DataState) => any;
 type xform = (a: any, b: any) => any;
 
-import { write } from "./sql/write-sql";
-
-import parseTransform from "./sql/parse-transform";
-import Parser from "./sql/parser";
-
 const identity = a => a;
 
-function createNodeReducer(state: GraphState) {
+function createNodeReducer(parser: any) {
   return function reduceNode(accum: SQL, rightNode: DataState): SQL {
-    return parseTransform(rightNode, Parser, accum);
+    return parser.parseTransform(rightNode, parser, accum);
   };
 }
 
@@ -31,20 +26,26 @@ export function walk(
     : accum;
 }
 
-export function reduceNodes(state: GraphState, name: string): SQL {
-  return walk(state, name, identity, createNodeReducer(state), {
-    select: [],
-    from: "",
-    where: [],
-    groupby: [],
-    having: [],
-    orderby: [],
-    limit: "",
-    offset: "",
-    unresolved: {}
-  });
+export function reduceNodes(context: GraphContext, name: string): SQL {
+  return walk(
+    context.state,
+    name,
+    identity,
+    createNodeReducer(context.parser),
+    {
+      select: [],
+      from: "",
+      where: [],
+      groupby: [],
+      having: [],
+      orderby: [],
+      limit: "",
+      offset: "",
+      unresolved: {}
+    }
+  );
 }
 
-export function nodePathToSQL(state: GraphState, source: string): string {
-  return write(reduceNodes(state, source));
+export function nodePathToSQL(context: GraphContext, source: string): string {
+  return context.parser.write(reduceNodes(context, source));
 }
