@@ -1,6 +1,7 @@
 // @flow
 import tape from "tape";
-import writeSQL from "../src/sql/write-sql";
+import { createParser } from "../src/sql/parser";
+const { writeSQL } = createParser();
 
 tape("writeSQL", assert => {
   assert.plan(6);

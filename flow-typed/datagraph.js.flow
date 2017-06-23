@@ -14,7 +14,7 @@ declare type DataState = {|
 declare type GraphContext = {
   connector: Connector,
   state: GraphState,
-  parser: any,
+  parser: Parser,
 };
 
 declare type GraphState = {
@@ -22,6 +22,7 @@ declare type GraphState = {
 };
 
 declare type Graph = {
+  registerParser: Function,
   getState: () => GraphState,
   nodes: () => Array<DataNode>,
   data: (state: DataState) => DataNode
@@ -41,11 +42,11 @@ declare type TypeDefinition = {
 }
 
 declare type Parser = {
-  parseExpression: Function,
-  parseTransform: Function,
-  parseDataState: Function,
-  parseSource: Function,
-  writeSQL: Function,
-  write: Function,
-  registerParser: Function
+  parseExpression: (expr: Expression) => string,
+  parseTransform: (sql: SQL, transform: Transform) => SQL,
+  parseDataState: (data: DataState, sql?: SQL) => SQL,
+  parseSource: (sourceTransforms: Array<SourceTransform | DataState>) => string,
+  writeSQL: (state: DataState) => string,
+  write: (sql: SQL) => string,
+  registerParser: (definition: TypeDefinition, typeParser: Function) => void
 }
