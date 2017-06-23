@@ -1,6 +1,6 @@
 // @flow
 import parseExpressionDefault from "./parse-expression";
-import parseDataState from "./parse-datastate";
+import parseDataStateDefault from "./parse-datastate";
 import parseTransformDefault from "./parse-transform";
 import parseSourceDefault from "./parse-source";
 import writeSQLDefault, { write } from "./write-sql";
@@ -8,7 +8,6 @@ import writeSQLDefault, { write } from "./write-sql";
 export function createParser(): Parser {
   const transformParsers = {};
   const expressionParsers = {};
-  const sourceParsers = {};
 
   const parser = {
     parseExpression,
@@ -20,19 +19,14 @@ export function createParser(): Parser {
     registerParser
   };
 
-  function registerParser(definition: TypeDefinition, typeParser: Function) {
-    switch (definition.meta) {
-      case "expression":
-        expressionParsers[definition.type] = typeParser;
-        return;
-      case "transform":
-        transformParsers[definition.type] = typeParser;
-        return;
-      case "source":
-        sourceParsers[definition.type] = typeParser;
-        return;
-      default:
-        return;
+  function registerParser(
+    definition: TypeDefinition,
+    typeParser: Function
+  ): void {
+    if (definition.meta === "expression") {
+      expressionParsers[definition.type] = typeParser;
+    } else if (definition.meta === "transform") {
+      transformParsers[definition.type] = typeParser;
     }
   }
 
@@ -43,21 +37,24 @@ export function createParser(): Parser {
     return parseExpressionDefault(expression, parser);
   }
 
-  function parseSource(transforms) {
-    if (sourceParsers[transforms.type]) {
-      return sourceParsers[transforms.type](transforms, parser);
-    }
-    return parseSourceDefault(transforms, parser);
-  }
-
-  function parseTransform(sql, transform) {
+  function parseTransform(sql: SQL, transform: Transform): SQL {
     if (transformParsers[transform.type]) {
-      return transformParsers[transform.type](sql, transform);
+      return transformParsers[transform.type](sql, transform, parser);
     }
     return parseTransformDefault(sql, transform, parser);
   }
 
-  function writeSQL(state) {
+  function parseDataState(data: DataState, sql?: SQL): SQL {
+    return parseDataStateDefault(data, parser, sql);
+  }
+
+  function parseSource(
+    sourceTransforms: Array<SourceTransform | DataState>
+  ): string {
+    return parseSourceDefault(sourceTransforms, parser);
+  }
+
+  function writeSQL(state: DataState): string {
     return writeSQLDefault(state, parser);
   }
 

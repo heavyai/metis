@@ -1,5 +1,5 @@
 // @flow
-import Parser from "./parser";
+import defaultParser from "./parser";
 
 type JoinRelationSQL = "JOIN" | "INNER JOIN" | "LEFT JOIN" | "RIGHT JOIN";
 function joinRelation(type: JoinRelation): JoinRelationSQL {
@@ -18,7 +18,7 @@ function joinRelation(type: JoinRelation): JoinRelationSQL {
 
 export default function parseSource(
   transforms: Array<SourceTransform | DataState>,
-  parser: any = Parser
+  parser: Parser = defaultParser
 ): string {
   return transforms
     .reduce(

@@ -26,6 +26,9 @@ export function createDataGraph(
    * @namespace Graph
    */
   return {
+    registerParser(typeDef: TypeDefinition, parseDef: Function): void {
+      context.parser.registerParser(typeDef, parseDef);
+    },
     /**
      * Returns all data node instances of the graph.
      * @memberof Graph

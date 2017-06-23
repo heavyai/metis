@@ -1,9 +1,7 @@
 // @flow
-import Parser from "./parser";
-
 export default function parseDataState(
   { source, transform }: DataState,
-  parser: any = Parser,
+  parser: Parser,
   initialSQL?: SQL = {
     select: [],
     from: "",

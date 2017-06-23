@@ -9,12 +9,11 @@ import parseProject from "./parse-project";
 import parseResolvefilter from "./parse-resolvefilter";
 import parseSample from "./parse-sample";
 import parseSource from "./parse-source";
-import Parser from "./parser";
 
 export default function parseTransform(
   sql: SQL,
   t: Transform,
-  parser: any = Parser
+  parser: Parser
 ): SQL {
   switch (t.type) {
     case "aggregate":

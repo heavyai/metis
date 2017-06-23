@@ -5,11 +5,13 @@ import aggregate from "../src/sql/parse-aggregate";
 import bin from "../src/sql/parse-bin";
 import sample from "../src/sql/parse-sample";
 import source from "../src/sql/parse-source";
+import { createParser } from "../src/sql/parser";
+const { parseDataState } = createParser();
 
-tape("parse", assert => {
+tape("parseDataState", assert => {
   assert.plan(1);
   assert.deepEqual(
-    parse({
+    parseDataState({
       type: "data",
       name: "test",
       source: "taxis",
