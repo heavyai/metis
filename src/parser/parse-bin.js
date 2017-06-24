@@ -1,4 +1,7 @@
 // @flow
+import type { SQL } from "./write-sql";
+import type { Bin } from "../types/transform-type";
+
 export default function parseBin(
   sql: SQL,
   { field, as, extent, maxbins }: Bin

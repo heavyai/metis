@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import parseExpression from "../src/sql/parse-expression";
+import parseExpression from "../src/parser/parse-expression";
 
 tape("parseExpression", assert => {
   assert.plan(13);
@@ -104,7 +104,7 @@ tape("parseExpression", assert => {
             type: "in",
             expr: "recipient_party",
             set: {
-              type: "data",
+              type: "root",
               source: "contributions",
               name: "",
               transform: [

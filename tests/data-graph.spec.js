@@ -1,228 +1,147 @@
 // @flow
 import tape from "tape";
-import { createDataGraph } from "../index";
+import createDataGraph from "../src/create-data-graph";
 
-tape("Data Graph API", function(t) {
-  t.test("Graph object", function(q) {
-    q.plan(3);
+tape("Data Graph API", assert => {
+  assert.plan(6);
 
-    const graph = createDataGraph({
-      query: () => Promise.resolve([]),
-      tables: []
-    });
-
-    q.equal(typeof graph, "object", "should be object");
-    q.equal(typeof graph.getState, "function", "should have getState method");
-    q.equal(typeof graph.data, "function", "should have createDataNode method");
-  });
-
-  t.test("Data Method", q => {
-    q.plan(1);
-
-    try {
-      // $FlowFixMe
-      const graph = createDataGraph();
-      // $FlowFixMe
-      graph.data();
-    } catch (e) {
-      q.ok(true, "should throw error when state is not passed in");
-    }
-  });
-});
-
-tape("Data Graph Integration Tests", assert => {
-  assert.plan(12);
   const graph = createDataGraph({
     query: () => Promise.resolve([]),
     tables: []
   });
 
-  const globalFilterNode = graph.data({
-    source: "flights",
-    name: "global",
-    type: "data",
-    transform: []
-  });
-  const xFilterNode = graph.data({
-    source: "global",
-    name: "xfilter",
-    type: "data",
-    transform: []
+  assert.equal(typeof graph, "object", "should be an object");
+
+  assert.equal(
+    typeof graph.registerParser,
+    "function",
+    "should have a registerParser method"
+  );
+
+  assert.equal(
+    typeof graph.children,
+    "function",
+    "should have a children method"
+  );
+
+  assert.equal(typeof graph.data, "function", "should have a data method");
+
+  assert.equal(graph.children().length, 0, "should initially have no children");
+
+  graph.data({
+    name: "test",
+    source: "test"
   });
 
-  const chartNode1 = graph.data({
-    type: "data",
-    source: "xfilter",
-    name: "1",
-    transform: [
+  assert.equal(
+    graph.children().length,
+    1,
+    "should be able to create chilren through .data() method"
+  );
+
+  tape("Data Node API", assert => {
+    assert.plan(7);
+    const rootNode = graph.children()[0];
+
+    assert.equal(typeof rootNode, "object", "should be an object");
+
+    assert.equal(
+      typeof rootNode.toSQL,
+      "function",
+      "should have a toSQL method"
+    );
+
+    assert.equal(
+      typeof rootNode.getState,
+      "function",
+      "should have a getState method"
+    );
+
+    assert.equal(typeof rootNode.data, "function", "should have a data method");
+
+    assert.equal(
+      typeof rootNode.values,
+      "function",
+      "should have a values method"
+    );
+
+    assert.equal(
+      typeof rootNode.transform,
+      "function",
+      "should have a transform method"
+    );
+
+    assert.deepEqual(
+      rootNode.getState(),
       {
-        type: "aggregate",
-        fields: ["payment_type"],
-        as: ["key0"],
-        groupby: ["key0"]
+        type: "root",
+        name: "test",
+        source: "test",
+        transform: [],
+        children: []
       },
-      {
-        type: "aggregate",
-        fields: ["*"],
-        ops: ["count"],
-        as: ["val"]
-      },
-      {
-        type: "sort",
-        field: ["val"],
-        order: ["ascending"]
-      },
-      {
-        type: "limit",
-        row: 10
-      }
-    ]
+      "should have the correct initial state"
+    );
+
+    const child = rootNode.data({ name: "child" });
+
+    tape("Data Node .data() method", assert => {
+      assert.plan(2);
+
+      assert.deepEqual(
+        rootNode.getState().children,
+        [child],
+        "should set child in children array when created"
+      );
+
+      assert.deepEqual(
+        child.getState(),
+        {
+          type: "data",
+          name: "child",
+          source: rootNode,
+          transform: [],
+          children: []
+        },
+        "should create child with correct initial state"
+      );
+    });
+
+    tape("Data Node .transform() method", assert => {
+      assert.plan(2);
+
+      child.transform([
+        { type: "filter", id: "test", expr: "custom" },
+        { type: "filter", id: "test", expr: "custom" }
+      ]);
+
+      assert.deepEqual(child.getState().transform, [
+        { type: "filter", id: "test", expr: "custom" },
+        { type: "filter", id: "test", expr: "custom" }
+      ]);
+
+      child.transform(transform =>
+        transform.map(t =>
+          Object.assign({}, t, {
+            expr: "test"
+          })
+        )
+      );
+
+      child.transform(""); // this is just to test the else block
+
+      assert.deepEqual(child.getState().transform, [
+        { type: "filter", id: "test", expr: "test" },
+        { type: "filter", id: "test", expr: "test" }
+      ]);
+    });
+
+    tape("Data Node .toSQL() method", assert => {
+      assert.plan(2);
+
+      assert.equal(rootNode.toSQL(), "SELECT * FROM test");
+
+      assert.equal(child.toSQL(), "SELECT * FROM test WHERE (test) AND (test)");
+    });
   });
-
-  const chartNode2 = graph.data({
-    type: "data",
-    source: "xfilter",
-    name: "2",
-    transform: [
-      {
-        type: "bin",
-        field: "trip_distance",
-        extent: [0, 30],
-        maxbins: 30,
-        as: "key0"
-      },
-      {
-        type: "aggregate",
-        fields: ["*"],
-        ops: ["count"],
-        as: ["val"]
-      }
-    ]
-  });
-
-  assert.equal(graph.nodes().length, 4);
-
-  assert.equal(
-    globalFilterNode.toSQL(),
-    "SELECT * FROM flights",
-    "globalFilterNode state should be initialized correctly"
-  );
-
-  assert.equal(
-    xFilterNode.toSQL(),
-    "SELECT * FROM flights",
-    "xFilterNode state should be initialized correctly"
-  );
-
-  assert.equal(
-    chartNode1.toSQL(),
-    "SELECT payment_type as key0, COUNT(*) as val FROM flights GROUP BY key0 ORDER BY val ASC LIMIT 10",
-    "chartNode1 state should be initialized correctly"
-  );
-
-  assert.equal(
-    chartNode2.toSQL(),
-    "SELECT cast((cast(trip_distance as float) - 0) * 1 as int) as key0, COUNT(*) as val FROM flights WHERE ((trip_distance >= 0 AND trip_distance <= 30) OR (trip_distance IS NULL)) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 30 OR key0 IS NULL)",
-    "chartNode2 state should be initialized correctly"
-  );
-
-  globalFilterNode.transform({
-    type: "filter",
-    id: "test",
-    expr: {
-      type: "between",
-      field: "dropoff_longitude",
-      left: -73.99828105055514,
-      right: -73.7766089742046
-    }
-  });
-
-  globalFilterNode.transform({
-    type: "filter",
-    id: "test",
-    expr: {
-      type: "between",
-      field: "dropoff_latitude",
-      left: 40.63646686110235,
-      right: 40.81468768513369
-    }
-  });
-
-  assert.equal(
-    globalFilterNode.toSQL(),
-    "SELECT * FROM flights WHERE (dropoff_longitude BETWEEN -73.99828105055514 AND -73.7766089742046) AND (dropoff_latitude BETWEEN 40.63646686110235 AND 40.81468768513369)",
-    "globalFilterNode SQL should include added filter transforms"
-  );
-
-  xFilterNode.transform({
-    type: "crossfilter",
-    signal: "group",
-    filter: [
-      {
-        type: "filter",
-        id: "row",
-        expr: {
-          type: "=",
-          left: "payment_type",
-          right: "cash"
-        }
-      },
-      {
-        type: "filter",
-        id: "histogram",
-        expr: {
-          type: "between",
-          field: "trip_distance",
-          left: 12,
-          right: 20
-        }
-      }
-    ]
-  });
-
-  chartNode1.transform({
-    type: "resolvefilter",
-    filter: { signal: "group" },
-    ignore: "row"
-  });
-
-  chartNode2.transform({
-    type: "resolvefilter",
-    filter: { signal: "group" },
-    ignore: "histogram"
-  });
-
-  assert.equal(
-    chartNode1.toSQL(),
-    "SELECT payment_type as key0, COUNT(*) as val FROM flights WHERE (trip_distance BETWEEN 12 AND 20) AND (dropoff_longitude BETWEEN -73.99828105055514 AND -73.7766089742046) AND (dropoff_latitude BETWEEN 40.63646686110235 AND 40.81468768513369) GROUP BY key0 ORDER BY val ASC LIMIT 10",
-    "chartNode1 SQL should resolve the proper crossfilters"
-  );
-
-  assert.equal(
-    chartNode2.toSQL(),
-    "SELECT cast((cast(trip_distance as float) - 0) * 1 as int) as key0, COUNT(*) as val FROM flights WHERE ((trip_distance >= 0 AND trip_distance <= 30) OR (trip_distance IS NULL)) AND (payment_type = 'cash') AND (dropoff_longitude BETWEEN -73.99828105055514 AND -73.7766089742046) AND (dropoff_latitude BETWEEN 40.63646686110235 AND 40.81468768513369) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 30 OR key0 IS NULL)",
-    "chartNode2 SQL should resolve the proper crossfilters"
-  );
-
-  const state = graph.getState();
-  assert.deepEqual(
-    state["1"],
-    chartNode1.getState(),
-    "chartNode1 state should equal the corresponding graph state slice"
-  );
-  assert.deepEqual(
-    state["2"],
-    chartNode2.getState(),
-    "chartNode2 state should equal the corresponding graph state slice"
-  );
-  assert.deepEqual(
-    state["global"],
-    globalFilterNode.getState(),
-    "globalFilterNode state should equal the corresponding graph state slice"
-  );
-  assert.deepEqual(
-    state["xfilter"],
-    xFilterNode.getState(),
-    "xFilterNode state should equal the corresponding graph state slice"
-  );
 });

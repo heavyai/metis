@@ -1,4 +1,4 @@
-import Parser from "./parser";
+import Parser from "./create-parser";
 
 export default function parseExpression(
   expression: string | Expression,
@@ -67,7 +67,7 @@ export default function parseExpression(
         );
       } else if (
         typeof expression.set === "object" &&
-        expression.set.type === "data"
+        (expression.set.type === "data" || expression.set.type === "root")
       ) {
         return (
           expression.expr +

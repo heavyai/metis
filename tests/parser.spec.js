@@ -1,5 +1,6 @@
+// @flow
 import tape from "tape";
-import { createParser } from "../src/sql/parser";
+import { createParser } from "../src/parser/create-parser";
 
 tape("parser", assert => {
   assert.plan(2);
@@ -10,5 +11,20 @@ tape("parser", assert => {
   Parser.registerParser({ meta: "transform", type: "custom" }, () => "TEST");
 
   assert.equal(Parser.parseExpression({ type: "custom" }), "TEST");
-  assert.equal(Parser.parseTransform({}, { type: "custom" }), "TEST");
+  assert.equal(
+    Parser.parseTransform(
+      {
+        select: [],
+        from: "",
+        where: [],
+        groupby: [],
+        having: [],
+        orderby: [],
+        limit: "",
+        offset: ""
+      },
+      { type: "custom" }
+    ),
+    "TEST"
+  );
 });

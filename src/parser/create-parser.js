@@ -5,6 +5,26 @@ import parseTransformDefault from "./parse-transform";
 import parseSourceDefault from "./parse-source";
 import writeSQLDefault, { write } from "./write-sql";
 
+import type { SQL } from "./write-sql";
+import type { Expression } from "../types/expression-type";
+import type { SourceTransform, Transform } from "../types/transform-type";
+import type { DataState } from "../create-data-node";
+
+export type TypeDefinition = {
+  meta: string,
+  type: string
+};
+
+export type Parser = {
+  parseExpression: (expr: Expression) => string,
+  parseTransform: (sql: SQL, transform: Transform) => SQL,
+  parseDataState: (data: DataState, sql?: SQL) => SQL,
+  parseSource: (sourceTransforms: Array<SourceTransform | DataState>) => string,
+  writeSQL: (state: DataState) => string,
+  write: (sql: SQL) => string,
+  registerParser: (definition: TypeDefinition, typeParser: Function) => void
+};
+
 export function createParser(): Parser {
   const transformParsers = {};
   const expressionParsers = {};

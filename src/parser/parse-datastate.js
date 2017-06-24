@@ -1,6 +1,11 @@
 // @flow
+import type { DataState } from "../create-data-node";
+import type { Parser } from "./create-parser";
+import type { SQL } from "./write-sql";
+import type { Transform } from "../types/transform-type";
+
 export default function parseDataState(
-  { source, transform }: DataState,
+  state: DataState,
   parser: Parser,
   initialSQL?: SQL = {
     select: [],
@@ -14,11 +19,15 @@ export default function parseDataState(
     unresolved: {}
   }
 ): SQL {
-  return transform.reduce(
+  return state.transform.reduce(
     (sql: SQL, t: Transform): SQL => parser.parseTransform(sql, t, parser),
     {
       select: initialSQL.select,
-      from: typeof source === "string" ? source : parser.parseSource(source),
+      from: state.type === "root"
+        ? typeof state.source === "string"
+            ? state.source
+            : parser.parseSource(state.source)
+        : initialSQL.from,
       where: initialSQL.where,
       groupby: initialSQL.groupby,
       having: initialSQL.having,
