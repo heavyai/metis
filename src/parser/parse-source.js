@@ -1,5 +1,11 @@
 // @flow
-import defaultParser from "./parser";
+import defaultParser from "./create-parser";
+
+import type { SQL } from "./write-sql";
+import type { Parser } from "./create-parser";
+import type { SourceTransform } from "../types/transform-type";
+import type { DataNode } from "../create-data-node";
+import type { JoinRelation } from "../types/transform-type";
 
 type JoinRelationSQL = "JOIN" | "INNER JOIN" | "LEFT JOIN" | "RIGHT JOIN";
 function joinRelation(type: JoinRelation): JoinRelationSQL {
@@ -17,14 +23,14 @@ function joinRelation(type: JoinRelation): JoinRelationSQL {
 }
 
 export default function parseSource(
-  transforms: Array<SourceTransform | DataState>,
+  transforms: Array<SourceTransform | DataNode>,
   parser: Parser = defaultParser
 ): string {
   return transforms
     .reduce(
       (
         stmt: Array<string>,
-        transform: SourceTransform | DataState,
+        transform: SourceTransform | DataNode,
         index: number
       ): Array<string> => {
         if (typeof transform.table === "string" && transform.type === "scan") {
@@ -41,9 +47,11 @@ export default function parseSource(
             ? transform.type
             : "join";
           const joinStmt = left + " " + joinRelation(joinType) + " " + right;
-          const aliasStmt = transform.as ? " as " + transform.as : "";
+          const aliasStmt = typeof transform.as === "string"
+            ? " as " + transform.as
+            : "";
           return stmt.concat(joinStmt + aliasStmt);
-        } else if (transform.type === "data") {
+        } else if (transform.type === "data" || transform.type === "root") {
           const subquery = parser.writeSQL(transform);
           return stmt.concat("(" + subquery + ")");
         } else {

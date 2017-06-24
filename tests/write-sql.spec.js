@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import { createParser } from "../src/sql/parser";
+import { createParser } from "../src/parser/create-parser";
 const { writeSQL } = createParser();
 
 tape("writeSQL", assert => {
@@ -8,19 +8,21 @@ tape("writeSQL", assert => {
 
   assert.equal(
     writeSQL({
-      type: "data",
+      type: "root",
       source: "flights",
       name: "test",
-      transform: []
+      transform: [],
+      children: []
     }),
     "SELECT * FROM flights"
   );
 
   assert.equal(
     writeSQL({
-      type: "data",
+      type: "root",
       source: "flights",
       name: "test",
+      children: [],
       transform: [
         {
           type: "aggregate",
@@ -40,9 +42,10 @@ tape("writeSQL", assert => {
 
   assert.equal(
     writeSQL({
-      type: "data",
+      type: "root",
       source: "contributions",
       name: "test",
+      children: [],
       transform: [
         {
           type: "filter",
@@ -56,9 +59,10 @@ tape("writeSQL", assert => {
 
   assert.equal(
     writeSQL({
-      type: "data",
+      type: "root",
       source: "flights",
       name: "test",
+      children: [],
       transform: [
         {
           type: "bin",
@@ -96,9 +100,10 @@ tape("writeSQL", assert => {
 
   assert.equal(
     writeSQL({
-      type: "data",
+      type: "root",
       source: "contributions",
       name: "test",
+      children: [],
       transform: [
         {
           type: "project",
@@ -142,7 +147,7 @@ tape("writeSQL", assert => {
 
   assert.equal(
     writeSQL({
-      type: "data",
+      type: "root",
       source: [
         {
           type: "scan",
@@ -166,6 +171,7 @@ tape("writeSQL", assert => {
         }
       ],
       name: "test",
+      children: [],
       transform: []
     }),
     "SELECT * FROM flights JOIN zipcode as table1 JOIN contrib as table2"

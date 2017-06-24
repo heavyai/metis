@@ -1,4 +1,7 @@
 // @flow
+import type { SQL } from "./write-sql";
+import type { Sort } from "../types/transform-type";
+
 const ORDERINGS = {
   ascending: "ASC",
   descending: "DESC"

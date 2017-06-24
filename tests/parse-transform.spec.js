@@ -1,20 +1,20 @@
 // @flow
 import tape from "tape";
-import parse from "../src/sql/parse-datastate";
-import aggregate from "../src/sql/parse-aggregate";
-import bin from "../src/sql/parse-bin";
-import sample from "../src/sql/parse-sample";
-import source from "../src/sql/parse-source";
-import { createParser } from "../src/sql/parser";
+import parse from "../src/parser/parse-datastate";
+import aggregate from "../src/parser/parse-aggregate";
+import bin from "../src/parser/parse-bin";
+import sample from "../src/parser/parse-sample";
+import { createParser } from "../src/parser/create-parser";
 const { parseDataState } = createParser();
 
 tape("parseDataState", assert => {
   assert.plan(1);
   assert.deepEqual(
     parseDataState({
-      type: "data",
+      type: "root",
       name: "test",
       source: "taxis",
+      children: [],
       transform: [
         {
           type: "bin",
@@ -358,74 +358,5 @@ tape("sample", assert => {
       limit: "",
       offset: ""
     }
-  );
-});
-
-tape("source", assert => {
-  assert.plan(2);
-  assert.deepEqual(
-    source([
-      {
-        type: "scan",
-        table: "flights"
-      },
-      {
-        type: "scan",
-        table: "zipcode"
-      },
-      {
-        type: "join",
-        as: "table1"
-      },
-      {
-        type: "scan",
-        table: "contrib"
-      },
-      {
-        type: "join.right",
-        as: "table2"
-      }
-    ]),
-    "flights JOIN zipcode as table1 RIGHT JOIN contrib as table2"
-  );
-
-  assert.deepEqual(
-    source([
-      {
-        type: "scan",
-        table: "flights"
-      },
-      {
-        type: "scan",
-        table: "zipcode"
-      },
-      {
-        type: "join.inner",
-        as: "table1"
-      },
-      {
-        type: "data",
-        source: "flights",
-        name: "test",
-        transform: [
-          {
-            type: "aggregate",
-            fields: ["dest_city"]
-          },
-          {
-            type: "aggregate",
-            groupby: ["dest_city"],
-            fields: ["depdelay"],
-            ops: ["average"],
-            as: ["val"]
-          }
-        ]
-      },
-      {
-        type: "join.left",
-        as: "table2"
-      }
-    ]),
-    "flights INNER JOIN zipcode as table1 LEFT JOIN (SELECT dest_city, AVG(depdelay) as val FROM flights GROUP BY dest_city) as table2"
   );
 });

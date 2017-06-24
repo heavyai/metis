@@ -10,6 +10,10 @@ import parseResolvefilter from "./parse-resolvefilter";
 import parseSample from "./parse-sample";
 import parseSource from "./parse-source";
 
+import type { SQL } from "./write-sql";
+import type { Parser } from "./create-parser";
+import type { Transform } from "../types/transform-type";
+
 export default function parseTransform(
   sql: SQL,
   t: Transform,

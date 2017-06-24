@@ -1,4 +1,22 @@
 // @flow
+import type { ResolveFilter } from "../types/transform-type";
+import type { DataState } from "../create-data-node";
+import type { Parser } from "./create-parser";
+
+export type SQL = {|
+  select: Array<string>,
+  from: string,
+  where: Array<string>,
+  groupby: Array<string>,
+  having: Array<string>,
+  orderby: Array<string>,
+  limit: string,
+  offset: string,
+  unresolved?: {
+    [string]: ResolveFilter
+  }
+|};
+
 /**
  * Returns a SQL query string based on the DataState passed in.
 * @memberof API

@@ -1,4 +1,3 @@
-// @flow
 import * as constants from "./constants";
 import { createDataGraph } from "../../../src/data-graph";
 import { query } from "./connector";

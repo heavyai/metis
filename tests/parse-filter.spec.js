@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import filter from "../src/sql/parse-filter";
+import filter from "../src/parser/parse-filter";
 
 tape("filter", assert => {
   assert.plan(4);

@@ -1,5 +1,8 @@
 // @flow
-import Parser from "./parser";
+import Parser from "./create-parser";
+
+import type { SQL } from "./write-sql";
+import type { Aggregate, Project } from "../types/transform-type";
 
 const AGGREGATES = {
   average: "AVG",
@@ -56,8 +59,7 @@ export default function parseAggregate(
     sql.select.push(
       parser.parseExpression(transform.groupby.expr) +
         (typeof transform.groupby === "object" && transform.groupby.as
-          ? // $FlowFixMe
-            " as " + transform.groupby.as
+          ? " as " + transform.groupby.as
           : "")
     );
     if (

@@ -1,5 +1,8 @@
 // @flow
-import Parser from "./parser";
+import Parser from "./create-parser";
+
+import type { SQL } from "./write-sql";
+import type { Filter } from "../types/transform-type";
 
 export default function parseFilter(
   sql: SQL,

@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import parseLimit from "../src/sql/parse-limit";
+import parseLimit from "../src/parser/parse-limit";
 
 tape("parseLimit", assert => {
   assert.plan(1);

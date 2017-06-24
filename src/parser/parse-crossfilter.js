@@ -1,6 +1,9 @@
 // @flow
-import Parser from "./parser";
+import Parser from "./create-parser";
 import parseFilter from "./parse-filter";
+
+import type { SQL } from "./write-sql";
+import type { Crossfilter } from "../types/transform-type";
 
 export default function parseCrossfilter(
   sql: SQL,
