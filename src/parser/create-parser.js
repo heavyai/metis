@@ -6,8 +6,6 @@ import parseSourceDefault from "./parse-source";
 import writeSQLDefault, { write } from "./write-sql";
 
 import type { SQL } from "./write-sql";
-import type { Expression } from "../types/expression-type";
-import type { SourceTransform, Transform } from "../types/transform-type";
 import type { DataState } from "../create-data-node";
 
 export type TypeDefinition = {

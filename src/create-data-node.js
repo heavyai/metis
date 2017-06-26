@@ -3,29 +3,29 @@ import invariant from "invariant";
 import { reduceToSQL } from "./utils";
 
 import type { GraphContext } from "./create-data-graph";
-import type { SourceTransform, Transform } from "./types/transform-type";
 
 export type DataState = RootDataNodeState | DataNodeState;
 
 type RootDataNodeState = {
   type: "root",
   source: string | Array<SourceTransform | DataState>,
-  name: string,
   transform: Array<Transform>,
-  children: Array<Node>
+  children?: Array<Node>
 };
 
 type DataNodeState = {
   type: "data",
-  name: string,
   source: DataNode,
   transform: Array<Transform>,
-  children: Array<DataNode>
+  children?: Array<DataNode>
 };
 
 export type InitialDataNodeState = {
-  source?: DataNode | string,
-  name: string | number,
+  source?:
+    | DataNode
+    | string
+    | Array<SourceTransform | DataState>
+    | InitialDataNodeState,
   transform?: Array<Transform>,
   children?: Array<DataNode>
 };
@@ -40,11 +40,10 @@ export type DataNode = {
 
 export default function createDataNode(
   context: GraphContext,
-  initialState: InitialDataNodeState
+  initialState: InitialDataNodeState = {}
 ) {
   let state = {
     type: initialState.type || "data",
-    name: initialState.name,
     source: initialState.source,
     transform: initialState.transform || [],
     children: initialState.children || []
@@ -78,7 +77,7 @@ export default function createDataNode(
       );
     },
 
-    data(childState: InitialDataNodeState): DataNode {
+    data(childState?: InitialDataNodeState): DataNode {
       const dataNode = createDataNode(context, { ...childState, source: this });
       state.children.push(dataNode);
       return dataNode;

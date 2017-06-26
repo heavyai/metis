@@ -1,6 +1,6 @@
 {
   "env": {
-    "testing": {
+    "test": {
       "presets": [
         "flow",
         "es2015",

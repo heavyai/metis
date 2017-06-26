@@ -15,7 +15,9 @@ export type Connector = {
 export type DataGraph = {
   registerParser: (typeDef: TypeDefinition, parseDef: Function) => void,
   children: () => Array<DataNode>,
-  data: (state: InitialDataNodeState) => DataNode
+  data: (
+    state: string | Array<SourceTransform> | InitialDataNodeState
+  ) => DataNode
 };
 
 export type GraphContext = {
@@ -42,8 +44,15 @@ export default function createDataGraph(connector: Connector): DataGraph {
       return children;
     },
 
-    data(state: InitialDataNodeState): DataNode {
-      const dataNode = createDataNode(context, { ...state, type: "root" });
+    data(
+      state: string | Array<SourceTransform | DataState> | InitialDataNodeState
+    ): DataNode {
+      const dataNode = createDataNode(
+        context,
+        typeof state === "string" || Array.isArray(state)
+          ? { source: state, type: "root" }
+          : { ...state, type: "root" }
+      );
       children.push(dataNode);
       return dataNode;
     }

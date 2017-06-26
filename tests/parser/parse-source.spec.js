@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import parseSource from "../src/parser/parse-source";
+import parseSource from "../../src/parser/parse-source";
 
 tape("parseSource", assert => {
   assert.plan(2);
@@ -49,10 +49,6 @@ tape("parseSource", assert => {
         source: "flights",
         name: "test",
         transform: [
-          {
-            type: "aggregate",
-            fields: ["dest_city"]
-          },
           {
             type: "aggregate",
             groupby: ["dest_city"],

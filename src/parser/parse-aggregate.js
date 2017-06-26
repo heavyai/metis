@@ -2,7 +2,6 @@
 import Parser from "./create-parser";
 
 import type { SQL } from "./write-sql";
-import type { Aggregate, Project } from "../types/transform-type";
 
 const AGGREGATES = {
   average: "AVG",
@@ -12,7 +11,28 @@ const AGGREGATES = {
   sum: "SUM"
 };
 
-function aggregateField(op, field, as) {
+export default function parseAggregate(
+  sql: SQL,
+  transform: Aggregate,
+  parser: any = Parser
+): SQL {
+  if (Array.isArray(transform.groupby)) {
+    transform.groupby.forEach((group: string | Project | Bin): void => {
+      sql = parseGroupBy(sql, group, parser);
+    });
+  } else {
+    sql = parseGroupBy(sql, transform.groupby, parser);
+  }
+
+  transform.fields.forEach((field: string, index: number): void => {
+    const as = transform.as[index];
+    sql.select.push(aggregateField(transform.ops[index], field, as));
+  });
+
+  return sql;
+}
+
+function aggregateField(op: string, field: string, as: string): string {
   let str = "";
   if (op === null) {
     str += field;
@@ -22,54 +42,25 @@ function aggregateField(op, field, as) {
   return str + `${as ? " as " + as : ""}`;
 }
 
-export default function parseAggregate(
+function parseGroupBy(
   sql: SQL,
-  transform: Aggregate,
-  parser: any = Parser
+  groupby: string | Project | Bin,
+  parser: any
 ): SQL {
-  transform.fields.forEach((field: string, index: number): void => {
-    const as = Array.isArray(transform.as) ? transform.as[index] : null;
-    if (Array.isArray(transform.ops)) {
-      sql.select.push(aggregateField(transform.ops[index], field, as));
-    } else {
-      sql.select.push(aggregateField(null, field, as));
-    }
-  });
-
-  if (typeof transform.groupby === "string") {
-    sql.groupby.push(transform.groupby);
-  } else if (Array.isArray(transform.groupby)) {
-    transform.groupby.forEach((group: string | Project) => {
-      if (typeof group === "string") {
-        sql.groupby.push(group);
-      } else if (group.type === "project") {
-        sql.select.push(
-          parser.parseExpression(group.expr) +
-            (group.as ? " as " + group.as : "")
-        );
-        if (group.as) {
-          sql.groupby.push(group.as);
-        }
-      }
-    });
-  } else if (
-    typeof transform.groupby === "object" &&
-    transform.groupby.type === "project"
-  ) {
+  if (typeof groupby === "string") {
+    sql.select.push(groupby);
+    sql.groupby.push(groupby);
+  } else if (groupby.type === "bin") {
+    sql = parser.parseTransform(sql, groupby);
+    sql.groupby.push(groupby.as);
+  } else if (groupby.type === "project") {
     sql.select.push(
-      parser.parseExpression(transform.groupby.expr) +
-        (typeof transform.groupby === "object" && transform.groupby.as
-          ? " as " + transform.groupby.as
-          : "")
+      parser.parseExpression(groupby.expr) +
+        (groupby.as ? " as " + groupby.as : "")
     );
-    if (
-      !Array.isArray(transform.groupby) &&
-      typeof transform.groupby === "object" &&
-      transform.groupby.as
-    ) {
-      sql.groupby.push(transform.groupby.as);
+    if (groupby.as) {
+      sql.groupby.push(groupby.as);
     }
   }
-
   return sql;
 }

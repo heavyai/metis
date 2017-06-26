@@ -1,4 +1,7 @@
-export type Transform =
+// @flow
+import type {Expression} from "./expression-type"
+
+declare type Transform =
   | Aggregate
   | Bin
   | Sort
@@ -9,12 +12,12 @@ export type Transform =
   | Crossfilter
   | ResolveFilter;
 
-export type SourceTransform = Scan | Join;
+declare type SourceTransform = Scan | Join;
 
-export type JoinRelation = "join" | "join.inner" | "join.left" | "join.right";
+declare type JoinRelation = "join" | "join.inner" | "join.left" | "join.right";
 
 type SortOrder = "ascending" | "descending";
-type ExtractUnits =
+declare type ExtractUnits =
   | "year"
   | "quarter"
   | "month"
@@ -22,7 +25,7 @@ type ExtractUnits =
   | "dow"
   | "hour"
   | "minute";
-type DateTruncUnits =
+declare type DateTruncUnits =
   | "decade"
   | "year"
   | "quarter"
@@ -32,15 +35,15 @@ type DateTruncUnits =
   | "hour";
 type Aggregation = "average" | "count" | "min" | "max" | "sum";
 
-export type Aggregate = {|
+declare type Aggregate = {|
   type: "aggregate",
   fields: Array<string>,
-  ops?: Array<Aggregation>,
-  as?: Array<string> | string,
-  groupby?: Array<string | Project> | string | Project
+  ops: Array<Aggregation>,
+  as: Array<string>,
+  groupby: Array<string | Project | Bin> | string | Project | Bin
 |};
 
-export type Bin = {|
+declare type Bin = {|
   type: "bin",
   field: string,
   extent: Array<number>,
@@ -48,55 +51,55 @@ export type Bin = {|
   as: string
 |};
 
-export type Limit = {
+declare type Limit = {
   type: "limit",
   row: number,
   offset?: number
 };
 
-export type Sort = {|
+declare type Sort = {|
   type: "sort",
   field: Array<string>,
   order?: Array<SortOrder>
 |};
 
-export type Filter = {|
+declare type Filter = {|
   type: "filter",
   id: string | number,
   expr: string | Expression | Array<string | Expression>
 |};
 
-export type Project = {|
+declare type Project = {|
   type: "project",
   expr: string | Expression,
   as?: string
 |};
 
-export type Join = {|
+declare type Join = {|
   type: JoinRelation,
   on?: Filter | Array<Filter>,
   as?: string
 |};
 
-export type Sample = {
+declare type Sample = {
   type: "sample",
   method: "multiplicative",
   size: number,
   limit: number
 };
 
-export type Scan = {|
+declare type Scan = {|
   type: "scan",
   table: string
 |};
 
-export type Crossfilter = {|
+declare type Crossfilter = {|
   type: "crossfilter",
   signal: string,
   filter: Array<Filter>
 |};
 
-export type ResolveFilter = {|
+declare type ResolveFilter = {|
   type: "resolvefilter",
   filter: { signal: string },
   ignore?: Array<string | number> | string | number

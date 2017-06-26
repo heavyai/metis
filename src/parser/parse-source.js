@@ -3,9 +3,7 @@ import defaultParser from "./create-parser";
 
 import type { SQL } from "./write-sql";
 import type { Parser } from "./create-parser";
-import type { SourceTransform } from "../types/transform-type";
 import type { DataNode } from "../create-data-node";
-import type { JoinRelation } from "../types/transform-type";
 
 type JoinRelationSQL = "JOIN" | "INNER JOIN" | "LEFT JOIN" | "RIGHT JOIN";
 function joinRelation(type: JoinRelation): JoinRelationSQL {
@@ -23,7 +21,7 @@ function joinRelation(type: JoinRelation): JoinRelationSQL {
 }
 
 export default function parseSource(
-  transforms: Array<SourceTransform | DataNode>,
+  transforms: Array<SourceTransform | DataState>,
   parser: Parser = defaultParser
 ): string {
   return transforms
@@ -46,12 +44,14 @@ export default function parseSource(
           const joinType = typeof transform.type === "string"
             ? transform.type
             : "join";
+          // $FlowFixMe
           const joinStmt = left + " " + joinRelation(joinType) + " " + right;
           const aliasStmt = typeof transform.as === "string"
             ? " as " + transform.as
             : "";
           return stmt.concat(joinStmt + aliasStmt);
         } else if (transform.type === "data" || transform.type === "root") {
+          // $FlowFixMe
           const subquery = parser.writeSQL(transform);
           return stmt.concat("(" + subquery + ")");
         } else {

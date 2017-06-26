@@ -1,4 +1,8 @@
-export type Expression =
+// @flow
+import type {ExtractUnits, DateTruncUnits} from "./expression-type"
+import type {DataState} from "../create-data-node"
+
+declare type Expression =
   | LogicalExpression
   | ComparisonExpression
   | InExpression
@@ -10,122 +14,154 @@ export type Expression =
   | TimeFunctionExpression
   | DataState;
 
-type BooleanExpression =
+declare type BooleanExpression =
   | ComparisonExpression
   | LogicalExpression
   | ConditionalExpression
   | InExpression;
 
-type LogicalExpression = NotExpression | AndExpression | OrExpression;
+declare type LogicalExpression = NotExpression | AndExpression | OrExpression;
 
-type NotExpression = {|
+declare type NotExpression = {|
   type: "not",
   expr: string | BooleanExpression
 |};
 
-type AndExpression = {|
+declare type AndExpression = {|
   type: "and",
   left: string | BooleanExpression,
   right: string | BooleanExpression
 |};
 
-type OrExpression = {|
+declare type OrExpression = {|
   type: "or",
   left: string | BooleanExpression,
   right: string | BooleanExpression
 |};
 
-type ComparisonExpression =
+declare type ComparisonExpression =
   | ComparisonOperatorExpression
   | BetweenExpression
   | NullExpression;
 
-type ComparisonOperatorExpression = {|
+declare type ComparisonOperatorExpression = {|
   type: "=" | "<>" | "<" | ">" | "<=" | ">=",
   left: string | number,
   right: string | number
 |};
 
-type BetweenExpression = {|
+declare type BetweenExpression = {|
   type: "between" | "not between",
   field: string,
   left: number | string,
   right: number | string
 |};
 
-type NullExpression = {|
+declare type NullExpression = {|
   type: "is null" | "is not null",
   field: string
 |};
 
-type PatternMatchingExpression = {|
+declare type PatternMatchingExpression = {|
   type: "like" | "not like" | "ilike",
   left: string,
   right: string
 |};
 
-type InExpression = {|
+declare type InExpression = {|
   type: "in" | "not in",
   expr: string,
   set: string | DataState | Array<string | number>
 |};
 
-type ConditionalExpression = CaseExpression | CoalesceExpression;
+declare type ConditionalExpression = CaseExpression | CoalesceExpression;
 
-type CoalesceExpression = {|
+declare type CoalesceExpression = {|
   type: "coalesce",
   values: Array<string>
 |};
 
-type CaseExpression = {|
+declare type CaseExpression = {|
   type: "case",
   cond: Array<[BooleanExpression | string, string]>,
   else: string
 |};
 
-type CastExpresssion = {|
+declare type CastExpresssion = {|
   type: "cast",
   expr: string,
   as: string
 |};
 
-type StatisticalFunctionExpression =
+declare type StatisticalFunctionExpression =
   | StatisticalValueFunction
   | StatisticalPairFunction;
 
-type StatisticalValueFunction = {|
+declare type StatisticalValueFunction = {|
   type: "stddev_pop" | "stddev_samp" | "var_pop" | "var_samp",
   x: string
 |};
 
-type StatisticalPairFunction = {|
+declare type StatisticalPairFunction = {|
   type: "corr" | "covar_pop" | "covar_samp",
   x: string,
   y: string
 |};
 
-type AggregateFunctionExpression =
-  | {|
-      type: "average" | "min" | "max" | "sum",
-      field: string
-    |}
-  | {|
-      type: "count",
-      distinct: boolean,
-      approx: boolean,
-      field: string
-    |};
+declare type AggregateFunctionExpression =
+  | MaxExpression
+  | MinExpression
+  | SumExpression
+  | AvgExpression
+  | CountExpression
 
-type TimeFunctionExpression = DateTruncExpression | ExtractExpression;
+declare type MaxExpression = {|
+  type: "max",
+  field: string,
+  as?: string
+|}
 
-type DateTruncExpression = {
+declare type MinExpression = {|
+  type: "min",
+  field: string,
+  as?: string
+|}
+
+declare type SumExpression = {|
+  type: "sum",
+  field: string,
+  as?: string
+|}
+
+declare type AvgExpression = {|
+  type: "average",
+  field: string,
+  as?: string
+|}
+
+declare type CountExpression = {|
+  type: "count",
+  distinct: boolean,
+  approx: boolean,
+  field: string,
+  as?: string
+|};
+
+declare type TimeFunctionExpression = DateTruncExpression | ExtractExpression;
+
+declare type DateTruncExpression = {
   type: "date_trunc",
   unit: DateTruncUnits,
   field: string
 };
 
-type ExtractExpression = {
+declare type ExtractExpression = {
   type: "extract",
   unit: ExtractUnits,
   field: string
 };
+
+declare type AliasExpression = {
+  expr: string | Expression,
+  as: string
+}

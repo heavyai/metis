@@ -1,6 +1,5 @@
 // @flow
 import type { SQL } from "./write-sql";
-import type { Sample } from "../types/transform-type";
 
 const GOLDEN_RATIO = 265445761;
 const THIRTY_TWO_BITS = 4294967296;

@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import parseResolvefilter from "../src/parser/parse-resolvefilter";
+import parseResolvefilter from "../../src/parser/parse-resolvefilter";
 
 tape("parseResolvefilter", assert => {
   assert.plan(1);

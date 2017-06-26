@@ -2,7 +2,6 @@
 import type { DataState } from "../create-data-node";
 import type { Parser } from "./create-parser";
 import type { SQL } from "./write-sql";
-import type { Transform } from "../types/transform-type";
 
 export default function parseDataState(
   state: DataState,

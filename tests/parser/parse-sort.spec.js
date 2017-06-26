@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import parseSort from "../src/parser/parse-sort";
+import parseSort from "../../src/parser/parse-sort";
 
 tape("parseSort", assert => {
   assert.plan(3);

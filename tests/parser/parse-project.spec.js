@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import parseProject from "../src/parser/parse-project";
+import parseProject from "../../src/parser/parse-project";
 
 tape("parseProject", assert => {
   assert.plan(5);

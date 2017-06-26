@@ -1,6 +1,5 @@
 // @flow
 import type { SQL } from "./write-sql";
-import type { Bin } from "../types/transform-type";
 
 export default function parseBin(
   sql: SQL,
@@ -12,7 +11,6 @@ export default function parseBin(
   sql.where.push(
     `((${field} >= ${extent[0]} AND ${field} <= ${extent[1]}) OR (${field} IS NULL))`
   );
-  sql.groupby.push(as);
   sql.having.push(`(${as} >= 0 AND ${as} < ${maxbins} OR ${as} IS NULL)`);
   return sql;
 }
