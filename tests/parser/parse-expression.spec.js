@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import parseExpression from "../src/parser/parse-expression";
+import parseExpression from "../../src/parser/parse-expression";
 
 tape("parseExpression", assert => {
   assert.plan(13);
@@ -110,7 +110,9 @@ tape("parseExpression", assert => {
               transform: [
                 {
                   type: "aggregate",
-                  fields: ["recipient_party"],
+                  fields: ["amount"],
+                  ops: ["max"],
+                  as: ["val"],
                   groupby: "recipient_party"
                 },
                 {
@@ -125,7 +127,7 @@ tape("parseExpression", assert => {
       ],
       else: "other"
     }),
-    "CASE WHEN recipient_party IN (SELECT recipient_party FROM contributions GROUP BY recipient_party LIMIT 10) THEN recipient_party ELSE 'other' END"
+    "CASE WHEN recipient_party IN (SELECT recipient_party, MAX(amount) as val FROM contributions GROUP BY recipient_party LIMIT 10) THEN recipient_party ELSE 'other' END"
   );
 
   assert.equal(

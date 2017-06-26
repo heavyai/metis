@@ -1,25 +1,25 @@
-import babel from 'rollup-plugin-babel';
-import uglify from 'rollup-plugin-uglify';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
+import babel from "rollup-plugin-babel";
+import uglify from "rollup-plugin-uglify";
+import resolve from "rollup-plugin-node-resolve";
+import commonjs from "rollup-plugin-commonjs";
 
-var env = process.env.NODE_ENV
+var env = process.env.NODE_ENV;
 var config = {
-  format: 'umd',
-  moduleName: 'DataGraph',
+  format: "umd",
+  moduleName: "DataGraph",
   plugins: [
     babel({
-      plugins: ['external-helpers']
+      plugins: ["external-helpers"]
     }),
     resolve({
       main: true,
       jsnext: true
     }),
-    commonjs(),
+    commonjs()
   ]
-}
+};
 
-if (env === 'production') {
+if (env === "production") {
   config.plugins.push(
     uglify({
       compress: {
@@ -29,7 +29,7 @@ if (env === 'production') {
         warnings: false
       }
     })
-  )
+  );
 }
 
-export default config
+export default config;

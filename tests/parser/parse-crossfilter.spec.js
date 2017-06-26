@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import parseCrossfilter from "../src/parser/parse-crossfilter";
+import parseCrossfilter from "../../src/parser/parse-crossfilter";
 
 tape("parseCrossfilter", assert => {
   assert.plan(3);

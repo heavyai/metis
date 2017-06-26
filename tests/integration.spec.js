@@ -1,6 +1,7 @@
 // @flow
 import tape from "tape";
 import createDataGraph from "../src/create-data-graph";
+import { filterRange } from "../src/helpers/transform-builders";
 
 tape("Integration Test", assert => {
   assert.plan(7);
@@ -24,15 +25,14 @@ tape("Integration Test", assert => {
     transform: [
       {
         type: "aggregate",
-        fields: ["payment_type"],
-        as: ["key0"],
-        groupby: ["key0"]
-      },
-      {
-        type: "aggregate",
         fields: ["*"],
         ops: ["count"],
-        as: ["val"]
+        as: ["val"],
+        groupby: {
+          type: "project",
+          expr: "payment_type",
+          as: "key0"
+        }
       },
       {
         type: "sort",
@@ -50,17 +50,17 @@ tape("Integration Test", assert => {
     name: "2",
     transform: [
       {
-        type: "bin",
-        field: "trip_distance",
-        extent: [0, 30],
-        maxbins: 30,
-        as: "key0"
-      },
-      {
         type: "aggregate",
         fields: ["*"],
         ops: ["count"],
-        as: ["val"]
+        as: ["val"],
+        groupby: {
+          type: "bin",
+          field: "trip_distance",
+          extent: [0, 30],
+          maxbins: 30,
+          as: "key0"
+        }
       }
     ]
   });
@@ -90,16 +90,13 @@ tape("Integration Test", assert => {
     }
   });
 
-  globalFilterNode.transform({
-    type: "filter",
-    id: "test",
-    expr: {
-      type: "between",
-      field: "dropoff_latitude",
-      left: 40.63646686110235,
-      right: 40.81468768513369
-    }
-  });
+  globalFilterNode.transform(
+    filterRange(
+      "dropoff_latitude",
+      [40.63646686110235, 40.81468768513369],
+      "test"
+    )
+  );
 
   assert.equal(
     globalFilterNode.toSQL(),

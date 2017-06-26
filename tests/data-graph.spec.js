@@ -75,7 +75,6 @@ tape("Data Graph API", assert => {
       rootNode.getState(),
       {
         type: "root",
-        name: "test",
         source: "test",
         transform: [],
         children: []
@@ -98,7 +97,6 @@ tape("Data Graph API", assert => {
         child.getState(),
         {
           type: "data",
-          name: "child",
           source: rootNode,
           transform: [],
           children: []
@@ -128,6 +126,7 @@ tape("Data Graph API", assert => {
         )
       );
 
+      // $FlowFixMe
       child.transform(""); // this is just to test the else block
 
       assert.deepEqual(child.getState().transform, [

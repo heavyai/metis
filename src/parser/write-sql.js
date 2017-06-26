@@ -1,5 +1,4 @@
 // @flow
-import type { ResolveFilter } from "../types/transform-type";
 import type { DataState } from "../create-data-node";
 import type { Parser } from "./create-parser";
 

@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import { createParser } from "../src/parser/create-parser";
+import { createParser } from "../../src/parser/create-parser";
 const { writeSQL } = createParser();
 
 tape("writeSQL", assert => {
@@ -26,14 +26,11 @@ tape("writeSQL", assert => {
       transform: [
         {
           type: "aggregate",
-          fields: ["dest_city"]
-        },
-        {
-          type: "aggregate",
           groupby: ["dest_city"],
           fields: ["depdelay"],
           ops: ["average"],
-          as: ["val"]
+          as: ["val"],
+          groupby: "dest_city"
         }
       ]
     }),
@@ -65,24 +62,26 @@ tape("writeSQL", assert => {
       children: [],
       transform: [
         {
-          type: "bin",
-          field: "airtime",
-          extent: [-3818, 3508],
-          maxbins: 12,
-          as: "key0"
-        },
-        {
-          type: "bin",
-          field: "distance",
-          extent: [0, 4983],
-          maxbins: 12,
-          as: "key1"
-        },
-        {
           type: "aggregate",
           fields: ["*"],
           ops: ["count"],
-          as: ["val"]
+          as: ["val"],
+          groupby: [
+            {
+              type: "bin",
+              field: "airtime",
+              extent: [-3818, 3508],
+              maxbins: 12,
+              as: "key0"
+            },
+            {
+              type: "bin",
+              field: "distance",
+              extent: [0, 4983],
+              maxbins: 12,
+              as: "key1"
+            }
+          ]
         },
         {
           type: "sort",
@@ -106,20 +105,19 @@ tape("writeSQL", assert => {
       children: [],
       transform: [
         {
-          type: "project",
-          expr: {
-            type: "date_trunc",
-            unit: "year",
-            field: "CAST(contrib_date AS TIMESTAMP(0))"
-          },
-          as: "key0"
-        },
-        {
           type: "aggregate",
-          groupby: ["key0"],
           fields: ["amount"],
           ops: ["average"],
-          as: ["series_1"]
+          as: ["series_1"],
+          groupby: {
+            type: "project",
+            expr: {
+              type: "date_trunc",
+              unit: "year",
+              field: "CAST(contrib_date AS TIMESTAMP(0))"
+            },
+            as: "key0"
+          }
         },
         {
           type: "sort",

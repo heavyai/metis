@@ -1,6 +1,6 @@
 // @flow
 import tape from "tape";
-import { createParser } from "../src/parser/create-parser";
+import { createParser } from "../../src/parser/create-parser";
 
 tape("parser", assert => {
   assert.plan(2);
@@ -23,6 +23,7 @@ tape("parser", assert => {
         limit: "",
         offset: ""
       },
+      // $FlowFixMe
       { type: "custom" }
     ),
     "TEST"

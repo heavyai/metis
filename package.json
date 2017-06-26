@@ -16,9 +16,10 @@
     "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/mapd-data-layer.min.js",
     "build": "yarn run build:commonjs && yarn run build:es && yarn run build:umd && yarn run build:umd:min",
     "docs": "documentation build index.js -f md -o docs/API.md",
-    "test": "flow && BABEL_ENV=testing nyc tape -r babel-register tests/**.spec.js",
+    "test": "flow && BABEL_ENV=test nyc tape -r babel-register tests/**/**.spec.js tests/**.spec.js",
     "pretty": "find . -name \"*.js\" | grep -v -f .gitignore | grep -v src/index.js | xargs prettier --write",
-    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "report": "nyc report --reporter=lcov && open coverage/lcov-report/index.html"
   },
   "dependencies": {
     "invariant": "^2.2.2"
