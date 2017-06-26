@@ -2,80 +2,134 @@
 
 ### Table of Contents
 
--   [Types](#types)
 -   [API](#api)
+    -   [createParser](#createparser)
     -   [createDataGraph](#createdatagraph)
-    -   [writeSQL](#writesql)
+    -   [expr](#expr)
+    -   [rel](#rel)
 -   [Graph](#graph)
-    -   [nodes](#nodes)
-    -   [getState](#getstate)
+    -   [registerParser](#registerparser)
+    -   [children](#children)
     -   [data](#data)
 -   [Data](#data-1)
-    -   [getState](#getstate-1)
+    -   [getState](#getstate)
     -   [transform](#transform)
     -   [toSQL](#tosql)
     -   [values](#values)
-
-## Types
-
--   **See: [Data Graph Types](https://github.com/mapd/mapd-data-layer/blob/master/flow-typed/datagraph.js.flow)**
--   **See: [Expression Types](https://github.com/mapd/mapd-data-layer/blob/master/flow-typed/expression.js.flow)**
--   **See: [Transform Types](https://github.com/mapd/mapd-data-layer/blob/master/flow-typed/transform.js.flow)**
-
-Library type definitions are declared in the `flow-typed/` folder.
+    -   [data](#data-2)
+-   [Parser](#parser)
+    -   [registerParser](#registerparser-1)
+    -   [parseExpression](#parseexpression)
+    -   [parseTransform](#parsetransform)
+    -   [parseDataState](#parsedatastate)
+    -   [parseSource](#parsesource)
+    -   [writeSQL](#writesql)
+-   [Expression](#expression)
+    -   [alias](#alias)
+    -   [avg](#avg)
+    -   [min](#min)
+    -   [max](#max)
+    -   [sum](#sum)
+    -   [count](#count)
+    -   [approxCount](#approxcount)
+    -   [countStar](#countstar)
+    -   [extract](#extract)
+    -   [dateTrunc](#datetrunc)
+    -   [inExpr](#inexpr)
+    -   [not](#not)
+    -   [caseExpr](#caseexpr)
+    -   [between](#between)
+-   [Transform](#transform-1)
+    -   [project](#project)
+    -   [aggregate](#aggregate)
+    -   [filter](#filter)
+    -   [filterRange](#filterrange)
+    -   [filterIn](#filterin)
+    -   [bin](#bin)
+    -   [limit](#limit)
+    -   [sort](#sort)
+    -   [top](#top)
+    -   [bottom](#bottom)
 
 ## API
 
-The exported module
+The exported `mapd-data-layer` module. Consists of a graph constructor and
+helper functions to build expressions and transforms and to parse them
+
+### createParser
+
+-   **See: [Parser](#parser) for further information.**
+
+Creates a parser than can parse expressions, transforms, and intermediary
+SQL representations. This parser is used internally by the data graph.
+
+Returns **[Parser](#parser)** 
 
 ### createDataGraph
 
-Creates a SQL data graph instance.
+-   **See: [Graph](#graph) for further information.**
+
+Creates a data graph instance. Must pass in a connector object that implements a query method.
 
 **Parameters**
 
--   `connector` **Connector**
--   `initialState` **GraphState**  (optional, default `{}`)
+-   `connector` **Connector** 
 
-Returns **[Graph](#graph)**
+Returns **DataGraph** 
 
-### writeSQL
+### expr
 
-Returns a SQL query string based on the DataState passed in.
+-   **See: [Expression](#expression)**
 
-**Parameters**
+Expression builders. These are helper functions to create expression objects
 
--   `state` **DataState**
+### rel
 
-Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)**
+-   **See: [Transform](#transform-1)**
+
+Transform builders. These are helpers function to create transform objects.
 
 ## Graph
 
-An instance of a SQL data graph
+An instance of a data graph. A data graph is basically a tree, where each
+node represents a
 
-### nodes
+### registerParser
 
-Returns all data node instances of the graph.
+-   **See: [createParser.js](https://github.com/mapd/mapd-data-layer/tree/master/src/parser/createParser.js)**
 
-Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;DataNode>**
-
-### getState
-
-Returns the state of the graph.
-
-Returns **GraphState**
-
-### data
-
-Creates a data node instance.
+Registers a custom expression or transform parser. The `typeDef` argument
+must be a valid type definition and the `typeParser` argument must be a
+function that matches the type of an ExpressionParser or TransformParser
 
 **Parameters**
 
--   `state` **DataState**
+-   `typeDef` **TypeDefinition** 
+-   `typeParser` **TypeParser** 
 
-Returns **DataNode**
+Returns **void** 
+
+### children
+
+Returns all child data node instances of the graph.
+
+Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;DataNode>** 
+
+### data
+
+Creates a root data node instance. The source must be specific in the
+initial state. An example of a source, is a string pointing to a tables
+or an array of source transformations.
+
+**Parameters**
+
+-   `state` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;(SourceTransform | DataState)> | InitialDataNodeState)** 
+
+Returns **DataNode** 
 
 ## Data
+
+-   **See: [create-data-node.js](https://github.com/mapd/mapd-data-layer/tree/master/src/create-data-node.js)**
 
 A node in the graph that represents a set of data transformations.
 
@@ -83,26 +137,388 @@ A node in the graph that represents a set of data transformations.
 
 Returns the state of the data node.
 
-Returns **DataState**
+Returns **DataState** 
 
 ### transform
 
-Sets the transform state of the data node.
+Sets the transform state of the data node. Either takes in an array of
+transforms or a function that takes and returns an array of transforms
 
 **Parameters**
 
--   `transform` **(Transform | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;Transform>)**
+-   `setter` **SetTransform** 
 
-Returns **DataNode**
+Returns **DataNode** 
 
 ### toSQL
 
-Returns the SQL string representation of the set of data transformations the node embodies.
+Returns the SQL string representation of the set of transforms from
+the node instance to its source root in the graph
 
-Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)**
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 ### values
 
-Executes data node's SQL query representation and returns queried data as a promise.
+Uses the `connector` in the graph context to execute data node's
+SQL query representation and returns queried data as a promise.
 
-Returns **[Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)&lt;[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;any>>**
+### data
+
+Creates a data node instance and sets it as a child of the parent.
+
+**Parameters**
+
+-   `childState` **InitialDataNodeState** 
+
+Returns **DataNode** 
+
+## Parser
+
+A collection of functions used for parsing expressions, transforms, and
+intermediary SQL representations
+
+### registerParser
+
+Returns all child data node instances of the graph.
+
+**Parameters**
+
+-   `definition` **TypeDefinition** 
+-   `typeParser` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** 
+
+Returns **void** 
+
+### parseExpression
+
+-   **See: [Expression](#expression) for further information.**
+
+Parses expressions and returns a valid SQL expression string
+
+**Parameters**
+
+-   `expression` **[Expression](#expression)** 
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### parseTransform
+
+-   **See: [Transform](#transform) for further information.**
+
+Parses transforms and returns an intermediary SQL representation
+
+**Parameters**
+
+-   `sql` **SQL** 
+-   `transform` **[Transform](#transform)** 
+
+Returns **SQL** 
+
+### parseDataState
+
+Parses a data node state and returns an intermediary SQL representation
+
+**Parameters**
+
+-   `data` **DataState** 
+-   `sql` **SQL** 
+
+Returns **SQL** 
+
+### parseSource
+
+Parses a source transform and returns a valid SQL FROM clause
+
+**Parameters**
+
+-   `sourceTransforms` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;(SourceTransform | DataState)>** 
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### writeSQL
+
+Parses a data node state and returns a valid SQL string
+
+**Parameters**
+
+-   `state` **DataState** 
+
+Returns **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+## Expression
+
+-   **See: [Expression Types](https://github.com/mapd/mapd-data-layer/tree/master/src/types/expression-type.js)**
+
+Expression builder module.
+
+### alias
+
+Creates an alias expression
+
+**Parameters**
+
+-   `as` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `expr` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Expression](#expression))** 
+
+Returns **AliasExpression** 
+
+### avg
+
+Creates an average expression
+
+**Parameters**
+
+-   `alias` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **AvgExpression** 
+
+### min
+
+creates a min expression
+
+**Parameters**
+
+-   `alias` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **MinExpression** 
+
+### max
+
+creates a max expression
+
+**Parameters**
+
+-   `alias` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **MaxExpression** 
+
+### sum
+
+creates a sum expression
+
+**Parameters**
+
+-   `alias` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **SumExpression** 
+
+### count
+
+creates a count expression
+
+**Parameters**
+
+-   `distinct` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+-   `alias` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **CountExpression** 
+
+### approxCount
+
+creates an approx count expression
+
+**Parameters**
+
+-   `distinct` **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+-   `alias` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **CountExpression** 
+
+### countStar
+
+creates a count star expression
+
+**Parameters**
+
+-   `alias` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **CountExpression** 
+
+### extract
+
+creates an extract function expression
+
+**Parameters**
+
+-   `unit` **ExtractUnits** 
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **ExtractExpression** 
+
+### dateTrunc
+
+creates a date_trunc function expression
+
+**Parameters**
+
+-   `unit` **DateTruncUnits** 
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **DateTruncExpression** 
+
+### inExpr
+
+creates an in expression
+
+**Parameters**
+
+-   `expr` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `set` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | DataState | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number))>)** 
+
+### not
+
+Creates a not expression
+
+**Parameters**
+
+-   `expr` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | BooleanExpression)** 
+
+Returns **NotExpression** 
+
+### caseExpr
+
+Creates a case expression
+
+**Parameters**
+
+-   `cond` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;\[(BooleanExpression | [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)), [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)]>** 
+-   `end` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+Returns **CaseExpression** 
+
+### between
+
+Creates a between expression
+
+**Parameters**
+
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `range` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;([number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) \| [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String))>** 
+
+Returns **BetweenExpression** 
+
+## Transform
+
+-   **See: [Transform Types](https://github.com/mapd/mapd-data-layer/tree/master/src/types/transform-type.js)**
+
+Transsform builder module.
+
+### project
+
+Creates a Project transform
+
+**Parameters**
+
+-   `expr` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) | {expr: ([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Expression](#expression)), as: [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)})** 
+
+Returns **Project** 
+
+### aggregate
+
+Creates an Aggregate transform
+
+**Parameters**
+
+-   `groupby` **(AliasExpression | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;AliasExpression> | [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String))** 
+-   `agg` **(AggregateFunctionExpression | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;AggregateFunctionExpression>)** 
+
+Returns **Aggregate** 
+
+### filter
+
+Creates an Filter transform
+
+**Parameters**
+
+-   `expr` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Expression](#expression))** 
+-   `id` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)**  (optional, default `""`)
+
+Returns **Filter** 
+
+### filterRange
+
+Creates an Filter transform that uses a between expression
+
+**Parameters**
+
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `range` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;([number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) \| [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String))>** 
+-   `id` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)**  (optional, default `""`)
+
+Returns **Filter** 
+
+### filterIn
+
+Creates an Filter transform that uses an in expression
+
+**Parameters**
+
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `set` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number))>** 
+-   `id` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)**  (optional, default `""`)
+
+Returns **Filter** 
+
+### bin
+
+Creates a Bin tranform
+
+**Parameters**
+
+-   `alias` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `extent` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)>** 
+-   `maxbins` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+
+Returns **Bin** 
+
+### limit
+
+Creates a Limit transform
+
+**Parameters**
+
+-   `row` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+-   `offset` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+
+Returns **Limit** 
+
+### sort
+
+Creates a Sort transform
+
+**Parameters**
+
+-   `field` **([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>)** 
+-   `order` **(SortOrder | [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;SortOrder>)** 
+
+Returns **Sort** 
+
+### top
+
+Creates a Sort transform ordered by descending and a Limit transform
+
+**Parameters**
+
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `limit` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+-   `offset` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+
+Returns **\[Sort, Limit]** 
+
+### bottom
+
+Creates a Sort transform ordered by ascending and a Limit transform
+
+**Parameters**
+
+-   `field` **[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `limit` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+-   `offset` **[number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)** 
+
+Returns **\[Sort, Limit]** 

@@ -1,10 +1,10 @@
-node_modules
+node_modules/
 npm-debug.log
-dist
+dist/
 .nyc_output
 coverage.lcov
-coverage
-assets
-es
-lib
+coverage/
+assets/
+es/
+lib/
 .DS_Store

@@ -1,6 +1,22 @@
 // @flow
+/**
+ * Transform builders. These are helpers function to create transform objects.
+ * @name rel
+ * @memberof API
+ * @see {@link #transform-1|Transform}
+ */
+
+/**
+ * Transsform builder module.
+ * @name Transform
+ * @see {@link https://github.com/mapd/mapd-data-layer/tree/master/src/types/transform-type.js|Transform Types}
+ */
 import type { DataState } from "../create-data-node";
 
+/**
+ * Creates a Project transform
+ * @memberof Transform
+ */
 export function project(
   expr: string | { expr: string | Expression, as: string }
 ): Project {
@@ -53,6 +69,10 @@ function getGroupBy(groupby) {
   }
 }
 
+/**
+ * Creates an Aggregate transform
+ * @memberof Transform
+ */
 export function aggregate(
   groupby: AliasExpression | Array<AliasExpression> | string,
   agg: AggregateFunctionExpression | Array<AggregateFunctionExpression>
@@ -68,6 +88,10 @@ export function aggregate(
   };
 }
 
+/**
+ * Creates an Filter transform
+ * @memberof Transform
+ */
 export function filter(expr: string | Expression, id?: string = ""): Filter {
   return {
     type: "filter",
@@ -76,6 +100,10 @@ export function filter(expr: string | Expression, id?: string = ""): Filter {
   };
 }
 
+/**
+ * Creates an Filter transform that uses a between expression
+ * @memberof Transform
+ */
 export function filterRange(
   field: string,
   range: Array<number | string>,
@@ -93,6 +121,10 @@ export function filterRange(
   };
 }
 
+/**
+ * Creates an Filter transform that uses an in expression
+ * @memberof Transform
+ */
 export function filterIn(
   field: string,
   set: Array<string | number>,
@@ -109,6 +141,10 @@ export function filterIn(
   };
 }
 
+/**
+ * Creates a Bin tranform
+ * @memberof Transform
+ */
 export function bin(
   alias: string,
   field: string,
@@ -124,6 +160,10 @@ export function bin(
   };
 }
 
+/**
+ * Creates a Limit transform
+ * @memberof Transform
+ */
 export function limit(row: number, offset?: number): Limit {
   return {
     type: "limit",
@@ -132,6 +172,10 @@ export function limit(row: number, offset?: number): Limit {
   };
 }
 
+/**
+ * Creates a Sort transform
+ * @memberof Transform
+ */
 export function sort(
   field: string | Array<string>,
   order: SortOrder | Array<SortOrder>
@@ -143,6 +187,10 @@ export function sort(
   };
 }
 
+/**
+ * Creates a Sort transform ordered by descending and a Limit transform
+ * @memberof Transform
+ */
 export function top(
   field: string,
   limit: number,
@@ -162,6 +210,10 @@ export function top(
   ];
 }
 
+/**
+* Creates a Sort transform ordered by ascending and a Limit transform
+ * @memberof Transform
+ */
 export function bottom(
   field: string,
   limit: number,

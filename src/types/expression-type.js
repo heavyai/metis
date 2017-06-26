@@ -1,6 +1,6 @@
 // @flow
-import type {ExtractUnits, DateTruncUnits} from "./expression-type"
-import type {DataState} from "../create-data-node"
+import type { ExtractUnits, DateTruncUnits } from "./expression-type";
+import type { DataState } from "../create-data-node";
 
 declare type Expression =
   | LogicalExpression
@@ -113,31 +113,31 @@ declare type AggregateFunctionExpression =
   | MinExpression
   | SumExpression
   | AvgExpression
-  | CountExpression
+  | CountExpression;
 
 declare type MaxExpression = {|
   type: "max",
   field: string,
   as?: string
-|}
+|};
 
 declare type MinExpression = {|
   type: "min",
   field: string,
   as?: string
-|}
+|};
 
 declare type SumExpression = {|
   type: "sum",
   field: string,
   as?: string
-|}
+|};
 
 declare type AvgExpression = {|
   type: "average",
   field: string,
   as?: string
-|}
+|};
 
 declare type CountExpression = {|
   type: "count",
@@ -164,4 +164,4 @@ declare type ExtractExpression = {
 declare type AliasExpression = {
   expr: string | Expression,
   as: string
-}
+};

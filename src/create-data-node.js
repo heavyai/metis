@@ -30,9 +30,13 @@ export type InitialDataNodeState = {
   children?: Array<DataNode>
 };
 
+type SetTransform =
+  | Array<Transform>
+  | ((transform: Array<Transform>) => Array<Transform>);
+
 export type DataNode = {
   getState: () => RootDataNodeState | DataNodeState,
-  transform: (transform: Transform | Array<Transform> | Function) => DataNode,
+  transform: (setter: SetTransform) => DataNode,
   toSQL: () => string,
   values: () => Promise<Array<any>>,
   data: (state: InitialDataNodeState) => DataNode
@@ -49,34 +53,61 @@ export default function createDataNode(
     children: initialState.children || []
   };
 
+  /**
+   * A node in the graph that represents a set of data transformations.
+   * @namespace Data
+   * @see {@link https://github.com/mapd/mapd-data-layer/tree/master/src/create-data-node.js|create-data-node.js}
+   */
   return {
+    /**
+     * Returns the state of the data node.
+     * @memberof Data
+     * @inner
+     */
     getState(): DataState {
       return state;
     },
 
-    transform(transform: Transform | Array<Transform> | Function): DataNode {
-      if (typeof transform === "function") {
-        state.transform = transform(state.transform);
-      } else if (Array.isArray(transform)) {
-        state.transform = state.transform.concat(transform);
-      } else if (typeof transform === "object") {
-        state.transform.push(transform);
-      } else {
-        invariant(true, "invalid transform");
-      }
+    /**
+     * Sets the transform state of the data node. Either takes in an array of
+     * transforms or a function that takes and returns an array of transforms
+     * @memberof Data
+     * @inner
+     */
+    transform(setter: SetTransform): DataNode {
+      state.transform = typeof setter === "function"
+        ? setter(state.transform)
+        : setter;
       return this;
     },
 
+    /**
+     * Returns the SQL string representation of the set of transforms from
+     * the node instance to its source root in the graph
+     * @memberof Data
+     * @inner
+     */
     toSQL(): string {
       return context.parser.write(reduceToSQL(context, this));
     },
 
+    /**
+     * Uses the `connector` in the graph context to execute data node's
+     * SQL query representation and returns queried data as a promise.
+     * @memberof Data
+     * @inner
+     */
     values() {
       return context.connector.query(
         context.parser.write(reduceToSQL(context, this))
       );
     },
 
+    /**
+     * Creates a data node instance and sets it as a child of the parent.
+     * @memberof Data
+     * @inner
+     */
     data(childState?: InitialDataNodeState): DataNode {
       const dataNode = createDataNode(context, { ...childState, source: this });
       state.children.push(dataNode);
