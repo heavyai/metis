@@ -1,5 +1,5 @@
 // @flow
-import type {Expression} from "./expression-type"
+import type { Expression } from "./expression-type";
 
 declare type Transform =
   | Aggregate

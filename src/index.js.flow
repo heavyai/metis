@@ -1,0 +1,8 @@
+// @flow
+import type {DataState} from "./create-data-node"
+import type {Connector, DataGraph} from "./create-data-graph"
+
+declare module "mapd-data-layer" {
+  declare export function writeSQL(state: DataState): string
+  declare export function createDataGraph(connector: Connector): DataGraph
+}

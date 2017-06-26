@@ -8,5 +8,6 @@
 
 [libs]
 ./src/types
+./src/index.js.flow
 
 [options]

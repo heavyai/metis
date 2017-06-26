@@ -108,7 +108,7 @@ tape("Data Graph API", assert => {
     tape("Data Node .transform() method", assert => {
       assert.plan(2);
 
-      child.transform([
+      child.transform(() => [
         { type: "filter", id: "test", expr: "custom" },
         { type: "filter", id: "test", expr: "custom" }
       ]);
@@ -119,15 +119,12 @@ tape("Data Graph API", assert => {
       ]);
 
       child.transform(transform =>
-        transform.map(t =>
-          Object.assign({}, t, {
-            expr: "test"
-          })
-        )
+        transform.map(() => ({
+          type: "filter",
+          id: "test",
+          expr: "test"
+        }))
       );
-
-      // $FlowFixMe
-      child.transform(""); // this is just to test the else block
 
       assert.deepEqual(child.getState().transform, [
         { type: "filter", id: "test", expr: "test" },

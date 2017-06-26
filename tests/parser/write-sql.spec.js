@@ -1,10 +1,12 @@
 // @flow
 import tape from "tape";
+import * as expr from "../../src/helpers/expression-builders";
+import * as rel from "../../src/helpers/transform-builders";
 import { createParser } from "../../src/parser/create-parser";
 const { writeSQL } = createParser();
 
 tape("writeSQL", assert => {
-  assert.plan(6);
+  assert.plan(7);
 
   assert.equal(
     writeSQL({
@@ -173,5 +175,21 @@ tape("writeSQL", assert => {
       transform: []
     }),
     "SELECT * FROM flights JOIN zipcode as table1 JOIN contrib as table2"
+  );
+
+  assert.equal(
+    writeSQL({
+      type: "root",
+      source: "flights",
+      transform: [
+        rel.aggregate(expr.alias("key0", "carrier_name"), [
+          expr.countStar("val"),
+          expr.max("color", "delay")
+        ]),
+        rel.filterRange("delay", [-50, 50]),
+        ...rel.top("key0", 10)
+      ]
+    }),
+    "SELECT carrier_name as key0, COUNT(*) as val, MAX(delay) as color FROM flights WHERE (delay BETWEEN -50 AND 50) GROUP BY key0 ORDER BY key0 DESC LIMIT 10"
   );
 });

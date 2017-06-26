@@ -16,10 +16,6 @@ export type SQL = {|
   }
 |};
 
-/**
- * Returns a SQL query string based on the DataState passed in.
-* @memberof API
- */
 export default function writeSQL(state: DataState, parser: Parser): string {
   return write(parser.parseDataState(state));
 }

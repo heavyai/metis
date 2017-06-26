@@ -13,6 +13,15 @@ export type TypeDefinition = {
   type: string
 };
 
+export type TypeParser = ExpressionParser | TransformParser;
+
+type ExpressionParser = (expr: Expression | Object, parser: Parser) => string;
+type TransformParser = (
+  sql: SQL,
+  transform: Transform | Object,
+  parser: Parser
+) => SQL;
+
 export type Parser = {
   parseExpression: (expr: Expression) => string,
   parseTransform: (sql: SQL, transform: Transform) => SQL,
@@ -23,10 +32,21 @@ export type Parser = {
   registerParser: (definition: TypeDefinition, typeParser: Function) => void
 };
 
+/**
+ * Creates a parser than can parse expressions, transforms, and intermediary
+ * SQL representations. This parser is used internally by the data graph.
+ * @see {@link Parser} for further information.
+ * @memberof API
+ */
 export function createParser(): Parser {
   const transformParsers = {};
   const expressionParsers = {};
 
+  /**
+   * A collection of functions used for parsing expressions, transforms, and
+   * intermediary SQL representations
+   * @namespace Parser
+   */
   const parser = {
     parseExpression,
     parseTransform,
@@ -37,6 +57,11 @@ export function createParser(): Parser {
     registerParser
   };
 
+  /**
+   * Returns all child data node instances of the graph.
+   * @memberof Parser
+   * @inner
+   */
   function registerParser(
     definition: TypeDefinition,
     typeParser: Function
@@ -48,6 +73,12 @@ export function createParser(): Parser {
     }
   }
 
+  /**
+   * Parses expressions and returns a valid SQL expression string
+   * @memberof Parser
+   * @inner
+   * @see {@link Expression} for further information.
+   */
   function parseExpression(expression: Expression): string {
     if (expressionParsers[expression.type]) {
       return expressionParsers[expression.type](expression, parser);
@@ -55,6 +86,12 @@ export function createParser(): Parser {
     return parseExpressionDefault(expression, parser);
   }
 
+  /**
+   * Parses transforms and returns an intermediary SQL representation
+   * @memberof Parser
+   * @inner
+   * @see {@link Transform} for further information.
+   */
   function parseTransform(sql: SQL, transform: Transform): SQL {
     if (transformParsers[transform.type]) {
       return transformParsers[transform.type](sql, transform, parser);
@@ -62,16 +99,31 @@ export function createParser(): Parser {
     return parseTransformDefault(sql, transform, parser);
   }
 
+  /**
+   * Parses a data node state and returns an intermediary SQL representation
+   * @memberof Parser
+   * @inner
+   */
   function parseDataState(data: DataState, sql?: SQL): SQL {
     return parseDataStateDefault(data, parser, sql);
   }
 
+  /**
+   * Parses a source transform and returns a valid SQL FROM clause
+   * @memberof Parser
+   * @inner
+   */
   function parseSource(
     sourceTransforms: Array<SourceTransform | DataState>
   ): string {
     return parseSourceDefault(sourceTransforms, parser);
   }
 
+  /**
+  * Parses a data node state and returns a valid SQL string
+   * @memberof Parser
+   * @inner
+   */
   function writeSQL(state: DataState): string {
     return writeSQLDefault(state, parser);
   }

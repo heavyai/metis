@@ -15,7 +15,6 @@ tape("parseDataState", assert => {
       source: "taxis",
       children: [],
       transform: [
-        ,
         {
           type: "aggregate",
           fields: ["*"],
