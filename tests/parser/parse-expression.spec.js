@@ -3,7 +3,7 @@ import tape from "tape";
 import parseExpression from "../../src/parser/parse-expression";
 
 tape("parseExpression", assert => {
-  assert.plan(13);
+  assert.plan(14);
 
   assert.equal(parseExpression("AVG(depdelay)"), "AVG(depdelay)");
 
@@ -146,5 +146,30 @@ tape("parseExpression", assert => {
       field: "contrib_date"
     }),
     "date_trunc(month, contrib_date)"
+  );
+
+  assert.equal(
+    parseExpression({
+      type: "root",
+      name: "test",
+      source: "taxis",
+      children: [],
+      transform: [
+        {
+          type: "aggregate",
+          fields: ["*"],
+          ops: ["count"],
+          as: ["series_1"],
+          groupby: {
+            type: "bin",
+            field: "total_amount",
+            extent: [-21474830, 3950611.6],
+            maxbins: 12,
+            as: "key0"
+          }
+        }
+      ]
+    }),
+    "(SELECT cast((cast(total_amount as float) - -21474830) * 4.719682036909046e-7 as int) as key0, COUNT(*) as series_1 FROM taxis WHERE ((total_amount >= -21474830 AND total_amount <= 3950611.6) OR (total_amount IS NULL)) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 12 OR key0 IS NULL))"
   );
 });

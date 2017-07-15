@@ -1,6 +1,6 @@
 {
   "name": "mapd-data-layer",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "author": "MapD Technologies",
   "license": "Apache-2.0",
   "description": "SQL data-layer for the MapD frontend",

@@ -107,6 +107,8 @@ export default function parseExpression(
       return "date_trunc(" + expression.unit + ", " + expression.field + ")";
     case "extract":
       return "extract(" + expression.unit + " from " + expression.field + ")";
+    case "root":
+      return "(" + parser.writeSQL(expression) + ")";
     default:
       return expression;
   }
