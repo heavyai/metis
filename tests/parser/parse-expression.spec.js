@@ -3,9 +3,63 @@ import tape from "tape";
 import parseExpression from "../../src/parser/parse-expression";
 
 tape("parseExpression", assert => {
-  assert.plan(14);
+  assert.plan(20);
 
   assert.equal(parseExpression("AVG(depdelay)"), "AVG(depdelay)");
+
+  assert.equal(
+    parseExpression({
+      type: "stddev",
+      x: "amount"
+    }),
+    "stddev(amount)"
+  );
+
+  assert.equal(
+    parseExpression({
+      type: "max",
+      field: "amount"
+    }),
+    "max(amount)"
+  );
+
+  assert.equal(
+    parseExpression({
+      type: "count",
+      distinct: true,
+      approx: true,
+      field: "*"
+    }),
+    "approx_count_distinct(*)"
+  );
+
+  assert.equal(
+    parseExpression({
+      type: "count",
+      distinct: true,
+      approx: false,
+      field: "*"
+    }),
+    "count(distinct * )"
+  );
+
+  assert.equal(
+    parseExpression({
+      type: "count",
+      distinct: false,
+      approx: false,
+      field: "*"
+    }),
+    "count(*)"
+  );
+
+  assert.equal(
+    parseExpression({
+      type: "stddev",
+      x: "amount"
+    }),
+    "stddev(amount)"
+  );
 
   assert.equal(
     parseExpression({

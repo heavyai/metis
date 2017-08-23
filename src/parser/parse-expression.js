@@ -109,6 +109,29 @@ export default function parseExpression(
       return "extract(" + expression.unit + " from " + expression.field + ")";
     case "root":
       return "(" + parser.writeSQL(expression) + ")";
+    case "count":
+      if (expression.distinct && expression.approx) {
+        return "approx_count_distinct(" + expression.field + ")"
+      } else if (expression.distinct) {
+        return "count(distinct " + expression.field + " )"
+      } else {
+        return "count(" + expression.field + ")"
+      }
+    case "stddev":
+    case "stddev_pop":
+    case "stddev_samp":
+    case "var_pop":
+    case "var_samp":
+      return expression.type + "(" + expression.x + ")"
+    case "corr":
+    case "covar_pop":
+    case "covar_samp":
+      return expression.type + "(" + expression.x + ", " + expression.y + ")"
+    case "min":
+    case "max":
+    case "average":
+    case "sum":
+      return expression.type + "(" + expression.field + ")"
     default:
       return expression;
   }

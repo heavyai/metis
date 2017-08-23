@@ -98,7 +98,7 @@ declare type StatisticalFunctionExpression =
   | StatisticalPairFunction;
 
 declare type StatisticalValueFunction = {|
-  type: "stddev_pop" | "stddev_samp" | "var_pop" | "var_samp",
+  type: "stddev" | "stddev_pop" | "stddev_samp" | "var_pop" | "var_samp",
   x: string
 |};
 
