@@ -3,7 +3,7 @@ import tape from "tape";
 import parseExpression from "../../src/parser/parse-expression";
 
 tape("parseExpression", assert => {
-  assert.plan(20);
+  assert.plan(21);
 
   assert.equal(parseExpression("AVG(depdelay)"), "AVG(depdelay)");
 
@@ -21,6 +21,14 @@ tape("parseExpression", assert => {
       field: "amount"
     }),
     "max(amount)"
+  );
+
+  assert.equal(
+    parseExpression({
+      type: "average",
+      field: "amount"
+    }),
+    "avg(amount)"
   );
 
   assert.equal(

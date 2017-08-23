@@ -129,9 +129,10 @@ export default function parseExpression(
       return expression.type + "(" + expression.x + ", " + expression.y + ")"
     case "min":
     case "max":
-    case "average":
     case "sum":
       return expression.type + "(" + expression.field + ")"
+    case "average":
+      return "avg(" + expression.field + ")"
     default:
       return expression;
   }
