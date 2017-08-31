@@ -111,7 +111,7 @@ tape("parseExpression", assert => {
       left: "dest_city",
       right: "san"
     }),
-    `dest_city ILIKE %"san"%`
+    `dest_city ILIKE '%san%'`
   );
 
   assert.equal(

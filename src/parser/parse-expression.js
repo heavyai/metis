@@ -46,7 +46,7 @@ export default function parseExpression(
         " " +
         expression.type.toUpperCase() +
         " " +
-        `%"${expression.right}"%`
+        `'%${expression.right}%'`
       );
     case "coalesce":
       return (
