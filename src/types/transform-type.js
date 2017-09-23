@@ -96,7 +96,7 @@ declare type Scan = {|
 declare type Crossfilter = {|
   type: "crossfilter",
   signal: string,
-  filter: Array<Filter>
+  filter: { [string]: Filter }
 |};
 
 declare type ResolveFilter = {|

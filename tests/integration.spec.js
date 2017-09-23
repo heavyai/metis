@@ -115,8 +115,8 @@ tape("Integration Test", assert => {
     concat({
       type: "crossfilter",
       signal: "group",
-      filter: [
-        {
+      filter: {
+        row: {
           type: "filter",
           id: "row",
           expr: {
@@ -125,7 +125,7 @@ tape("Integration Test", assert => {
             right: "cash"
           }
         },
-        {
+        histogram: {
           type: "filter",
           id: "histogram",
           expr: {
@@ -135,7 +135,7 @@ tape("Integration Test", assert => {
             right: 20
           }
         }
-      ]
+      }
     })
   );
 

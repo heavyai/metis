@@ -27,13 +27,13 @@ tape("parseCrossfilter", assert => {
       {
         type: "crossfilter",
         signal: "xfilter",
-        filter: [
-          {
+        filter: {
+          ["some-filter"]: {
             type: "filter",
             id: "some-filter",
             expr: "party = 'R'"
           },
-          {
+          ["another-filter"]: {
             type: "filter",
             id: "another-filter",
             expr: {
@@ -42,7 +42,7 @@ tape("parseCrossfilter", assert => {
               right: "D"
             }
           }
-        ]
+        }
       }
     ),
     {
@@ -87,13 +87,13 @@ tape("parseCrossfilter", assert => {
       {
         type: "crossfilter",
         signal: "xfilter",
-        filter: [
-          {
+        filter: {
+          ["some-filter"]: {
             type: "filter",
             id: "some-filter",
             expr: "party = 'R'"
           },
-          {
+          ["another-filter"]: {
             type: "filter",
             id: "another-filter",
             expr: {
@@ -102,7 +102,7 @@ tape("parseCrossfilter", assert => {
               right: "D"
             }
           },
-          {
+          ["test-filter"]: {
             type: "filter",
             id: "test-filter",
             expr: {
@@ -111,7 +111,7 @@ tape("parseCrossfilter", assert => {
               right: 100
             }
           }
-        ]
+        }
       }
     ),
     {
@@ -149,13 +149,13 @@ tape("parseCrossfilter", assert => {
       {
         type: "crossfilter",
         signal: "xfilter",
-        filter: [
-          {
+        filter: {
+          ["some-filter"]: {
             type: "filter",
             id: "some-filter",
             expr: "party = 'R'"
           },
-          {
+          ["another-filter"]: {
             type: "filter",
             id: "another-filter",
             expr: {
@@ -164,7 +164,7 @@ tape("parseCrossfilter", assert => {
               right: "D"
             }
           }
-        ]
+        }
       }
     ),
     {

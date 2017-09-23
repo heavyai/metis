@@ -13,18 +13,19 @@ export default function parseCrossfilter(
     case "crossfilter":
       if (typeof sql.unresolved === "object") {
         if (sql.unresolved.hasOwnProperty(transform.signal)) {
-          transform.filter.forEach(filter => {
+          Object.keys(transform.filter).forEach(key => {
+            const filter = transform.filter[key]
             if (sql.unresolved) {
               const { ignore } = sql.unresolved[transform.signal];
               if (
                 Array.isArray(ignore)
-                  ? ignore.indexOf(filter.id) === -1
-                  : filter.id !== ignore
+                  ? ignore.indexOf(key) === -1
+                  : key !== ignore
               ) {
                 parseFilter(sql, filter, parser);
               }
             }
-          });
+          })
         }
       }
     default:
