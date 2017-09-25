@@ -7,8 +7,10 @@
   },
   "dependencies": {
     "@mapd/connector": "git://github.com/mapd/mapd-connector.git#develop",
+    "d3-dispatch": "^1.0.3",
     "script-loader": "^0.7.0",
     "vega": "^3.0.0-beta.32",
+    "vega-lite": "^2.0.0-rc3",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5"
   }

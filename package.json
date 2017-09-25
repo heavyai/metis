@@ -35,6 +35,7 @@
     "test": "flow && BABEL_ENV=test nyc tape -r babel-register tests/**/**.spec.js tests/**.spec.js"
   },
   "dependencies": {
+    "d3-dispatch": "^1.0.3",
     "invariant": "^2.2.2"
   },
   "devDependencies": {
