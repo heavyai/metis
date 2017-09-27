@@ -1,0 +1,10 @@
+node_modules/
+npm-debug.log
+dist/
+.nyc_output
+coverage.lcov
+coverage/
+assets/
+es/
+lib/
+.DS_Store
