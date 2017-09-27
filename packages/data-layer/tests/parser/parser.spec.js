@@ -9,7 +9,7 @@ tape("parser", assert => {
 
   Parser.registerParser({ meta: "expression", type: "custom" }, () => "TEST");
   Parser.registerParser({ meta: "transform", type: "custom" }, () => "TEST");
-
+  // $FlowFixMe
   assert.equal(Parser.parseExpression({ type: "custom" }), "TEST");
   assert.equal(
     Parser.parseTransform(

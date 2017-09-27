@@ -19,7 +19,7 @@ export default function parseDataState(
   }
 ): SQL {
   return state.transform.reduce(
-    (sql: SQL, t: Transform): SQL => parser.parseTransform(sql, t, parser),
+    (sql: SQL, t: Transform): SQL => parser.parseTransform(sql, t),
     {
       select: initialSQL.select,
       from: state.type === "root"

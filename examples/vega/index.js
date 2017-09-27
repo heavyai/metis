@@ -1,4 +1,4 @@
-import { Chart } from "../../packages/view-layer";
+import { Chart } from "../../packages/view-layer/src";
 import { view, connector } from "./src/services";
 import * as line from "./src/charts/line";
 import * as bar from "./src/charts/bar";
