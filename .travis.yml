@@ -1,4 +1,4 @@
 language: node_js
 node_js: "8"
-install: ./install.sh
+install: ./scripts/install.sh
 after_success: CODECOV_TOKEN="3ec979ab-0d76-4383-91ae-68a214fc0156" npm run coverage

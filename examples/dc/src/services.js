@@ -1,5 +1,5 @@
 import Thrifty from "../../../packages/thrift-layer";
-import { createView } from "../../../packages/view-layer";
+import { createView } from "../../../packages/view-layer/src";
 import { createDataGraph } from "../../../packages/data-layer";
 import config from "../../config";
 
