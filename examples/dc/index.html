@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.css">
+  <title>DC.js Example</title>
+</head>
+<style>
+  #filter-all {display: block;}
+  #chart {display: inline-block;}
+  #chart2 {display: inline-block;}
+  .column {display: inline-block; margin-top: 50px}
+</style>
+<body>
+  <script>
+    (function polyfillCrossfilter () {
+      window.crossfilter = {quicksort: {by: () => {}}}
+    }())
+  </script>
+  <script src="assets/bundle.js"></script>
+  <div class="column">
+    <div id="chart"></div>
+    <div id="chart2"></div>
+  </div>
+</body>
+</html>

@@ -1,4 +1,7 @@
-export default {
+import { view, xfilterNode } from "../services";
+import * as utils from "../utils"
+
+const LINE_SPEC = {
   $schema: "https://vega.github.io/schema/vega-lite/v2.json",
   data: {
     transform: [
@@ -110,4 +113,43 @@ export default {
       }
     }
   ]
+};
+
+export const dispatch = view.dispatch();
+
+function handleLineBrush() {
+  this.vegaView.getState({
+    data: (data, values) => {
+      if (data === "filter_store") {
+        const extent = utils.getExtent(values);
+        if (extent) {
+          xfilterNode.transform(transforms => {
+            transforms[0].filter.LINE = {
+              type: "filter",
+              expr: {
+                type: "between",
+                field: "dep_timestamp",
+                left: `TIMESTAMP(0) '${utils.formatTime(extent[0])}'`,
+                right: `TIMESTAMP(0) '${utils.formatTime(extent[1])}'`
+              }
+            };
+            return transforms;
+          });
+          dispatch.call("filter", this);
+        }
+      }
+    }
+  });
 }
+
+dispatch.on("setup.vega", function setup() {
+  this.state = LINE_SPEC;
+  this.dataNode = xfilterNode.data({
+    name: "line",
+    transform: this.state.data.transform
+  });
+});
+
+dispatch.on("postRender", function postRender() {
+  this.vegaView.addSignalListener("filter_x", handleLineBrush.bind(this));
+});
