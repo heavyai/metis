@@ -1,4 +1,4 @@
-import {view, xfilterNode} from "./services"
+import { view, xfilterNode } from "./services";
 
 export const dispatch = view.dispatch();
 
@@ -24,10 +24,10 @@ const dataTransforms = [
     filter: { signal: "XFILTER" },
     ignore: "PIE"
   }
-]
+];
 
-function filterHandler (chart) {
-  const filters = chart.filters()
+function filterHandler(chart) {
+  const filters = chart.filters();
   xfilterNode.transform(transforms => {
     if (filters.length) {
       transforms[0].filter["PIE"] = {
@@ -39,12 +39,12 @@ function filterHandler (chart) {
         }
       };
     } else {
-      delete transforms[0].filter["PIE"]
+      delete transforms[0].filter["PIE"];
     }
 
     return transforms;
   });
-  dispatch.call("filter", this)
+  dispatch.call("filter", this);
 }
 
 dispatch.on("preRedraw", function preRender(data) {
@@ -67,7 +67,7 @@ dispatch.on("setup", function setup() {
     .keyAccessor(d => d.country)
     .valueAccessor(p => p.records);
 
-  this.chart.on("filtered", filterHandler.bind(this))
+  this.chart.on("filtered", filterHandler.bind(this));
 
   this.dataNode = xfilterNode.data({
     name: "pie",
