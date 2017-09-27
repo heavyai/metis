@@ -22,19 +22,15 @@ export function prepareDataForStack(data) {
 }
 
 export function prepareStack(chart, layerName, data, index) {
-  const params = [
-    { all: () => data },
-    layerName,
-    a => a.value[layerName]
-  ]
+  const params = [{ all: () => data }, layerName, a => a.value[layerName]];
   if (index === 0) {
-    chart.group(...params)
+    chart.group(...params);
   } else {
-    chart.stack(...params)
+    chart.stack(...params);
   }
 }
 
-export function fadeDeselectedAreaOverride () {
+export function fadeDeselectedAreaOverride() {
   var bars = this.chart.chartBodyG().selectAll("rect.bar");
   if (this.chart.hasFilter()) {
     bars.classed(dc.constants.SELECTED_CLASS, d => {
@@ -49,7 +45,7 @@ export function fadeDeselectedAreaOverride () {
   }
 }
 
-export function handleBarSelection (chart) {
+export function handleBarSelection(chart) {
   chart
     .selectAll("rect.bar")
     .classed("stack-deselected", function(d) {

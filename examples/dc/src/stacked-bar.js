@@ -1,9 +1,9 @@
-import {view, xfilterNode} from "./services"
-import * as utils from "./stack-utils"
+import { view, xfilterNode } from "./services";
+import * as utils from "./stack-utils";
 
 export const dispatch = view.dispatch();
 
-const STACKS = ["en", "fr", "es", "it"]
+const STACKS = ["en", "fr", "es", "it"];
 
 const dataTransforms = [
   {
@@ -50,9 +50,9 @@ const dataTransforms = [
     filter: { signal: "XFILTER" },
     ignore: ["BAR.lang", "BAR.extract"]
   }
-]
-function filterTransform (lang, extract) {
-  return function transform (transforms) {
+];
+function filterTransform(lang, extract) {
+  return function transform(transforms) {
     if (lang.length) {
       transforms[0].filter["BAR.lang"] = {
         type: "filter",
@@ -63,7 +63,7 @@ function filterTransform (lang, extract) {
         }
       };
     } else {
-      delete transforms[0].filter["BAR.lang"]
+      delete transforms[0].filter["BAR.lang"];
     }
 
     if (extract.length) {
@@ -76,32 +76,32 @@ function filterTransform (lang, extract) {
         }
       };
     } else {
-      delete transforms[0].filter["BAR.extract"]
+      delete transforms[0].filter["BAR.extract"];
     }
 
     return transforms;
-  }
+  };
 }
 
-function filterHandler (chart) {
-  const filters = chart.filters().map(f =>  f.split("x")[1])
-  const extract = chart.filters().map(f => parseInt(f.split("x")[0]))
+function filterHandler(chart) {
+  const filters = chart.filters().map(f => f.split("x")[1]);
+  const extract = chart.filters().map(f => parseInt(f.split("x")[0]));
   xfilterNode.transform(filterTransform(filters, extract));
-  dispatch.call("filter", this)
+  dispatch.call("filter", this);
 }
 
 dispatch.on("preRender", function(data) {
   const preparedData = utils.prepareDataForStack(data);
   STACKS.forEach((stack, index) => {
-    utils.prepareStack(this.chart, stack, preparedData, index)
-  })
+    utils.prepareStack(this.chart, stack, preparedData, index);
+  });
 });
 
 dispatch.on("preRedraw", function(data) {
   const preparedData = utils.prepareDataForStack(data);
   STACKS.forEach((stack, index) => {
-    utils.prepareStack(this.chart, stack, preparedData, index)
-  })
+    utils.prepareStack(this.chart, stack, preparedData, index);
+  });
 });
 dispatch.on("setup", function setup() {
   this.chart = dc.barChart("#chart2");
@@ -121,8 +121,8 @@ dispatch.on("setup", function setup() {
     .keyAccessor(a => a.key);
 
   this.chart.legend(dc.legend());
-  this.chart.fadeDeselectedArea = utils.fadeDeselectedAreaOverride.bind(this)
+  this.chart.fadeDeselectedArea = utils.fadeDeselectedAreaOverride.bind(this);
   this.chart.on("pretransition", utils.handleBarSelection);
 
-  this.chart.on("filtered", filterHandler.bind(this))
+  this.chart.on("filtered", filterHandler.bind(this));
 });

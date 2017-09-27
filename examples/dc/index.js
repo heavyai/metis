@@ -1,7 +1,7 @@
 import { Chart } from "../../packages/view-layer";
-import {connector, view} from "./src/services"
-import * as pie from "./src/pie"
-import * as bar from "./src/stacked-bar"
+import { connector, view } from "./src/services";
+import * as pie from "./src/pie";
+import * as bar from "./src/stacked-bar";
 
 class DCChart extends Chart {
   data = () => {
