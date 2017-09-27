@@ -1,15 +1,16 @@
 var webpack = require("webpack");
 var path = require("path");
 
-const modulePath = dir => path.resolve(__dirname, "node_modules", dir)
-
 module.exports = {
   entry: {
     app: [
-      `script-loader!${modulePath("@mapd/connector/dist/browser-connector.js")}`,
-      `script-loader!${modulePath("d3/build/d3.min.js")}`,
-      `script-loader!${modulePath("vega/build/vega.min.js")}`,
-      `script-loader!${modulePath("vega-lite/build/vega-lite.min.js")}`,
+      `script-loader!${path.resolve(
+        __dirname,
+        "node_modules",
+        "@mapd/connector/dist/browser-connector.js"
+      )}`,
+      `script-loader!${path.resolve(__dirname, "node_modules", "d3/d3.js")}`,
+      `script-loader!${path.resolve(__dirname, "node_modules", "dc/dc.js")}`,
       path.resolve(__dirname, "index.js")
     ]
   },
@@ -25,7 +26,6 @@ module.exports = {
         test: /\.js$/,
         include: [
           path.resolve(__dirname, "index.js"),
-          path.resolve(__dirname, "./src"),
           path.resolve(__dirname, "../config.js"),
           path.resolve(__dirname, "../../packages/thrift-layer"),
           path.resolve(__dirname, "../../packages/data-layer"),

@@ -62,7 +62,7 @@ export default function parseExpression(
           " " +
           expression.type.toUpperCase() +
           " (" +
-          expression.set.map(field => `'${field}'`).join(", ") +
+          expression.set.map(field => typeof field === "number" ? field : `'${field}'`).join(", ") +
           ")"
         );
       } else if (
