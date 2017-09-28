@@ -4,11 +4,6 @@ var path = require("path");
 module.exports = {
   entry: {
     app: [
-      `script-loader!${path.resolve(
-        __dirname,
-        "node_modules",
-        "@mapd/connector/dist/browser-connector.js"
-      )}`,
       `script-loader!${path.resolve(__dirname, "node_modules", "d3/d3.js")}`,
       `script-loader!${path.resolve(__dirname, "node_modules", "dc/dc.js")}`,
       path.resolve(__dirname, "index.js")
@@ -30,6 +25,9 @@ module.exports = {
           path.resolve(__dirname, "../../packages/thrift-layer"),
           path.resolve(__dirname, "../../packages/data-layer"),
           path.resolve(__dirname, "../../packages/view-layer")
+        ],
+        exclude: [
+          path.resolve(__dirname, "../../packages/thrift-layer/lib"),
         ],
         loader: "babel-loader"
       }

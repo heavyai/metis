@@ -45,19 +45,19 @@ export default function createView(
   }
 
   function dispatch(events = []) {
-    const _dispatch = d3.dispatch(
+    const listener = d3.dispatch(
       ...Array.from(new Set([...BASE_EVENTS, ...events]))
     );
-    _dispatch.on("setup.register", function setup() {
+    listener.on("setup.register", function setup() {
       registry.register(this, this.group);
     });
-    _dispatch.on("remove.deregister", function remove() {
+    listener.on("remove.deregister", function remove() {
       registry.deregister(this, this.group);
     });
-    _dispatch.on("filter.redraw", function filter() {
+    listener.on("filter.redraw", function filter() {
       redrawAll(this.group);
     });
-    return _dispatch;
+    return listener;
   }
 
   return {
