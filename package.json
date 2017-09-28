@@ -9,8 +9,8 @@
     "build": "./scripts/build.sh",
     "clean": "./scripts/clean.sh",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
-    "start:dc": "webpack-dev-server --content-base ./examples/dc --config ./examples/dc/webpack.config.js",
-    "start:vega": "webpack-dev-server --content-base ./examples/vega --config ./examples/vega/webpack.config.js",
+    "example:dc": "webpack-dev-server --content-base ./examples/dc --config ./examples/dc/webpack.config.js",
+    "example:vega": "webpack-dev-server --content-base ./examples/vega --config ./examples/vega/webpack.config.js",
     "report": "nyc report --reporter=lcov && open coverage/lcov-report/index.html",
     "test": "BABEL_ENV=test nyc tape -r babel-register packages/data-layer/tests/**/**.spec.js packages/data-layer/tests/**.spec.js"
   },

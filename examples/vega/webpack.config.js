@@ -6,7 +6,6 @@ const modulePath = dir => path.resolve(__dirname, "node_modules", dir)
 module.exports = {
   entry: {
     app: [
-      `script-loader!${modulePath("@mapd/connector/dist/browser-connector.js")}`,
       `script-loader!${modulePath("d3/build/d3.min.js")}`,
       `script-loader!${modulePath("vega/build/vega.min.js")}`,
       `script-loader!${modulePath("vega-lite/build/vega-lite.min.js")}`,
@@ -30,6 +29,9 @@ module.exports = {
           path.resolve(__dirname, "../../packages/thrift-layer"),
           path.resolve(__dirname, "../../packages/data-layer"),
           path.resolve(__dirname, "../../packages/view-layer")
+        ],
+        exclude: [
+          path.resolve(__dirname, "../../packages/thrift-layer/lib"),
         ],
         loader: "babel-loader"
       }

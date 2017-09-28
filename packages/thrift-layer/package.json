@@ -1,5 +1,4 @@
 {
   "dependencies": {
-    "@mapd/connector": "git://github.com/mapd/mapd-connector.git#v2.1.0"
   }
 }
