@@ -5,11 +5,41 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.8/dc.css">
   <title>DC.js Example</title>
 </head>
+<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto+Mono:400' rel='stylesheet' type='text/css'>
 <style>
-  #filter-all {display: block;}
-  #chart {display: inline-block;}
-  #chart2 {display: inline-block;}
-  .column {display: inline-block; margin-top: 50px}
+  body {
+    display: flex;
+    flex-direction: row;
+    font-family: Roboto,Sans-Serif;
+  }
+  .main {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px
+  }
+  .chart {
+    margin: 25px;
+  }
+  #logging {
+    margin-top: 75px;
+    display: flex;
+    flex-direction: column;
+  }
+  .query {
+    font-size: 14px;
+    padding: 15px;
+  }
+  .query .stmt {
+    color: #404040;
+  }
+  .query .time {
+    color: red;
+  }
+  .fade.query {
+    transition: all 0.3s ease-out;
+    opacity: 0;
+  }
 </style>
 <body>
   <script>
@@ -18,9 +48,11 @@
     }())
   </script>
   <script src="assets/bundle.js"></script>
-  <div class="column">
-    <div id="chart"></div>
-    <div id="chart2"></div>
+  <div class="main">
+    <div class="chart" id="count-widget"></div>
+    <div class="chart" id="chart"></div>
+    <div class="chart" id="chart2"></div>
   </div>
+  <div id="logging"></div>
 </body>
 </html>

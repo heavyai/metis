@@ -113,8 +113,8 @@ dispatch.on("setup", function setup() {
   this.chart
     ._mandatoryAttributes([])
     .controlsUseVisibility(true)
-    .width(600)
-    .height(400)
+    .width(400)
+    .height(320)
     .x(d3.scale.linear().domain([1, 21]))
     .margins({ left: 80, top: 20, right: 10, bottom: 20 })
     .brushOn(false)

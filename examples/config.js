@@ -4,5 +4,6 @@ export default {
   port: "443",
   dbName: "mapd",
   user: "mapd",
-  password: "HyperInteractive"
+  password: "HyperInteractive",
+  logging: true
 }

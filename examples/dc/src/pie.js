@@ -59,8 +59,8 @@ dispatch.on("setup", function setup() {
   this.chart = dc
     .pieChart("#chart")
     ._mandatoryAttributes([])
-    .width(768)
-    .height(480)
+    .width(420)
+    .height(270)
     .slicesCap(4)
     .innerRadius(100)
     .colorAccessor(d => d.country)
