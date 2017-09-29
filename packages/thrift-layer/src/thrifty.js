@@ -1,10 +1,12 @@
 import proxy from "./client-proxy";
 import processQueryResults from "./utils/process-query-results";
+import logQueryResults from "./utils/log-query-results";
 
 const CLIENT_KEY = Symbol("CLIENT_KEY");
 const CONFIG_KEY = Symbol("CONFIG_KEY");
 const SESSION_KEY = Symbol("SESSION_KEY");
 const NONCE_KEY = Symbol("NONCE_KEY");
+const LOGGER_KEY = Symbol("LOGGER_KEY")
 
 export default class Thrifty {
   constructor(config) {
@@ -12,9 +14,10 @@ export default class Thrifty {
     const transport = new Thrift.Transport(url);
     const protocol = new Thrift.Protocol(transport);
     const client = new MapDClient(protocol);
+    this[NONCE_KEY] = 0;
     this[CONFIG_KEY] = config;
     this[CLIENT_KEY] = new Proxy(client, proxy);
-    this[NONCE_KEY] = 0;
+    this[LOGGER_KEY] = logQueryResults
   }
 
   get curNonce() {
@@ -33,9 +36,18 @@ export default class Thrifty {
     return this[SESSION_KEY];
   }
 
+  set logging (logging) {
+    this[CONFIG_KEY].logging = logging
+  }
+
+  set logger(logger) {
+    this[LOGGER_KEY] = logger
+  }
+
   query = (
     stmt,
     options = {
+      id: null,
       limit: -1,
       columnar: true,
       logging: this.logging
@@ -52,6 +64,9 @@ export default class Thrifty {
           if (error) {
             reject(error);
           } else {
+            if (this.config.logging) {
+              this[LOGGER_KEY](stmt, result)
+            }
             resolve(processQueryResults(result));
           }
         }
