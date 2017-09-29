@@ -1,0 +1,82 @@
+{
+  "name": "dc",
+  "version": "2.1.8",
+  "license": "Apache-2.0",
+  "copyright": "2017",
+  "description": "A multi-dimensional charting library built to work natively with crossfilter and rendered using d3.js ",
+  "keywords": [
+    "visualization",
+    "svg",
+    "animation",
+    "canvas",
+    "chart",
+    "dimensional",
+    "crossfilter",
+    "d3"
+  ],
+  "homepage": "http://dc-js.github.io/dc.js/",
+  "bugs": "https://github.com/dc-js/dc.js/issues",
+  "author": {
+    "name": "Nick Zhu",
+    "url": "http://nzhu.blogspot.ca/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dc-js/dc.js.git"
+  },
+  "dependencies": {
+    "crossfilter2": "~1.3",
+    "d3": "^3"
+  },
+  "devDependencies": {
+    "grunt": "~1.0",
+    "grunt-browserify": "~5.0",
+    "grunt-cli": "~1.2",
+    "grunt-contrib-concat": "~1.0",
+    "grunt-contrib-connect": "~1.0",
+    "grunt-contrib-copy": "~1.0",
+    "grunt-contrib-cssmin": "~1.0",
+    "grunt-contrib-jasmine": "~1.1.0",
+    "grunt-contrib-jshint": "~1.1",
+    "grunt-contrib-uglify": "~2.0",
+    "grunt-contrib-watch": "~1.0",
+    "grunt-docco2": "~0.2",
+    "grunt-fileindex": "~0.1",
+    "grunt-gh-pages": "~2",
+    "grunt-jscs": "~3.0",
+    "grunt-jsdoc": "~2.1",
+    "grunt-jsdoc-to-markdown": "~2.0",
+    "grunt-lib-phantomjs": "~1.1",
+    "grunt-markdown": "~0.7",
+    "grunt-sass": "~2",
+    "grunt-saucelabs": "~9.0",
+    "grunt-shell": "~2.1",
+    "grunt-template-jasmine-istanbul": "~0.5",
+    "ink-docstrap": "~1.3",
+    "jsdifflib": "~1.1",
+    "load-grunt-tasks": "~3.5",
+    "marked": "~0.3",
+    "queue-async": "~1.x",
+    "time-grunt": "~1.4",
+    "uglify-js": "~2.7",
+    "file-saver": "^1.3.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "npmName": "dc",
+  "npmFileMap": [
+    {
+      "basePath": "/",
+      "files": [
+        "dc.css",
+        "dc.min.css",
+        "dc.min.js",
+        "dc.min.js.map",
+        "dc.js",
+        "dc.js.map"
+      ]
+    }
+  ],
+  "browser": "dc.js"
+}

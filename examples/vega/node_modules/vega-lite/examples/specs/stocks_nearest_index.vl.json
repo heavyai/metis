@@ -1,0 +1,57 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v2.json",
+  "width": 600,
+  "height": 300,
+  "data": {"url": "data/stocks.csv"},
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal", "axis": null},
+        "y": {"field": "price", "type": "quantitative"},
+        "color": {"field": "symbol", "type": "nominal"}
+      }
+    },
+    {
+      "selection": {
+        "index": {
+          "type": "single", "on": "mousemove",
+          "encodings": ["x"],
+          "nearest": true
+        }
+      },
+      "mark": "point",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal", "axis": null},
+        "y": {"field": "price", "type": "quantitative"},
+        "color": {"field": "symbol", "type": "nominal"},
+        "opacity": {"value": 0}
+      }
+    },
+    {
+      "transform": [
+        {"filter": {
+          "and": ["index.date", {"selection": "index"}]
+        }}
+      ],
+      "mark": "rule",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal", "axis": null}
+      }
+    },
+    {
+      "transform": [
+        {"filter": {
+          "and": ["index.date", {"selection": "index"}]
+        }}
+      ],
+      "mark": "text",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal", "axis": null},
+        "y": {"value": 10},
+        "text": {"field": "date", "type": "temporal"}
+      }
+    }
+  ],
+  "config": {"text": {"align": "right", "dx": -5, "dy": 5}}
+}
