@@ -17,6 +17,7 @@ after_success: |
 
     cd ${DOWNLOAD_PATH}
       ./scripts/install.sh
+      ./scripts/build.sh
 
       pushd examples/dc
       yarn
