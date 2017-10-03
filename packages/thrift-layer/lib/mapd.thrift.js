@@ -2085,7 +2085,7 @@ MapD_clear_gpu_memory_result.prototype.write = function(output) {
   return;
 };
 
-MapD_rollback_table_epoch_args = function(args) {
+MapD_set_table_epoch_args = function(args) {
   this.session = null;
   this.db_id = null;
   this.table_id = null;
@@ -2105,8 +2105,8 @@ MapD_rollback_table_epoch_args = function(args) {
     }
   }
 };
-MapD_rollback_table_epoch_args.prototype = {};
-MapD_rollback_table_epoch_args.prototype.read = function(input) {
+MapD_set_table_epoch_args.prototype = {};
+MapD_set_table_epoch_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -2156,8 +2156,8 @@ MapD_rollback_table_epoch_args.prototype.read = function(input) {
   return;
 };
 
-MapD_rollback_table_epoch_args.prototype.write = function(output) {
-  output.writeStructBegin('MapD_rollback_table_epoch_args');
+MapD_set_table_epoch_args.prototype.write = function(output) {
+  output.writeStructBegin('MapD_set_table_epoch_args');
   if (this.session !== null && this.session !== undefined) {
     output.writeFieldBegin('session', Thrift.Type.STRING, 1);
     output.writeString(this.session);
@@ -2183,7 +2183,7 @@ MapD_rollback_table_epoch_args.prototype.write = function(output) {
   return;
 };
 
-MapD_rollback_table_epoch_result = function(args) {
+MapD_set_table_epoch_result = function(args) {
   this.e = null;
   if (args instanceof TMapDException) {
     this.e = args;
@@ -2195,8 +2195,8 @@ MapD_rollback_table_epoch_result = function(args) {
     }
   }
 };
-MapD_rollback_table_epoch_result.prototype = {};
-MapD_rollback_table_epoch_result.prototype.read = function(input) {
+MapD_set_table_epoch_result.prototype = {};
+MapD_set_table_epoch_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -2229,11 +2229,146 @@ MapD_rollback_table_epoch_result.prototype.read = function(input) {
   return;
 };
 
-MapD_rollback_table_epoch_result.prototype.write = function(output) {
-  output.writeStructBegin('MapD_rollback_table_epoch_result');
+MapD_set_table_epoch_result.prototype.write = function(output) {
+  output.writeStructBegin('MapD_set_table_epoch_result');
   if (this.e !== null && this.e !== undefined) {
     output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
     this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MapD_get_table_epoch_args = function(args) {
+  this.session = null;
+  this.db_id = null;
+  this.table_id = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+    if (args.db_id !== undefined && args.db_id !== null) {
+      this.db_id = args.db_id;
+    }
+    if (args.table_id !== undefined && args.table_id !== null) {
+      this.table_id = args.table_id;
+    }
+  }
+};
+MapD_get_table_epoch_args.prototype = {};
+MapD_get_table_epoch_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.db_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.table_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_get_table_epoch_args.prototype.write = function(output) {
+  output.writeStructBegin('MapD_get_table_epoch_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  if (this.db_id !== null && this.db_id !== undefined) {
+    output.writeFieldBegin('db_id', Thrift.Type.I32, 2);
+    output.writeI32(this.db_id);
+    output.writeFieldEnd();
+  }
+  if (this.table_id !== null && this.table_id !== undefined) {
+    output.writeFieldBegin('table_id', Thrift.Type.I32, 3);
+    output.writeI32(this.table_id);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MapD_get_table_epoch_result = function(args) {
+  this.success = null;
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+  }
+};
+MapD_get_table_epoch_result.prototype = {};
+MapD_get_table_epoch_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.I32) {
+        this.success = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_get_table_epoch_result.prototype.write = function(output) {
+  output.writeStructBegin('MapD_get_table_epoch_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.I32, 0);
+    output.writeI32(this.success);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -4845,6 +4980,146 @@ MapD_load_table_binary_columnar_result.prototype.write = function(output) {
   return;
 };
 
+MapD_load_table_binary_arrow_args = function(args) {
+  this.session = null;
+  this.table_name = null;
+  this.arrow_stream = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+    if (args.table_name !== undefined && args.table_name !== null) {
+      this.table_name = args.table_name;
+    }
+    if (args.arrow_stream !== undefined && args.arrow_stream !== null) {
+      this.arrow_stream = args.arrow_stream;
+    }
+  }
+};
+MapD_load_table_binary_arrow_args.prototype = {};
+MapD_load_table_binary_arrow_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.table_name = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.arrow_stream = input.readBinary().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_load_table_binary_arrow_args.prototype.write = function(output) {
+  output.writeStructBegin('MapD_load_table_binary_arrow_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  if (this.table_name !== null && this.table_name !== undefined) {
+    output.writeFieldBegin('table_name', Thrift.Type.STRING, 2);
+    output.writeString(this.table_name);
+    output.writeFieldEnd();
+  }
+  if (this.arrow_stream !== null && this.arrow_stream !== undefined) {
+    output.writeFieldBegin('arrow_stream', Thrift.Type.STRING, 3);
+    output.writeBinary(this.arrow_stream);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MapD_load_table_binary_arrow_result = function(args) {
+  this.e = null;
+  if (args instanceof TMapDException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+MapD_load_table_binary_arrow_result.prototype = {};
+MapD_load_table_binary_arrow_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TMapDException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_load_table_binary_arrow_result.prototype.write = function(output) {
+  output.writeStructBegin('MapD_load_table_binary_arrow_result');
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 MapD_load_table_args = function(args) {
   this.session = null;
   this.table_name = null;
@@ -6571,6 +6846,146 @@ MapD_insert_data_result.prototype.write = function(output) {
   return;
 };
 
+MapD_checkpoint_args = function(args) {
+  this.session = null;
+  this.db_id = null;
+  this.table_id = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+    if (args.db_id !== undefined && args.db_id !== null) {
+      this.db_id = args.db_id;
+    }
+    if (args.table_id !== undefined && args.table_id !== null) {
+      this.table_id = args.table_id;
+    }
+  }
+};
+MapD_checkpoint_args.prototype = {};
+MapD_checkpoint_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.db_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.table_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_checkpoint_args.prototype.write = function(output) {
+  output.writeStructBegin('MapD_checkpoint_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  if (this.db_id !== null && this.db_id !== undefined) {
+    output.writeFieldBegin('db_id', Thrift.Type.I32, 2);
+    output.writeI32(this.db_id);
+    output.writeFieldEnd();
+  }
+  if (this.table_id !== null && this.table_id !== undefined) {
+    output.writeFieldBegin('table_id', Thrift.Type.I32, 3);
+    output.writeI32(this.table_id);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MapD_checkpoint_result = function(args) {
+  this.e = null;
+  if (args instanceof TMapDException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+MapD_checkpoint_result.prototype = {};
+MapD_checkpoint_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TMapDException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_checkpoint_result.prototype.write = function(output) {
+  output.writeStructBegin('MapD_checkpoint_result');
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 MapD_get_table_descriptor_args = function(args) {
   this.session = null;
   this.table_name = null;
@@ -7598,7 +8013,7 @@ MapDClient = function(input, output) {
 };
 MapDClient.prototype = {};
 MapDClient.prototype.connect = function(user, passwd, dbname, callback) {
-  this.send_connect(user, passwd, dbname, callback);
+  this.send_connect(user, passwd, dbname, callback); 
   if (!callback) {
     return this.recv_connect();
   }
@@ -7652,7 +8067,7 @@ MapDClient.prototype.recv_connect = function() {
   throw 'connect failed: unknown result';
 };
 MapDClient.prototype.disconnect = function(session, callback) {
-  this.send_disconnect(session, callback);
+  this.send_disconnect(session, callback); 
   if (!callback) {
   this.recv_disconnect();
   }
@@ -7701,7 +8116,7 @@ MapDClient.prototype.recv_disconnect = function() {
   return;
 };
 MapDClient.prototype.get_server_status = function(session, callback) {
-  this.send_get_server_status(session, callback);
+  this.send_get_server_status(session, callback); 
   if (!callback) {
     return this.recv_get_server_status();
   }
@@ -7753,7 +8168,7 @@ MapDClient.prototype.recv_get_server_status = function() {
   throw 'get_server_status failed: unknown result';
 };
 MapDClient.prototype.get_status = function(session, callback) {
-  this.send_get_status(session, callback);
+  this.send_get_status(session, callback); 
   if (!callback) {
     return this.recv_get_status();
   }
@@ -7805,7 +8220,7 @@ MapDClient.prototype.recv_get_status = function() {
   throw 'get_status failed: unknown result';
 };
 MapDClient.prototype.get_tables = function(session, callback) {
-  this.send_get_tables(session, callback);
+  this.send_get_tables(session, callback); 
   if (!callback) {
     return this.recv_get_tables();
   }
@@ -7857,7 +8272,7 @@ MapDClient.prototype.recv_get_tables = function() {
   throw 'get_tables failed: unknown result';
 };
 MapDClient.prototype.get_table_details = function(session, table_name, callback) {
-  this.send_get_table_details(session, table_name, callback);
+  this.send_get_table_details(session, table_name, callback); 
   if (!callback) {
     return this.recv_get_table_details();
   }
@@ -7910,7 +8325,7 @@ MapDClient.prototype.recv_get_table_details = function() {
   throw 'get_table_details failed: unknown result';
 };
 MapDClient.prototype.get_internal_table_details = function(session, table_name, callback) {
-  this.send_get_internal_table_details(session, table_name, callback);
+  this.send_get_internal_table_details(session, table_name, callback); 
   if (!callback) {
     return this.recv_get_internal_table_details();
   }
@@ -7963,7 +8378,7 @@ MapDClient.prototype.recv_get_internal_table_details = function() {
   throw 'get_internal_table_details failed: unknown result';
 };
 MapDClient.prototype.get_users = function(session, callback) {
-  this.send_get_users(session, callback);
+  this.send_get_users(session, callback); 
   if (!callback) {
     return this.recv_get_users();
   }
@@ -8015,7 +8430,7 @@ MapDClient.prototype.recv_get_users = function() {
   throw 'get_users failed: unknown result';
 };
 MapDClient.prototype.get_databases = function(session, callback) {
-  this.send_get_databases(session, callback);
+  this.send_get_databases(session, callback); 
   if (!callback) {
     return this.recv_get_databases();
   }
@@ -8067,7 +8482,7 @@ MapDClient.prototype.recv_get_databases = function() {
   throw 'get_databases failed: unknown result';
 };
 MapDClient.prototype.get_version = function(callback) {
-  this.send_get_version(callback);
+  this.send_get_version(callback); 
   if (!callback) {
     return this.recv_get_version();
   }
@@ -8118,7 +8533,7 @@ MapDClient.prototype.recv_get_version = function() {
   throw 'get_version failed: unknown result';
 };
 MapDClient.prototype.start_heap_profile = function(session, callback) {
-  this.send_start_heap_profile(session, callback);
+  this.send_start_heap_profile(session, callback); 
   if (!callback) {
   this.recv_start_heap_profile();
   }
@@ -8167,7 +8582,7 @@ MapDClient.prototype.recv_start_heap_profile = function() {
   return;
 };
 MapDClient.prototype.stop_heap_profile = function(session, callback) {
-  this.send_stop_heap_profile(session, callback);
+  this.send_stop_heap_profile(session, callback); 
   if (!callback) {
   this.recv_stop_heap_profile();
   }
@@ -8216,7 +8631,7 @@ MapDClient.prototype.recv_stop_heap_profile = function() {
   return;
 };
 MapDClient.prototype.get_heap_profile = function(session, callback) {
-  this.send_get_heap_profile(session, callback);
+  this.send_get_heap_profile(session, callback); 
   if (!callback) {
     return this.recv_get_heap_profile();
   }
@@ -8268,7 +8683,7 @@ MapDClient.prototype.recv_get_heap_profile = function() {
   throw 'get_heap_profile failed: unknown result';
 };
 MapDClient.prototype.get_memory = function(session, memory_level, callback) {
-  this.send_get_memory(session, memory_level, callback);
+  this.send_get_memory(session, memory_level, callback); 
   if (!callback) {
     return this.recv_get_memory();
   }
@@ -8321,7 +8736,7 @@ MapDClient.prototype.recv_get_memory = function() {
   throw 'get_memory failed: unknown result';
 };
 MapDClient.prototype.clear_cpu_memory = function(session, callback) {
-  this.send_clear_cpu_memory(session, callback);
+  this.send_clear_cpu_memory(session, callback); 
   if (!callback) {
   this.recv_clear_cpu_memory();
   }
@@ -8370,7 +8785,7 @@ MapDClient.prototype.recv_clear_cpu_memory = function() {
   return;
 };
 MapDClient.prototype.clear_gpu_memory = function(session, callback) {
-  this.send_clear_gpu_memory(session, callback);
+  this.send_clear_gpu_memory(session, callback); 
   if (!callback) {
   this.recv_clear_gpu_memory();
   }
@@ -8418,16 +8833,16 @@ MapDClient.prototype.recv_clear_gpu_memory = function() {
   }
   return;
 };
-MapDClient.prototype.rollback_table_epoch = function(session, db_id, table_id, new_epoch, callback) {
-  this.send_rollback_table_epoch(session, db_id, table_id, new_epoch, callback);
+MapDClient.prototype.set_table_epoch = function(session, db_id, table_id, new_epoch, callback) {
+  this.send_set_table_epoch(session, db_id, table_id, new_epoch, callback); 
   if (!callback) {
-  this.recv_rollback_table_epoch();
+  this.recv_set_table_epoch();
   }
 };
 
-MapDClient.prototype.send_rollback_table_epoch = function(session, db_id, table_id, new_epoch, callback) {
-  this.output.writeMessageBegin('rollback_table_epoch', Thrift.MessageType.CALL, this.seqid);
-  var args = new MapD_rollback_table_epoch_args();
+MapDClient.prototype.send_set_table_epoch = function(session, db_id, table_id, new_epoch, callback) {
+  this.output.writeMessageBegin('set_table_epoch', Thrift.MessageType.CALL, this.seqid);
+  var args = new MapD_set_table_epoch_args();
   args.session = session;
   args.db_id = db_id;
   args.table_id = table_id;
@@ -8439,7 +8854,7 @@ MapDClient.prototype.send_rollback_table_epoch = function(session, db_id, table_
     this.output.getTransport().flush(true, function() {
       var result = null;
       try {
-        result = self.recv_rollback_table_epoch();
+        result = self.recv_set_table_epoch();
       } catch (e) {
         result = e;
       }
@@ -8450,7 +8865,7 @@ MapDClient.prototype.send_rollback_table_epoch = function(session, db_id, table_
   }
 };
 
-MapDClient.prototype.recv_rollback_table_epoch = function() {
+MapDClient.prototype.recv_set_table_epoch = function() {
   var ret = this.input.readMessageBegin();
   var fname = ret.fname;
   var mtype = ret.mtype;
@@ -8461,7 +8876,7 @@ MapDClient.prototype.recv_rollback_table_epoch = function() {
     this.input.readMessageEnd();
     throw x;
   }
-  var result = new MapD_rollback_table_epoch_result();
+  var result = new MapD_set_table_epoch_result();
   result.read(this.input);
   this.input.readMessageEnd();
 
@@ -8470,8 +8885,59 @@ MapDClient.prototype.recv_rollback_table_epoch = function() {
   }
   return;
 };
+MapDClient.prototype.get_table_epoch = function(session, db_id, table_id, callback) {
+  this.send_get_table_epoch(session, db_id, table_id, callback); 
+  if (!callback) {
+    return this.recv_get_table_epoch();
+  }
+};
+
+MapDClient.prototype.send_get_table_epoch = function(session, db_id, table_id, callback) {
+  this.output.writeMessageBegin('get_table_epoch', Thrift.MessageType.CALL, this.seqid);
+  var args = new MapD_get_table_epoch_args();
+  args.session = session;
+  args.db_id = db_id;
+  args.table_id = table_id;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_get_table_epoch();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+MapDClient.prototype.recv_get_table_epoch = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new MapD_get_table_epoch_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'get_table_epoch failed: unknown result';
+};
 MapDClient.prototype.sql_execute = function(session, query, column_format, nonce, first_n, callback) {
-  this.send_sql_execute(session, query, column_format, nonce, first_n, callback);
+  this.send_sql_execute(session, query, column_format, nonce, first_n, callback); 
   if (!callback) {
     return this.recv_sql_execute();
   }
@@ -8527,7 +8993,7 @@ MapDClient.prototype.recv_sql_execute = function() {
   throw 'sql_execute failed: unknown result';
 };
 MapDClient.prototype.sql_execute_df = function(session, query, device_type, device_id, first_n, callback) {
-  this.send_sql_execute_df(session, query, device_type, device_id, first_n, callback);
+  this.send_sql_execute_df(session, query, device_type, device_id, first_n, callback); 
   if (!callback) {
     return this.recv_sql_execute_df();
   }
@@ -8583,7 +9049,7 @@ MapDClient.prototype.recv_sql_execute_df = function() {
   throw 'sql_execute_df failed: unknown result';
 };
 MapDClient.prototype.sql_execute_gdf = function(session, query, device_id, first_n, callback) {
-  this.send_sql_execute_gdf(session, query, device_id, first_n, callback);
+  this.send_sql_execute_gdf(session, query, device_id, first_n, callback); 
   if (!callback) {
     return this.recv_sql_execute_gdf();
   }
@@ -8638,7 +9104,7 @@ MapDClient.prototype.recv_sql_execute_gdf = function() {
   throw 'sql_execute_gdf failed: unknown result';
 };
 MapDClient.prototype.interrupt = function(session, callback) {
-  this.send_interrupt(session, callback);
+  this.send_interrupt(session, callback); 
   if (!callback) {
   this.recv_interrupt();
   }
@@ -8687,7 +9153,7 @@ MapDClient.prototype.recv_interrupt = function() {
   return;
 };
 MapDClient.prototype.sql_validate = function(session, query, callback) {
-  this.send_sql_validate(session, query, callback);
+  this.send_sql_validate(session, query, callback); 
   if (!callback) {
     return this.recv_sql_validate();
   }
@@ -8740,7 +9206,7 @@ MapDClient.prototype.recv_sql_validate = function() {
   throw 'sql_validate failed: unknown result';
 };
 MapDClient.prototype.set_execution_mode = function(session, mode, callback) {
-  this.send_set_execution_mode(session, mode, callback);
+  this.send_set_execution_mode(session, mode, callback); 
   if (!callback) {
   this.recv_set_execution_mode();
   }
@@ -8790,7 +9256,7 @@ MapDClient.prototype.recv_set_execution_mode = function() {
   return;
 };
 MapDClient.prototype.render_vega = function(session, widget_id, vega_json, compression_level, nonce, callback) {
-  this.send_render_vega(session, widget_id, vega_json, compression_level, nonce, callback);
+  this.send_render_vega(session, widget_id, vega_json, compression_level, nonce, callback); 
   if (!callback) {
     return this.recv_render_vega();
   }
@@ -8846,7 +9312,7 @@ MapDClient.prototype.recv_render_vega = function() {
   throw 'render_vega failed: unknown result';
 };
 MapDClient.prototype.get_result_row_for_pixel = function(session, widget_id, pixel, table_col_names, column_format, pixelRadius, nonce, callback) {
-  this.send_get_result_row_for_pixel(session, widget_id, pixel, table_col_names, column_format, pixelRadius, nonce, callback);
+  this.send_get_result_row_for_pixel(session, widget_id, pixel, table_col_names, column_format, pixelRadius, nonce, callback); 
   if (!callback) {
     return this.recv_get_result_row_for_pixel();
   }
@@ -8904,7 +9370,7 @@ MapDClient.prototype.recv_get_result_row_for_pixel = function() {
   throw 'get_result_row_for_pixel failed: unknown result';
 };
 MapDClient.prototype.get_frontend_view = function(session, view_name, callback) {
-  this.send_get_frontend_view(session, view_name, callback);
+  this.send_get_frontend_view(session, view_name, callback); 
   if (!callback) {
     return this.recv_get_frontend_view();
   }
@@ -8957,7 +9423,7 @@ MapDClient.prototype.recv_get_frontend_view = function() {
   throw 'get_frontend_view failed: unknown result';
 };
 MapDClient.prototype.get_frontend_views = function(session, callback) {
-  this.send_get_frontend_views(session, callback);
+  this.send_get_frontend_views(session, callback); 
   if (!callback) {
     return this.recv_get_frontend_views();
   }
@@ -9009,7 +9475,7 @@ MapDClient.prototype.recv_get_frontend_views = function() {
   throw 'get_frontend_views failed: unknown result';
 };
 MapDClient.prototype.create_frontend_view = function(session, view_name, view_state, image_hash, view_metadata, callback) {
-  this.send_create_frontend_view(session, view_name, view_state, image_hash, view_metadata, callback);
+  this.send_create_frontend_view(session, view_name, view_state, image_hash, view_metadata, callback); 
   if (!callback) {
   this.recv_create_frontend_view();
   }
@@ -9062,7 +9528,7 @@ MapDClient.prototype.recv_create_frontend_view = function() {
   return;
 };
 MapDClient.prototype.delete_frontend_view = function(session, view_name, callback) {
-  this.send_delete_frontend_view(session, view_name, callback);
+  this.send_delete_frontend_view(session, view_name, callback); 
   if (!callback) {
   this.recv_delete_frontend_view();
   }
@@ -9112,7 +9578,7 @@ MapDClient.prototype.recv_delete_frontend_view = function() {
   return;
 };
 MapDClient.prototype.get_link_view = function(session, link, callback) {
-  this.send_get_link_view(session, link, callback);
+  this.send_get_link_view(session, link, callback); 
   if (!callback) {
     return this.recv_get_link_view();
   }
@@ -9165,7 +9631,7 @@ MapDClient.prototype.recv_get_link_view = function() {
   throw 'get_link_view failed: unknown result';
 };
 MapDClient.prototype.create_link = function(session, view_state, view_metadata, callback) {
-  this.send_create_link(session, view_state, view_metadata, callback);
+  this.send_create_link(session, view_state, view_metadata, callback); 
   if (!callback) {
     return this.recv_create_link();
   }
@@ -9219,7 +9685,7 @@ MapDClient.prototype.recv_create_link = function() {
   throw 'create_link failed: unknown result';
 };
 MapDClient.prototype.load_table_binary = function(session, table_name, rows, callback) {
-  this.send_load_table_binary(session, table_name, rows, callback);
+  this.send_load_table_binary(session, table_name, rows, callback); 
   if (!callback) {
   this.recv_load_table_binary();
   }
@@ -9270,7 +9736,7 @@ MapDClient.prototype.recv_load_table_binary = function() {
   return;
 };
 MapDClient.prototype.load_table_binary_columnar = function(session, table_name, cols, callback) {
-  this.send_load_table_binary_columnar(session, table_name, cols, callback);
+  this.send_load_table_binary_columnar(session, table_name, cols, callback); 
   if (!callback) {
   this.recv_load_table_binary_columnar();
   }
@@ -9320,8 +9786,59 @@ MapDClient.prototype.recv_load_table_binary_columnar = function() {
   }
   return;
 };
+MapDClient.prototype.load_table_binary_arrow = function(session, table_name, arrow_stream, callback) {
+  this.send_load_table_binary_arrow(session, table_name, arrow_stream, callback); 
+  if (!callback) {
+  this.recv_load_table_binary_arrow();
+  }
+};
+
+MapDClient.prototype.send_load_table_binary_arrow = function(session, table_name, arrow_stream, callback) {
+  this.output.writeMessageBegin('load_table_binary_arrow', Thrift.MessageType.CALL, this.seqid);
+  var args = new MapD_load_table_binary_arrow_args();
+  args.session = session;
+  args.table_name = table_name;
+  args.arrow_stream = arrow_stream;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_load_table_binary_arrow();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+MapDClient.prototype.recv_load_table_binary_arrow = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new MapD_load_table_binary_arrow_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  return;
+};
 MapDClient.prototype.load_table = function(session, table_name, rows, callback) {
-  this.send_load_table(session, table_name, rows, callback);
+  this.send_load_table(session, table_name, rows, callback); 
   if (!callback) {
   this.recv_load_table();
   }
@@ -9372,7 +9889,7 @@ MapDClient.prototype.recv_load_table = function() {
   return;
 };
 MapDClient.prototype.detect_column_types = function(session, file_name, copy_params, callback) {
-  this.send_detect_column_types(session, file_name, copy_params, callback);
+  this.send_detect_column_types(session, file_name, copy_params, callback); 
   if (!callback) {
     return this.recv_detect_column_types();
   }
@@ -9426,7 +9943,7 @@ MapDClient.prototype.recv_detect_column_types = function() {
   throw 'detect_column_types failed: unknown result';
 };
 MapDClient.prototype.create_table = function(session, table_name, row_desc, table_type, callback) {
-  this.send_create_table(session, table_name, row_desc, table_type, callback);
+  this.send_create_table(session, table_name, row_desc, table_type, callback); 
   if (!callback) {
   this.recv_create_table();
   }
@@ -9478,7 +9995,7 @@ MapDClient.prototype.recv_create_table = function() {
   return;
 };
 MapDClient.prototype.import_table = function(session, table_name, file_name, copy_params, callback) {
-  this.send_import_table(session, table_name, file_name, copy_params, callback);
+  this.send_import_table(session, table_name, file_name, copy_params, callback); 
   if (!callback) {
   this.recv_import_table();
   }
@@ -9530,7 +10047,7 @@ MapDClient.prototype.recv_import_table = function() {
   return;
 };
 MapDClient.prototype.import_geo_table = function(session, table_name, file_name, copy_params, row_desc, callback) {
-  this.send_import_geo_table(session, table_name, file_name, copy_params, row_desc, callback);
+  this.send_import_geo_table(session, table_name, file_name, copy_params, row_desc, callback); 
   if (!callback) {
   this.recv_import_geo_table();
   }
@@ -9583,7 +10100,7 @@ MapDClient.prototype.recv_import_geo_table = function() {
   return;
 };
 MapDClient.prototype.import_table_status = function(session, import_id, callback) {
-  this.send_import_table_status(session, import_id, callback);
+  this.send_import_table_status(session, import_id, callback); 
   if (!callback) {
     return this.recv_import_table_status();
   }
@@ -9636,7 +10153,7 @@ MapDClient.prototype.recv_import_table_status = function() {
   throw 'import_table_status failed: unknown result';
 };
 MapDClient.prototype.start_query = function(session, query_ra, just_explain, callback) {
-  this.send_start_query(session, query_ra, just_explain, callback);
+  this.send_start_query(session, query_ra, just_explain, callback); 
   if (!callback) {
     return this.recv_start_query();
   }
@@ -9690,7 +10207,7 @@ MapDClient.prototype.recv_start_query = function() {
   throw 'start_query failed: unknown result';
 };
 MapDClient.prototype.execute_first_step = function(pending_query, callback) {
-  this.send_execute_first_step(pending_query, callback);
+  this.send_execute_first_step(pending_query, callback); 
   if (!callback) {
     return this.recv_execute_first_step();
   }
@@ -9742,7 +10259,7 @@ MapDClient.prototype.recv_execute_first_step = function() {
   throw 'execute_first_step failed: unknown result';
 };
 MapDClient.prototype.broadcast_serialized_rows = function(serialized_rows, row_desc, query_id, callback) {
-  this.send_broadcast_serialized_rows(serialized_rows, row_desc, query_id, callback);
+  this.send_broadcast_serialized_rows(serialized_rows, row_desc, query_id, callback); 
   if (!callback) {
   this.recv_broadcast_serialized_rows();
   }
@@ -9793,7 +10310,7 @@ MapDClient.prototype.recv_broadcast_serialized_rows = function() {
   return;
 };
 MapDClient.prototype.render_vega_raw_pixels = function(session, widget_id, node_idx, vega_json, callback) {
-  this.send_render_vega_raw_pixels(session, widget_id, node_idx, vega_json, callback);
+  this.send_render_vega_raw_pixels(session, widget_id, node_idx, vega_json, callback); 
   if (!callback) {
     return this.recv_render_vega_raw_pixels();
   }
@@ -9848,7 +10365,7 @@ MapDClient.prototype.recv_render_vega_raw_pixels = function() {
   throw 'render_vega_raw_pixels failed: unknown result';
 };
 MapDClient.prototype.insert_data = function(session, insert_data, callback) {
-  this.send_insert_data(session, insert_data, callback);
+  this.send_insert_data(session, insert_data, callback); 
   if (!callback) {
   this.recv_insert_data();
   }
@@ -9897,8 +10414,59 @@ MapDClient.prototype.recv_insert_data = function() {
   }
   return;
 };
+MapDClient.prototype.checkpoint = function(session, db_id, table_id, callback) {
+  this.send_checkpoint(session, db_id, table_id, callback); 
+  if (!callback) {
+  this.recv_checkpoint();
+  }
+};
+
+MapDClient.prototype.send_checkpoint = function(session, db_id, table_id, callback) {
+  this.output.writeMessageBegin('checkpoint', Thrift.MessageType.CALL, this.seqid);
+  var args = new MapD_checkpoint_args();
+  args.session = session;
+  args.db_id = db_id;
+  args.table_id = table_id;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_checkpoint();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+MapDClient.prototype.recv_checkpoint = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new MapD_checkpoint_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  return;
+};
 MapDClient.prototype.get_table_descriptor = function(session, table_name, callback) {
-  this.send_get_table_descriptor(session, table_name, callback);
+  this.send_get_table_descriptor(session, table_name, callback); 
   if (!callback) {
     return this.recv_get_table_descriptor();
   }
@@ -9951,7 +10519,7 @@ MapDClient.prototype.recv_get_table_descriptor = function() {
   throw 'get_table_descriptor failed: unknown result';
 };
 MapDClient.prototype.get_row_descriptor = function(session, table_name, callback) {
-  this.send_get_row_descriptor(session, table_name, callback);
+  this.send_get_row_descriptor(session, table_name, callback); 
   if (!callback) {
     return this.recv_get_row_descriptor();
   }
@@ -10004,7 +10572,7 @@ MapDClient.prototype.recv_get_row_descriptor = function() {
   throw 'get_row_descriptor failed: unknown result';
 };
 MapDClient.prototype.render = function(session, query, render_type, nonce, callback) {
-  this.send_render(session, query, render_type, nonce, callback);
+  this.send_render(session, query, render_type, nonce, callback); 
   if (!callback) {
     return this.recv_render();
   }
@@ -10059,7 +10627,7 @@ MapDClient.prototype.recv_render = function() {
   throw 'render failed: unknown result';
 };
 MapDClient.prototype.get_rows_for_pixels = function(session, widget_id, pixels, table_name, col_names, column_format, nonce, callback) {
-  this.send_get_rows_for_pixels(session, widget_id, pixels, table_name, col_names, column_format, nonce, callback);
+  this.send_get_rows_for_pixels(session, widget_id, pixels, table_name, col_names, column_format, nonce, callback); 
   if (!callback) {
     return this.recv_get_rows_for_pixels();
   }
@@ -10117,7 +10685,7 @@ MapDClient.prototype.recv_get_rows_for_pixels = function() {
   throw 'get_rows_for_pixels failed: unknown result';
 };
 MapDClient.prototype.get_row_for_pixel = function(session, widget_id, pixel, table_name, col_names, column_format, pixelRadius, nonce, callback) {
-  this.send_get_row_for_pixel(session, widget_id, pixel, table_name, col_names, column_format, pixelRadius, nonce, callback);
+  this.send_get_row_for_pixel(session, widget_id, pixel, table_name, col_names, column_format, pixelRadius, nonce, callback); 
   if (!callback) {
     return this.recv_get_row_for_pixel();
   }

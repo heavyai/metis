@@ -4508,3 +4508,4 @@ TRawPixelDataResult.prototype.write = function(output) {
   output.writeStructEnd();
   return;
 };
+
