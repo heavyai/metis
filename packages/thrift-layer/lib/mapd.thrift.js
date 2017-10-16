@@ -2382,6 +2382,7 @@ MapD_sql_execute_args = function(args) {
   this.column_format = null;
   this.nonce = null;
   this.first_n = -1;
+  this.at_most_n = -1;
   if (args) {
     if (args.session !== undefined && args.session !== null) {
       this.session = args.session;
@@ -2397,6 +2398,9 @@ MapD_sql_execute_args = function(args) {
     }
     if (args.first_n !== undefined && args.first_n !== null) {
       this.first_n = args.first_n;
+    }
+    if (args.at_most_n !== undefined && args.at_most_n !== null) {
+      this.at_most_n = args.at_most_n;
     }
   }
 };
@@ -2449,6 +2453,13 @@ MapD_sql_execute_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 6:
+      if (ftype == Thrift.Type.I32) {
+        this.at_most_n = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2483,6 +2494,11 @@ MapD_sql_execute_args.prototype.write = function(output) {
   if (this.first_n !== null && this.first_n !== undefined) {
     output.writeFieldBegin('first_n', Thrift.Type.I32, 5);
     output.writeI32(this.first_n);
+    output.writeFieldEnd();
+  }
+  if (this.at_most_n !== null && this.at_most_n !== undefined) {
+    output.writeFieldBegin('at_most_n', Thrift.Type.I32, 6);
+    output.writeI32(this.at_most_n);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -8936,14 +8952,14 @@ MapDClient.prototype.recv_get_table_epoch = function() {
   }
   throw 'get_table_epoch failed: unknown result';
 };
-MapDClient.prototype.sql_execute = function(session, query, column_format, nonce, first_n, callback) {
-  this.send_sql_execute(session, query, column_format, nonce, first_n, callback); 
+MapDClient.prototype.sql_execute = function(session, query, column_format, nonce, first_n, at_most_n, callback) {
+  this.send_sql_execute(session, query, column_format, nonce, first_n, at_most_n, callback); 
   if (!callback) {
     return this.recv_sql_execute();
   }
 };
 
-MapDClient.prototype.send_sql_execute = function(session, query, column_format, nonce, first_n, callback) {
+MapDClient.prototype.send_sql_execute = function(session, query, column_format, nonce, first_n, at_most_n, callback) {
   this.output.writeMessageBegin('sql_execute', Thrift.MessageType.CALL, this.seqid);
   var args = new MapD_sql_execute_args();
   args.session = session;
@@ -8951,6 +8967,7 @@ MapDClient.prototype.send_sql_execute = function(session, query, column_format, 
   args.column_format = column_format;
   args.nonce = nonce;
   args.first_n = first_n;
+  args.at_most_n = at_most_n;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {
