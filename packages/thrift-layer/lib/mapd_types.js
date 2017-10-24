@@ -51,6 +51,13 @@ TExpressionRangeType = {
   'FLOAT' : 2,
   'DOUBLE' : 3
 };
+TDBObjectType = {
+  'AbstractDBObjectType' : 0,
+  'DatabaseDBObjectType' : 1,
+  'TableDBObjectType' : 2,
+  'ColumnDBObjectType' : 3,
+  'DashboardDBObjectType' : 4
+};
 TDatumVal = function(args) {
   this.int_val = null;
   this.real_val = null;
@@ -4502,6 +4509,208 @@ TRawPixelDataResult.prototype.write = function(output) {
   if (this.total_time_ms !== null && this.total_time_ms !== undefined) {
     output.writeFieldBegin('total_time_ms', Thrift.Type.I64, 10);
     output.writeI64(this.total_time_ms);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TAccessPrivileges = function(args) {
+  this.select_ = null;
+  this.insert_ = null;
+  this.create_ = null;
+  this.truncate_ = null;
+  if (args) {
+    if (args.select_ !== undefined && args.select_ !== null) {
+      this.select_ = args.select_;
+    }
+    if (args.insert_ !== undefined && args.insert_ !== null) {
+      this.insert_ = args.insert_;
+    }
+    if (args.create_ !== undefined && args.create_ !== null) {
+      this.create_ = args.create_;
+    }
+    if (args.truncate_ !== undefined && args.truncate_ !== null) {
+      this.truncate_ = args.truncate_;
+    }
+  }
+};
+TAccessPrivileges.prototype = {};
+TAccessPrivileges.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.BOOL) {
+        this.select_ = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.BOOL) {
+        this.insert_ = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.BOOL) {
+        this.create_ = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.BOOL) {
+        this.truncate_ = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TAccessPrivileges.prototype.write = function(output) {
+  output.writeStructBegin('TAccessPrivileges');
+  if (this.select_ !== null && this.select_ !== undefined) {
+    output.writeFieldBegin('select_', Thrift.Type.BOOL, 1);
+    output.writeBool(this.select_);
+    output.writeFieldEnd();
+  }
+  if (this.insert_ !== null && this.insert_ !== undefined) {
+    output.writeFieldBegin('insert_', Thrift.Type.BOOL, 2);
+    output.writeBool(this.insert_);
+    output.writeFieldEnd();
+  }
+  if (this.create_ !== null && this.create_ !== undefined) {
+    output.writeFieldBegin('create_', Thrift.Type.BOOL, 3);
+    output.writeBool(this.create_);
+    output.writeFieldEnd();
+  }
+  if (this.truncate_ !== null && this.truncate_ !== undefined) {
+    output.writeFieldBegin('truncate_', Thrift.Type.BOOL, 4);
+    output.writeBool(this.truncate_);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TDBObject = function(args) {
+  this.objectName = null;
+  this.objectType = null;
+  this.privs = null;
+  if (args) {
+    if (args.objectName !== undefined && args.objectName !== null) {
+      this.objectName = args.objectName;
+    }
+    if (args.objectType !== undefined && args.objectType !== null) {
+      this.objectType = args.objectType;
+    }
+    if (args.privs !== undefined && args.privs !== null) {
+      this.privs = Thrift.copyList(args.privs, [null]);
+    }
+  }
+};
+TDBObject.prototype = {};
+TDBObject.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.objectName = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.objectType = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.LIST) {
+        var _size186 = 0;
+        var _rtmp3190;
+        this.privs = [];
+        var _etype189 = 0;
+        _rtmp3190 = input.readListBegin();
+        _etype189 = _rtmp3190.etype;
+        _size186 = _rtmp3190.size;
+        for (var _i191 = 0; _i191 < _size186; ++_i191)
+        {
+          var elem192 = null;
+          elem192 = input.readBool().value;
+          this.privs.push(elem192);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TDBObject.prototype.write = function(output) {
+  output.writeStructBegin('TDBObject');
+  if (this.objectName !== null && this.objectName !== undefined) {
+    output.writeFieldBegin('objectName', Thrift.Type.STRING, 1);
+    output.writeString(this.objectName);
+    output.writeFieldEnd();
+  }
+  if (this.objectType !== null && this.objectType !== undefined) {
+    output.writeFieldBegin('objectType', Thrift.Type.I32, 2);
+    output.writeI32(this.objectType);
+    output.writeFieldEnd();
+  }
+  if (this.privs !== null && this.privs !== undefined) {
+    output.writeFieldBegin('privs', Thrift.Type.LIST, 3);
+    output.writeListBegin(Thrift.Type.BOOL, this.privs.length);
+    for (var iter193 in this.privs)
+    {
+      if (this.privs.hasOwnProperty(iter193))
+      {
+        iter193 = this.privs[iter193];
+        output.writeBool(iter193);
+      }
+    }
+    output.writeListEnd();
     output.writeFieldEnd();
   }
   output.writeFieldStop();
