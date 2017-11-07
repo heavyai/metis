@@ -8025,12 +8025,16 @@ MapD_get_row_for_pixel_result.prototype.write = function(output) {
 MapD_get_role_args = function(args) {
   this.session = null;
   this.roleName = null;
+  this.userPrivateRole = null;
   if (args) {
     if (args.session !== undefined && args.session !== null) {
       this.session = args.session;
     }
     if (args.roleName !== undefined && args.roleName !== null) {
       this.roleName = args.roleName;
+    }
+    if (args.userPrivateRole !== undefined && args.userPrivateRole !== null) {
+      this.userPrivateRole = args.userPrivateRole;
     }
   }
 };
@@ -8062,6 +8066,13 @@ MapD_get_role_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 3:
+      if (ftype == Thrift.Type.BOOL) {
+        this.userPrivateRole = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -8081,6 +8092,11 @@ MapD_get_role_args.prototype.write = function(output) {
   if (this.roleName !== null && this.roleName !== undefined) {
     output.writeFieldBegin('roleName', Thrift.Type.STRING, 2);
     output.writeString(this.roleName);
+    output.writeFieldEnd();
+  }
+  if (this.userPrivateRole !== null && this.userPrivateRole !== undefined) {
+    output.writeFieldBegin('userPrivateRole', Thrift.Type.BOOL, 3);
+    output.writeBool(this.userPrivateRole);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -12101,18 +12117,19 @@ MapDClient.prototype.recv_get_row_for_pixel = function() {
   }
   throw 'get_row_for_pixel failed: unknown result';
 };
-MapDClient.prototype.get_role = function(session, roleName, callback) {
-  this.send_get_role(session, roleName, callback); 
+MapDClient.prototype.get_role = function(session, roleName, userPrivateRole, callback) {
+  this.send_get_role(session, roleName, userPrivateRole, callback); 
   if (!callback) {
     return this.recv_get_role();
   }
 };
 
-MapDClient.prototype.send_get_role = function(session, roleName, callback) {
+MapDClient.prototype.send_get_role = function(session, roleName, userPrivateRole, callback) {
   this.output.writeMessageBegin('get_role', Thrift.MessageType.CALL, this.seqid);
   var args = new MapD_get_role_args();
   args.session = session;
   args.roleName = roleName;
+  args.userPrivateRole = userPrivateRole;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {
