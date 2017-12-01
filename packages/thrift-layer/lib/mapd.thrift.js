@@ -3059,6 +3059,147 @@ MapD_sql_execute_gdf_result.prototype.write = function(output) {
   return;
 };
 
+MapD_deallocate_df_args = function(args) {
+  this.df = null;
+  this.device_type = null;
+  this.device_id = 0;
+  if (args) {
+    if (args.df !== undefined && args.df !== null) {
+      this.df = new TDataFrame(args.df);
+    }
+    if (args.device_type !== undefined && args.device_type !== null) {
+      this.device_type = args.device_type;
+    }
+    if (args.device_id !== undefined && args.device_id !== null) {
+      this.device_id = args.device_id;
+    }
+  }
+};
+MapD_deallocate_df_args.prototype = {};
+MapD_deallocate_df_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.df = new TDataFrame();
+        this.df.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.device_type = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.device_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_deallocate_df_args.prototype.write = function(output) {
+  output.writeStructBegin('MapD_deallocate_df_args');
+  if (this.df !== null && this.df !== undefined) {
+    output.writeFieldBegin('df', Thrift.Type.STRUCT, 1);
+    this.df.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.device_type !== null && this.device_type !== undefined) {
+    output.writeFieldBegin('device_type', Thrift.Type.I32, 2);
+    output.writeI32(this.device_type);
+    output.writeFieldEnd();
+  }
+  if (this.device_id !== null && this.device_id !== undefined) {
+    output.writeFieldBegin('device_id', Thrift.Type.I32, 3);
+    output.writeI32(this.device_id);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MapD_deallocate_df_result = function(args) {
+  this.e = null;
+  if (args instanceof TMapDException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+MapD_deallocate_df_result.prototype = {};
+MapD_deallocate_df_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TMapDException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_deallocate_df_result.prototype.write = function(output) {
+  output.writeStructBegin('MapD_deallocate_df_result');
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 MapD_interrupt_args = function(args) {
   this.session = null;
   if (args) {
@@ -10155,6 +10296,57 @@ MapDClient.prototype.recv_sql_execute_gdf = function() {
     return result.success;
   }
   throw 'sql_execute_gdf failed: unknown result';
+};
+MapDClient.prototype.deallocate_df = function(df, device_type, device_id, callback) {
+  this.send_deallocate_df(df, device_type, device_id, callback); 
+  if (!callback) {
+  this.recv_deallocate_df();
+  }
+};
+
+MapDClient.prototype.send_deallocate_df = function(df, device_type, device_id, callback) {
+  this.output.writeMessageBegin('deallocate_df', Thrift.MessageType.CALL, this.seqid);
+  var args = new MapD_deallocate_df_args();
+  args.df = df;
+  args.device_type = device_type;
+  args.device_id = device_id;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_deallocate_df();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+MapDClient.prototype.recv_deallocate_df = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new MapD_deallocate_df_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  return;
 };
 MapDClient.prototype.interrupt = function(session, callback) {
   this.send_interrupt(session, callback); 
