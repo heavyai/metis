@@ -3060,10 +3060,14 @@ MapD_sql_execute_gdf_result.prototype.write = function(output) {
 };
 
 MapD_deallocate_df_args = function(args) {
+  this.session = null;
   this.df = null;
   this.device_type = null;
   this.device_id = 0;
   if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
     if (args.df !== undefined && args.df !== null) {
       this.df = new TDataFrame(args.df);
     }
@@ -3090,6 +3094,13 @@ MapD_deallocate_df_args.prototype.read = function(input) {
     switch (fid)
     {
       case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
       if (ftype == Thrift.Type.STRUCT) {
         this.df = new TDataFrame();
         this.df.read(input);
@@ -3097,14 +3108,14 @@ MapD_deallocate_df_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 2:
+      case 3:
       if (ftype == Thrift.Type.I32) {
         this.device_type = input.readI32().value;
       } else {
         input.skip(ftype);
       }
       break;
-      case 3:
+      case 4:
       if (ftype == Thrift.Type.I32) {
         this.device_id = input.readI32().value;
       } else {
@@ -3122,18 +3133,23 @@ MapD_deallocate_df_args.prototype.read = function(input) {
 
 MapD_deallocate_df_args.prototype.write = function(output) {
   output.writeStructBegin('MapD_deallocate_df_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
   if (this.df !== null && this.df !== undefined) {
-    output.writeFieldBegin('df', Thrift.Type.STRUCT, 1);
+    output.writeFieldBegin('df', Thrift.Type.STRUCT, 2);
     this.df.write(output);
     output.writeFieldEnd();
   }
   if (this.device_type !== null && this.device_type !== undefined) {
-    output.writeFieldBegin('device_type', Thrift.Type.I32, 2);
+    output.writeFieldBegin('device_type', Thrift.Type.I32, 3);
     output.writeI32(this.device_type);
     output.writeFieldEnd();
   }
   if (this.device_id !== null && this.device_id !== undefined) {
-    output.writeFieldBegin('device_id', Thrift.Type.I32, 3);
+    output.writeFieldBegin('device_id', Thrift.Type.I32, 4);
     output.writeI32(this.device_id);
     output.writeFieldEnd();
   }
@@ -10297,16 +10313,17 @@ MapDClient.prototype.recv_sql_execute_gdf = function() {
   }
   throw 'sql_execute_gdf failed: unknown result';
 };
-MapDClient.prototype.deallocate_df = function(df, device_type, device_id, callback) {
-  this.send_deallocate_df(df, device_type, device_id, callback); 
+MapDClient.prototype.deallocate_df = function(session, df, device_type, device_id, callback) {
+  this.send_deallocate_df(session, df, device_type, device_id, callback); 
   if (!callback) {
   this.recv_deallocate_df();
   }
 };
 
-MapDClient.prototype.send_deallocate_df = function(df, device_type, device_id, callback) {
+MapDClient.prototype.send_deallocate_df = function(session, df, device_type, device_id, callback) {
   this.output.writeMessageBegin('deallocate_df', Thrift.MessageType.CALL, this.seqid);
   var args = new MapD_deallocate_df_args();
+  args.session = session;
   args.df = df;
   args.device_type = device_type;
   args.device_id = device_id;
