@@ -4804,3 +4804,78 @@ TDBObject.prototype.write = function(output) {
   return;
 };
 
+TLicenseInfo = function(args) {
+  this.claims = null;
+  if (args) {
+    if (args.claims !== undefined && args.claims !== null) {
+      this.claims = Thrift.copyList(args.claims, [null]);
+    }
+  }
+};
+TLicenseInfo.prototype = {};
+TLicenseInfo.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.LIST) {
+        var _size202 = 0;
+        var _rtmp3206;
+        this.claims = [];
+        var _etype205 = 0;
+        _rtmp3206 = input.readListBegin();
+        _etype205 = _rtmp3206.etype;
+        _size202 = _rtmp3206.size;
+        for (var _i207 = 0; _i207 < _size202; ++_i207)
+        {
+          var elem208 = null;
+          elem208 = input.readString().value;
+          this.claims.push(elem208);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TLicenseInfo.prototype.write = function(output) {
+  output.writeStructBegin('TLicenseInfo');
+  if (this.claims !== null && this.claims !== undefined) {
+    output.writeFieldBegin('claims', Thrift.Type.LIST, 1);
+    output.writeListBegin(Thrift.Type.STRING, this.claims.length);
+    for (var iter209 in this.claims)
+    {
+      if (this.claims.hasOwnProperty(iter209))
+      {
+        iter209 = this.claims[iter209];
+        output.writeString(iter209);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
