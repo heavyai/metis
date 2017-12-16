@@ -3,7 +3,7 @@ import tape from "tape";
 import parseExpression from "../../src/parser/parse-expression";
 
 tape("parseExpression", assert => {
-  assert.plan(21);
+  assert.plan(22);
 
   assert.equal(parseExpression("AVG(depdelay)"), "AVG(depdelay)");
 
@@ -190,6 +190,40 @@ tape("parseExpression", assert => {
       else: "other"
     }),
     "CASE WHEN recipient_party IN (SELECT recipient_party, MAX(amount) as val FROM contributions GROUP BY recipient_party LIMIT 10) THEN recipient_party ELSE 'other' END"
+  );
+
+assert.equal(
+    parseExpression({
+      type: "case",
+      cond: [
+        [
+          {
+            type: "in",
+            expr: "recipient_party",
+            set: {
+              type: "root",
+              source: "contributions",
+              name: "",
+              transform: [
+                {
+                  type: "aggregate",
+                  fields: ["amount"],
+                  ops: ["max"],
+                  as: ["val"],
+                  groupby: "recipient_party"
+                },
+                {
+                  type: "limit",
+                  row: 10
+                }
+              ]
+            }
+          },
+          "recipient_party"
+        ]
+      ]
+    }),
+    "CASE WHEN recipient_party IN (SELECT recipient_party, MAX(amount) as val FROM contributions GROUP BY recipient_party LIMIT 10) THEN recipient_party END"
   );
 
   assert.equal(
