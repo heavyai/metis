@@ -39,7 +39,7 @@ function aggregateField(op: string, field: string, as: string): string {
   } else if (AGGREGATES[op]) {
     str += AGGREGATES[op] + "(" + field + ")";
   } else {
-    str += `${op}(${field})`
+    str += `${op}(${field})`;
   }
 
   return str + `${as ? " as " + as : ""}`;
