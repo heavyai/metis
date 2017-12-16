@@ -21,16 +21,14 @@ export default function writeSQL(state: DataState, parser: Parser): string {
 }
 
 export function write(sql: SQL): string {
-  return (
-    writeSelect(sql.select) +
+  return writeSelect(sql.select) +
     writeFrom(sql.from) +
     writeWhere(sql.where) +
     writeGroupby(sql.groupby) +
     writeHaving(sql.having) +
     writeOrderBy(sql.orderby) +
     writeLimit(sql.limit) +
-    writeOffset(sql.offset)
-  );
+    writeOffset(sql.offset);
 }
 
 function writeSelect(select: Array<string>): string {

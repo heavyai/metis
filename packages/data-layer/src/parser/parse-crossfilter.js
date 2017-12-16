@@ -14,7 +14,7 @@ export default function parseCrossfilter(
       if (typeof sql.unresolved === "object") {
         if (sql.unresolved.hasOwnProperty(transform.signal)) {
           Object.keys(transform.filter).forEach(key => {
-            const filter = transform.filter[key]
+            const filter = transform.filter[key];
             if (sql.unresolved) {
               const { ignore } = sql.unresolved[transform.signal];
               if (
@@ -25,7 +25,7 @@ export default function parseCrossfilter(
                 parseFilter(sql, filter, parser);
               }
             }
-          })
+          });
         }
       }
     default:
