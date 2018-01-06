@@ -2658,6 +2658,146 @@ MapD_set_table_epoch_result.prototype.write = function(output) {
   return;
 };
 
+MapD_set_table_epoch_by_name_args = function(args) {
+  this.session = null;
+  this.table_name = null;
+  this.new_epoch = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+    if (args.table_name !== undefined && args.table_name !== null) {
+      this.table_name = args.table_name;
+    }
+    if (args.new_epoch !== undefined && args.new_epoch !== null) {
+      this.new_epoch = args.new_epoch;
+    }
+  }
+};
+MapD_set_table_epoch_by_name_args.prototype = {};
+MapD_set_table_epoch_by_name_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.table_name = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.new_epoch = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_set_table_epoch_by_name_args.prototype.write = function(output) {
+  output.writeStructBegin('MapD_set_table_epoch_by_name_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  if (this.table_name !== null && this.table_name !== undefined) {
+    output.writeFieldBegin('table_name', Thrift.Type.STRING, 2);
+    output.writeString(this.table_name);
+    output.writeFieldEnd();
+  }
+  if (this.new_epoch !== null && this.new_epoch !== undefined) {
+    output.writeFieldBegin('new_epoch', Thrift.Type.I32, 3);
+    output.writeI32(this.new_epoch);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MapD_set_table_epoch_by_name_result = function(args) {
+  this.e = null;
+  if (args instanceof TMapDException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+MapD_set_table_epoch_by_name_result.prototype = {};
+MapD_set_table_epoch_by_name_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TMapDException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_set_table_epoch_by_name_result.prototype.write = function(output) {
+  output.writeStructBegin('MapD_set_table_epoch_by_name_result');
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 MapD_get_table_epoch_args = function(args) {
   this.session = null;
   this.db_id = null;
@@ -2783,6 +2923,125 @@ MapD_get_table_epoch_result.prototype.read = function(input) {
 
 MapD_get_table_epoch_result.prototype.write = function(output) {
   output.writeStructBegin('MapD_get_table_epoch_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.I32, 0);
+    output.writeI32(this.success);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MapD_get_table_epoch_by_name_args = function(args) {
+  this.session = null;
+  this.table_name = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+    if (args.table_name !== undefined && args.table_name !== null) {
+      this.table_name = args.table_name;
+    }
+  }
+};
+MapD_get_table_epoch_by_name_args.prototype = {};
+MapD_get_table_epoch_by_name_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.table_name = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_get_table_epoch_by_name_args.prototype.write = function(output) {
+  output.writeStructBegin('MapD_get_table_epoch_by_name_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  if (this.table_name !== null && this.table_name !== undefined) {
+    output.writeFieldBegin('table_name', Thrift.Type.STRING, 2);
+    output.writeString(this.table_name);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MapD_get_table_epoch_by_name_result = function(args) {
+  this.success = null;
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
+    }
+  }
+};
+MapD_get_table_epoch_by_name_result.prototype = {};
+MapD_get_table_epoch_by_name_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.I32) {
+        this.success = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_get_table_epoch_by_name_result.prototype.write = function(output) {
+  output.writeStructBegin('MapD_get_table_epoch_by_name_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.I32, 0);
     output.writeI32(this.success);
@@ -10782,6 +11041,57 @@ MapDClient.prototype.recv_set_table_epoch = function() {
   }
   return;
 };
+MapDClient.prototype.set_table_epoch_by_name = function(session, table_name, new_epoch, callback) {
+  this.send_set_table_epoch_by_name(session, table_name, new_epoch, callback); 
+  if (!callback) {
+  this.recv_set_table_epoch_by_name();
+  }
+};
+
+MapDClient.prototype.send_set_table_epoch_by_name = function(session, table_name, new_epoch, callback) {
+  this.output.writeMessageBegin('set_table_epoch_by_name', Thrift.MessageType.CALL, this.seqid);
+  var args = new MapD_set_table_epoch_by_name_args();
+  args.session = session;
+  args.table_name = table_name;
+  args.new_epoch = new_epoch;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_set_table_epoch_by_name();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+MapDClient.prototype.recv_set_table_epoch_by_name = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new MapD_set_table_epoch_by_name_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  return;
+};
 MapDClient.prototype.get_table_epoch = function(session, db_id, table_id, callback) {
   this.send_get_table_epoch(session, db_id, table_id, callback); 
   if (!callback) {
@@ -10832,6 +11142,56 @@ MapDClient.prototype.recv_get_table_epoch = function() {
     return result.success;
   }
   throw 'get_table_epoch failed: unknown result';
+};
+MapDClient.prototype.get_table_epoch_by_name = function(session, table_name, callback) {
+  this.send_get_table_epoch_by_name(session, table_name, callback); 
+  if (!callback) {
+    return this.recv_get_table_epoch_by_name();
+  }
+};
+
+MapDClient.prototype.send_get_table_epoch_by_name = function(session, table_name, callback) {
+  this.output.writeMessageBegin('get_table_epoch_by_name', Thrift.MessageType.CALL, this.seqid);
+  var args = new MapD_get_table_epoch_by_name_args();
+  args.session = session;
+  args.table_name = table_name;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_get_table_epoch_by_name();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+MapDClient.prototype.recv_get_table_epoch_by_name = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new MapD_get_table_epoch_by_name_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'get_table_epoch_by_name failed: unknown result';
 };
 MapDClient.prototype.sql_execute = function(session, query, column_format, nonce, first_n, at_most_n, callback) {
   this.send_sql_execute(session, query, column_format, nonce, first_n, at_most_n, callback); 
