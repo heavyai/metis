@@ -82,11 +82,12 @@ export default function parseExpression(
         parseExpression(expression.right) +
         ")";
     case "case":
+      const elseCase = expression.else === null ? "NULL" : `'${expression.else}'`
       return "CASE WHEN " +
         expression.cond
           .map(cond => parseExpression(cond[0]) + " THEN " + cond[1])
           .join(" ") +
-        (expression.else ? ` ELSE '${expression.else}'` : "") +
+        (typeof expression.else !== "undefined" ? ` ELSE ${elseCase}` : "") +
         " END";
     case "date_trunc":
       return "date_trunc(" + expression.unit + ", " + expression.field + ")";
