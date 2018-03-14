@@ -1651,6 +1651,9 @@ TCopyParams = function(args) {
   this.array_end = null;
   this.threads = null;
   this.table_type = 0;
+  this.s3_access_key = null;
+  this.s3_secret_key = null;
+  this.s3_region = null;
   if (args) {
     if (args.delimiter !== undefined && args.delimiter !== null) {
       this.delimiter = args.delimiter;
@@ -1687,6 +1690,15 @@ TCopyParams = function(args) {
     }
     if (args.table_type !== undefined && args.table_type !== null) {
       this.table_type = args.table_type;
+    }
+    if (args.s3_access_key !== undefined && args.s3_access_key !== null) {
+      this.s3_access_key = args.s3_access_key;
+    }
+    if (args.s3_secret_key !== undefined && args.s3_secret_key !== null) {
+      this.s3_secret_key = args.s3_secret_key;
+    }
+    if (args.s3_region !== undefined && args.s3_region !== null) {
+      this.s3_region = args.s3_region;
     }
   }
 };
@@ -1788,6 +1800,27 @@ TCopyParams.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 13:
+      if (ftype == Thrift.Type.STRING) {
+        this.s3_access_key = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 14:
+      if (ftype == Thrift.Type.STRING) {
+        this.s3_secret_key = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 15:
+      if (ftype == Thrift.Type.STRING) {
+        this.s3_region = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -1857,6 +1890,21 @@ TCopyParams.prototype.write = function(output) {
   if (this.table_type !== null && this.table_type !== undefined) {
     output.writeFieldBegin('table_type', Thrift.Type.I32, 12);
     output.writeI32(this.table_type);
+    output.writeFieldEnd();
+  }
+  if (this.s3_access_key !== null && this.s3_access_key !== undefined) {
+    output.writeFieldBegin('s3_access_key', Thrift.Type.STRING, 13);
+    output.writeString(this.s3_access_key);
+    output.writeFieldEnd();
+  }
+  if (this.s3_secret_key !== null && this.s3_secret_key !== undefined) {
+    output.writeFieldBegin('s3_secret_key', Thrift.Type.STRING, 14);
+    output.writeString(this.s3_secret_key);
+    output.writeFieldEnd();
+  }
+  if (this.s3_region !== null && this.s3_region !== undefined) {
+    output.writeFieldBegin('s3_region', Thrift.Type.STRING, 15);
+    output.writeString(this.s3_region);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
