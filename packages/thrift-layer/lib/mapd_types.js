@@ -18,7 +18,11 @@ TDatumType = {
   'DATE' : 9,
   'BOOL' : 10,
   'INTERVAL_DAY_TIME' : 11,
-  'INTERVAL_YEAR_MONTH' : 12
+  'INTERVAL_YEAR_MONTH' : 12,
+  'POINT' : 13,
+  'LINESTRING' : 14,
+  'POLYGON' : 15,
+  'MULTIPOLYGON' : 16
 };
 TEncodingType = {
   'NONE' : 0,
@@ -464,6 +468,7 @@ TColumnType = function(args) {
   this.is_reserved_keyword = null;
   this.src_name = null;
   this.is_system = null;
+  this.is_physical = null;
   if (args) {
     if (args.col_name !== undefined && args.col_name !== null) {
       this.col_name = args.col_name;
@@ -479,6 +484,9 @@ TColumnType = function(args) {
     }
     if (args.is_system !== undefined && args.is_system !== null) {
       this.is_system = args.is_system;
+    }
+    if (args.is_physical !== undefined && args.is_physical !== null) {
+      this.is_physical = args.is_physical;
     }
   }
 };
@@ -532,6 +540,13 @@ TColumnType.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 6:
+      if (ftype == Thrift.Type.BOOL) {
+        this.is_physical = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -566,6 +581,11 @@ TColumnType.prototype.write = function(output) {
   if (this.is_system !== null && this.is_system !== undefined) {
     output.writeFieldBegin('is_system', Thrift.Type.BOOL, 5);
     output.writeBool(this.is_system);
+    output.writeFieldEnd();
+  }
+  if (this.is_physical !== null && this.is_physical !== undefined) {
+    output.writeFieldBegin('is_physical', Thrift.Type.BOOL, 6);
+    output.writeBool(this.is_physical);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
