@@ -6,6 +6,7 @@
     "url": "git+https://github.com/mapd/mapd-data-layer.git"
   },
   "scripts": {
+    "init": "./scripts/install.sh",
     "build": "./scripts/build.sh",
     "clean": "./scripts/clean.sh",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",

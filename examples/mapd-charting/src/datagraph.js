@@ -1,4 +1,4 @@
-import { createDataGraph } from "../../../index";
+import { createDataGraph } from "../../../packages/data-layer";
 import { query } from "./connector";
 
 export const graph = createDataGraph({
