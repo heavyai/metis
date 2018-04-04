@@ -5167,6 +5167,7 @@ TDBObject = function(args) {
   this.objectName = null;
   this.objectType = null;
   this.privs = null;
+  this.grantee = null;
   if (args) {
     if (args.objectName !== undefined && args.objectName !== null) {
       this.objectName = args.objectName;
@@ -5176,6 +5177,9 @@ TDBObject = function(args) {
     }
     if (args.privs !== undefined && args.privs !== null) {
       this.privs = Thrift.copyList(args.privs, [null]);
+    }
+    if (args.grantee !== undefined && args.grantee !== null) {
+      this.grantee = args.grantee;
     }
   }
 };
@@ -5227,6 +5231,13 @@ TDBObject.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.grantee = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -5260,6 +5271,11 @@ TDBObject.prototype.write = function(output) {
       }
     }
     output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.grantee !== null && this.grantee !== undefined) {
+    output.writeFieldBegin('grantee', Thrift.Type.STRING, 4);
+    output.writeString(this.grantee);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
