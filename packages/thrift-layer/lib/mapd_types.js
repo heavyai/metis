@@ -2212,6 +2212,152 @@ TFrontendView.prototype.write = function(output) {
   return;
 };
 
+TDashboard = function(args) {
+  this.dashboard_name = null;
+  this.dashboard_state = null;
+  this.image_hash = null;
+  this.update_time = null;
+  this.dashboard_metadata = null;
+  this.dashboard_id = null;
+  this.dashboard_owner = null;
+  if (args) {
+    if (args.dashboard_name !== undefined && args.dashboard_name !== null) {
+      this.dashboard_name = args.dashboard_name;
+    }
+    if (args.dashboard_state !== undefined && args.dashboard_state !== null) {
+      this.dashboard_state = args.dashboard_state;
+    }
+    if (args.image_hash !== undefined && args.image_hash !== null) {
+      this.image_hash = args.image_hash;
+    }
+    if (args.update_time !== undefined && args.update_time !== null) {
+      this.update_time = args.update_time;
+    }
+    if (args.dashboard_metadata !== undefined && args.dashboard_metadata !== null) {
+      this.dashboard_metadata = args.dashboard_metadata;
+    }
+    if (args.dashboard_id !== undefined && args.dashboard_id !== null) {
+      this.dashboard_id = args.dashboard_id;
+    }
+    if (args.dashboard_owner !== undefined && args.dashboard_owner !== null) {
+      this.dashboard_owner = args.dashboard_owner;
+    }
+  }
+};
+TDashboard.prototype = {};
+TDashboard.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.dashboard_name = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.dashboard_state = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.image_hash = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.update_time = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.STRING) {
+        this.dashboard_metadata = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.I32) {
+        this.dashboard_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.STRING) {
+        this.dashboard_owner = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TDashboard.prototype.write = function(output) {
+  output.writeStructBegin('TDashboard');
+  if (this.dashboard_name !== null && this.dashboard_name !== undefined) {
+    output.writeFieldBegin('dashboard_name', Thrift.Type.STRING, 1);
+    output.writeString(this.dashboard_name);
+    output.writeFieldEnd();
+  }
+  if (this.dashboard_state !== null && this.dashboard_state !== undefined) {
+    output.writeFieldBegin('dashboard_state', Thrift.Type.STRING, 2);
+    output.writeString(this.dashboard_state);
+    output.writeFieldEnd();
+  }
+  if (this.image_hash !== null && this.image_hash !== undefined) {
+    output.writeFieldBegin('image_hash', Thrift.Type.STRING, 3);
+    output.writeString(this.image_hash);
+    output.writeFieldEnd();
+  }
+  if (this.update_time !== null && this.update_time !== undefined) {
+    output.writeFieldBegin('update_time', Thrift.Type.STRING, 4);
+    output.writeString(this.update_time);
+    output.writeFieldEnd();
+  }
+  if (this.dashboard_metadata !== null && this.dashboard_metadata !== undefined) {
+    output.writeFieldBegin('dashboard_metadata', Thrift.Type.STRING, 5);
+    output.writeString(this.dashboard_metadata);
+    output.writeFieldEnd();
+  }
+  if (this.dashboard_id !== null && this.dashboard_id !== undefined) {
+    output.writeFieldBegin('dashboard_id', Thrift.Type.I32, 6);
+    output.writeI32(this.dashboard_id);
+    output.writeFieldEnd();
+  }
+  if (this.dashboard_owner !== null && this.dashboard_owner !== undefined) {
+    output.writeFieldBegin('dashboard_owner', Thrift.Type.STRING, 7);
+    output.writeString(this.dashboard_owner);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 TServerStatus = function(args) {
   this.read_only = null;
   this.version = null;
