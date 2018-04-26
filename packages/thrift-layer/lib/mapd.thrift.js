@@ -6353,7 +6353,7 @@ MapD_share_dashboard_args = function(args) {
       this.objects = Thrift.copyList(args.objects, [null]);
     }
     if (args.permissions !== undefined && args.permissions !== null) {
-      this.permissions = new TAccessPrivileges(args.permissions);
+      this.permissions = new TDashboardPermissions(args.permissions);
     }
   }
 };
@@ -6427,7 +6427,7 @@ MapD_share_dashboard_args.prototype.read = function(input) {
       break;
       case 5:
       if (ftype == Thrift.Type.STRUCT) {
-        this.permissions = new TAccessPrivileges();
+        this.permissions = new TDashboardPermissions();
         this.permissions.read(input);
       } else {
         input.skip(ftype);
