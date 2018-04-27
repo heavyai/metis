@@ -1678,6 +1678,8 @@ TCopyParams = function(args) {
   this.s3_access_key = null;
   this.s3_secret_key = null;
   this.s3_region = null;
+  this.geo_coords_encoding = 0;
+  this.geo_coords_comp_param = null;
   if (args) {
     if (args.delimiter !== undefined && args.delimiter !== null) {
       this.delimiter = args.delimiter;
@@ -1723,6 +1725,12 @@ TCopyParams = function(args) {
     }
     if (args.s3_region !== undefined && args.s3_region !== null) {
       this.s3_region = args.s3_region;
+    }
+    if (args.geo_coords_encoding !== undefined && args.geo_coords_encoding !== null) {
+      this.geo_coords_encoding = args.geo_coords_encoding;
+    }
+    if (args.geo_coords_comp_param !== undefined && args.geo_coords_comp_param !== null) {
+      this.geo_coords_comp_param = args.geo_coords_comp_param;
     }
   }
 };
@@ -1845,6 +1853,20 @@ TCopyParams.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 16:
+      if (ftype == Thrift.Type.I32) {
+        this.geo_coords_encoding = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 17:
+      if (ftype == Thrift.Type.I32) {
+        this.geo_coords_comp_param = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -1929,6 +1951,16 @@ TCopyParams.prototype.write = function(output) {
   if (this.s3_region !== null && this.s3_region !== undefined) {
     output.writeFieldBegin('s3_region', Thrift.Type.STRING, 15);
     output.writeString(this.s3_region);
+    output.writeFieldEnd();
+  }
+  if (this.geo_coords_encoding !== null && this.geo_coords_encoding !== undefined) {
+    output.writeFieldBegin('geo_coords_encoding', Thrift.Type.I32, 16);
+    output.writeI32(this.geo_coords_encoding);
+    output.writeFieldEnd();
+  }
+  if (this.geo_coords_comp_param !== null && this.geo_coords_comp_param !== undefined) {
+    output.writeFieldBegin('geo_coords_comp_param', Thrift.Type.I32, 17);
+    output.writeI32(this.geo_coords_comp_param);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
