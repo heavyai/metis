@@ -1680,6 +1680,8 @@ TCopyParams = function(args) {
   this.s3_region = null;
   this.geo_coords_encoding = 0;
   this.geo_coords_comp_param = null;
+  this.geo_coords_type = 19;
+  this.geo_coords_srid = 4326;
   if (args) {
     if (args.delimiter !== undefined && args.delimiter !== null) {
       this.delimiter = args.delimiter;
@@ -1731,6 +1733,12 @@ TCopyParams = function(args) {
     }
     if (args.geo_coords_comp_param !== undefined && args.geo_coords_comp_param !== null) {
       this.geo_coords_comp_param = args.geo_coords_comp_param;
+    }
+    if (args.geo_coords_type !== undefined && args.geo_coords_type !== null) {
+      this.geo_coords_type = args.geo_coords_type;
+    }
+    if (args.geo_coords_srid !== undefined && args.geo_coords_srid !== null) {
+      this.geo_coords_srid = args.geo_coords_srid;
     }
   }
 };
@@ -1867,6 +1875,20 @@ TCopyParams.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 18:
+      if (ftype == Thrift.Type.I32) {
+        this.geo_coords_type = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 19:
+      if (ftype == Thrift.Type.I32) {
+        this.geo_coords_srid = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -1961,6 +1983,16 @@ TCopyParams.prototype.write = function(output) {
   if (this.geo_coords_comp_param !== null && this.geo_coords_comp_param !== undefined) {
     output.writeFieldBegin('geo_coords_comp_param', Thrift.Type.I32, 17);
     output.writeI32(this.geo_coords_comp_param);
+    output.writeFieldEnd();
+  }
+  if (this.geo_coords_type !== null && this.geo_coords_type !== undefined) {
+    output.writeFieldBegin('geo_coords_type', Thrift.Type.I32, 18);
+    output.writeI32(this.geo_coords_type);
+    output.writeFieldEnd();
+  }
+  if (this.geo_coords_srid !== null && this.geo_coords_srid !== undefined) {
+    output.writeFieldBegin('geo_coords_srid', Thrift.Type.I32, 19);
+    output.writeI32(this.geo_coords_srid);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
