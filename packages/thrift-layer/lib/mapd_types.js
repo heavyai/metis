@@ -2288,6 +2288,7 @@ TDashboard = function(args) {
   this.dashboard_metadata = null;
   this.dashboard_id = null;
   this.dashboard_owner = null;
+  this.is_dash_shared = null;
   if (args) {
     if (args.dashboard_name !== undefined && args.dashboard_name !== null) {
       this.dashboard_name = args.dashboard_name;
@@ -2309,6 +2310,9 @@ TDashboard = function(args) {
     }
     if (args.dashboard_owner !== undefined && args.dashboard_owner !== null) {
       this.dashboard_owner = args.dashboard_owner;
+    }
+    if (args.is_dash_shared !== undefined && args.is_dash_shared !== null) {
+      this.is_dash_shared = args.is_dash_shared;
     }
   }
 };
@@ -2375,6 +2379,13 @@ TDashboard.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 8:
+      if (ftype == Thrift.Type.BOOL) {
+        this.is_dash_shared = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2419,6 +2430,11 @@ TDashboard.prototype.write = function(output) {
   if (this.dashboard_owner !== null && this.dashboard_owner !== undefined) {
     output.writeFieldBegin('dashboard_owner', Thrift.Type.STRING, 7);
     output.writeString(this.dashboard_owner);
+    output.writeFieldEnd();
+  }
+  if (this.is_dash_shared !== null && this.is_dash_shared !== undefined) {
+    output.writeFieldBegin('is_dash_shared', Thrift.Type.BOOL, 8);
+    output.writeBool(this.is_dash_shared);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
