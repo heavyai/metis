@@ -1684,9 +1684,9 @@ TCopyParams = function(args) {
   this.s3_access_key = null;
   this.s3_secret_key = null;
   this.s3_region = null;
-  this.geo_coords_encoding = 0;
-  this.geo_coords_comp_param = null;
-  this.geo_coords_type = 19;
+  this.geo_coords_encoding = 6;
+  this.geo_coords_comp_param = 32;
+  this.geo_coords_type = 18;
   this.geo_coords_srid = 4326;
   this.sanitize_column_names = true;
   if (args) {
