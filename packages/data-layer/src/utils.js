@@ -42,7 +42,7 @@ export function reduceToSQL(context: GraphContext, node: DataNode): SQL {
 }
 
 export function escapeQuotes(string) {
-  if (typeof string === "string" && string.includes("'")) {
+  if (typeof string === "string") {
     return string.replace(/'/gi, "''")
   } else {
     return string
