@@ -1,4 +1,5 @@
 import Parser from "./create-parser";
+import {escapeQuotes} from "../utils"
 
 export default function parseExpression(
   expression: string | Expression,
@@ -54,7 +55,7 @@ export default function parseExpression(
           expression.type.toUpperCase() +
           " (" +
           expression.set
-            .map(field => typeof field === "number" ? field : `'${field}'`)
+            .map(field => typeof field === "number" ? field : `'${escapeQuotes(field)}'`)
             .join(", ") +
           ")";
       } else if (

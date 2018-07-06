@@ -40,3 +40,11 @@ export function reduceToSQL(context: GraphContext, node: DataNode): SQL {
 
   return traverse(node, identity, toSQL, initialSQL);
 }
+
+export function escapeQuotes(string) {
+  if (typeof string === "string") {
+    return string.replace(/'/gi, "''")
+  } else {
+    return string
+  }
+}

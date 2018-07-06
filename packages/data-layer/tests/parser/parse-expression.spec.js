@@ -3,7 +3,7 @@ import tape from "tape";
 import parseExpression from "../../src/parser/parse-expression";
 
 tape("parseExpression", assert => {
-  assert.plan(22);
+  assert.plan(23);
 
   assert.equal(parseExpression("AVG(depdelay)"), "AVG(depdelay)");
 
@@ -225,6 +225,25 @@ assert.equal(
     }),
     "CASE WHEN recipient_party IN (SELECT recipient_party, MAX(amount) as val FROM contributions GROUP BY recipient_party LIMIT 10) THEN recipient_party END"
   );
+
+  // case statement may be constructed from a set array, single quotes should be escaped as two single quotes
+  assert.equal(
+    parseExpression({
+      type: "case",
+      cond: [
+        [
+          {
+            type: "in",
+            expr: "origin_name",
+            set: ["William B Hartsfield-Atlanta Intl", "Chicago O'Hare International", "Dallas-Fort Worth International", "Denver Int'l", "Los Angeles International"]
+          },
+          "origin_name"
+        ]
+      ],
+      else: "other"
+    }),
+    "CASE WHEN origin_name IN ('William B Hartsfield-Atlanta Intl', 'Chicago O''Hare International', 'Dallas-Fort Worth International', 'Denver Int''l', 'Los Angeles International') THEN origin_name ELSE 'other' END"
+  )
 
   assert.equal(
     parseExpression({
