@@ -1,7 +1,7 @@
 // @flow
 import type { SQL } from "./write-sql";
 
-const GOLDEN_RATIO = 265445761;
+const GOLDEN_RATIO = 2654435761;
 const THIRTY_TWO_BITS = 4294967296;
 
 export default function sample(sql: SQL, transform: Sample): SQL {
