@@ -37,7 +37,6 @@ TEncodingType = {
   'GEOINT' : 6
 };
 TExecuteMode = {
-  'HYBRID' : 0,
   'GPU' : 1,
   'CPU' : 2
 };
