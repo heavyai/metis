@@ -5609,12 +5609,16 @@ TRenderStepResult.prototype.write = function(output) {
 TDatabasePermissions = function(args) {
   this.create_ = null;
   this.delete_ = null;
+  this.view_sql_editor_ = null;
   if (args) {
     if (args.create_ !== undefined && args.create_ !== null) {
       this.create_ = args.create_;
     }
     if (args.delete_ !== undefined && args.delete_ !== null) {
       this.delete_ = args.delete_;
+    }
+    if (args.view_sql_editor_ !== undefined && args.view_sql_editor_ !== null) {
+      this.view_sql_editor_ = args.view_sql_editor_;
     }
   }
 };
@@ -5646,6 +5650,13 @@ TDatabasePermissions.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 3:
+      if (ftype == Thrift.Type.BOOL) {
+        this.view_sql_editor_ = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -5665,6 +5676,11 @@ TDatabasePermissions.prototype.write = function(output) {
   if (this.delete_ !== null && this.delete_ !== undefined) {
     output.writeFieldBegin('delete_', Thrift.Type.BOOL, 2);
     output.writeBool(this.delete_);
+    output.writeFieldEnd();
+  }
+  if (this.view_sql_editor_ !== null && this.view_sql_editor_ !== undefined) {
+    output.writeFieldBegin('view_sql_editor_', Thrift.Type.BOOL, 3);
+    output.writeBool(this.view_sql_editor_);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
