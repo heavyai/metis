@@ -9019,6 +9019,144 @@ MapD_get_all_files_in_archive_result.prototype.write = function(output) {
   return;
 };
 
+MapD_check_table_consistency_args = function(args) {
+  this.session = null;
+  this.table_id = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+    if (args.table_id !== undefined && args.table_id !== null) {
+      this.table_id = args.table_id;
+    }
+  }
+};
+MapD_check_table_consistency_args.prototype = {};
+MapD_check_table_consistency_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.table_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_check_table_consistency_args.prototype.write = function(output) {
+  output.writeStructBegin('MapD_check_table_consistency_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  if (this.table_id !== null && this.table_id !== undefined) {
+    output.writeFieldBegin('table_id', Thrift.Type.I32, 2);
+    output.writeI32(this.table_id);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MapD_check_table_consistency_result = function(args) {
+  this.success = null;
+  this.e = null;
+  if (args instanceof TMapDException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = new TTableMeta(args.success);
+    }
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+MapD_check_table_consistency_result.prototype = {};
+MapD_check_table_consistency_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new TTableMeta();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TMapDException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_check_table_consistency_result.prototype.write = function(output) {
+  output.writeStructBegin('MapD_check_table_consistency_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 MapD_start_query_args = function(args) {
   this.session = null;
   this.query_ra = null;
@@ -14731,6 +14869,59 @@ MapDClient.prototype.recv_get_all_files_in_archive = function() {
     return result.success;
   }
   throw 'get_all_files_in_archive failed: unknown result';
+};
+MapDClient.prototype.check_table_consistency = function(session, table_id, callback) {
+  this.send_check_table_consistency(session, table_id, callback); 
+  if (!callback) {
+    return this.recv_check_table_consistency();
+  }
+};
+
+MapDClient.prototype.send_check_table_consistency = function(session, table_id, callback) {
+  this.output.writeMessageBegin('check_table_consistency', Thrift.MessageType.CALL, this.seqid);
+  var args = new MapD_check_table_consistency_args();
+  args.session = session;
+  args.table_id = table_id;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_check_table_consistency();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+MapDClient.prototype.recv_check_table_consistency = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new MapD_check_table_consistency_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'check_table_consistency failed: unknown result';
 };
 MapDClient.prototype.start_query = function(session, query_ra, just_explain, callback) {
   this.send_start_query(session, query_ra, just_explain, callback); 
