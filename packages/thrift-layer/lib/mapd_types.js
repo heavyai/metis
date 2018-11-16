@@ -34,7 +34,8 @@ TEncodingType = {
   'DIFF' : 3,
   'DICT' : 4,
   'SPARSE' : 5,
-  'GEOINT' : 6
+  'GEOINT' : 6,
+  'DATE_IN_DAYS' : 7
 };
 TExecuteMode = {
   'GPU' : 1,
