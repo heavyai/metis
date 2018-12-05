@@ -1,6 +1,6 @@
 {
   "name": "mapd-data-layer-2",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "SQL data-layer for the MapD frontend",
   "main": "lib/index.js",
   "module": "es/index.js",
