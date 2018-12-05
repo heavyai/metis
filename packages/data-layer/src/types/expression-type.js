@@ -113,6 +113,7 @@ declare type AggregateFunctionExpression =
   | MinExpression
   | SumExpression
   | AvgExpression
+  | SampleExpression
   | CountExpression;
 
 declare type MaxExpression = {|
@@ -135,6 +136,12 @@ declare type SumExpression = {|
 
 declare type AvgExpression = {|
   type: "average",
+  field: string,
+  as?: string
+|};
+
+declare type SampleExpression = {|
+  type: "sample",
   field: string,
   as?: string
 |};
