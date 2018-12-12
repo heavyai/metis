@@ -6475,3 +6475,85 @@ TLicenseInfo.prototype.write = function(output) {
   return;
 };
 
+TSessionInfo = function(args) {
+  this.user = null;
+  this.database = null;
+  this.start_time = null;
+  if (args) {
+    if (args.user !== undefined && args.user !== null) {
+      this.user = args.user;
+    }
+    if (args.database !== undefined && args.database !== null) {
+      this.database = args.database;
+    }
+    if (args.start_time !== undefined && args.start_time !== null) {
+      this.start_time = args.start_time;
+    }
+  }
+};
+TSessionInfo.prototype = {};
+TSessionInfo.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.user = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.database = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I64) {
+        this.start_time = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TSessionInfo.prototype.write = function(output) {
+  output.writeStructBegin('TSessionInfo');
+  if (this.user !== null && this.user !== undefined) {
+    output.writeFieldBegin('user', Thrift.Type.STRING, 1);
+    output.writeString(this.user);
+    output.writeFieldEnd();
+  }
+  if (this.database !== null && this.database !== undefined) {
+    output.writeFieldBegin('database', Thrift.Type.STRING, 2);
+    output.writeString(this.database);
+    output.writeFieldEnd();
+  }
+  if (this.start_time !== null && this.start_time !== undefined) {
+    output.writeFieldBegin('start_time', Thrift.Type.I64, 3);
+    output.writeI64(this.start_time);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
