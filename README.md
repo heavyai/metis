@@ -1,4 +1,4 @@
-# Metis &middot; [![Build Status](https://travis-ci.com/mapd/mapd-data-layer.svg?token=PevoQNBcptry9Dnrqejy&branch=master)](https://travis-ci.com/mapd/mapd-data-layer) [![codecov](https://codecov.io/gh/mapd/mapd-data-layer/branch/master/graph/badge.svg?token=J68Anjg8je)](https://codecov.io/gh/mapd/mapd-data-layer)
+# Metis &middot; [![Build Status](https://travis-ci.org/omnisci/metis.svg?branch=master)](https://travis-ci.org/omnisci/metis)
 
 Tools for massively parallel and multi-variate data exploration.
 
