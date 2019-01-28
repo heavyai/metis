@@ -8486,6 +8486,7 @@ MapD_import_geo_table_args = function(args) {
   this.file_name = null;
   this.copy_params = null;
   this.row_desc = null;
+  this.create_params = null;
   if (args) {
     if (args.session !== undefined && args.session !== null) {
       this.session = args.session;
@@ -8501,6 +8502,9 @@ MapD_import_geo_table_args = function(args) {
     }
     if (args.row_desc !== undefined && args.row_desc !== null) {
       this.row_desc = Thrift.copyList(args.row_desc, [TColumnType]);
+    }
+    if (args.create_params !== undefined && args.create_params !== null) {
+      this.create_params = new TCreateParams(args.create_params);
     }
   }
 };
@@ -8568,6 +8572,14 @@ MapD_import_geo_table_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 6:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.create_params = new TCreateParams();
+        this.create_params.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -8611,6 +8623,11 @@ MapD_import_geo_table_args.prototype.write = function(output) {
       }
     }
     output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.create_params !== null && this.create_params !== undefined) {
+    output.writeFieldBegin('create_params', Thrift.Type.STRUCT, 6);
+    this.create_params.write(output);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -14849,14 +14866,14 @@ MapDClient.prototype.recv_import_table = function() {
   }
   return;
 };
-MapDClient.prototype.import_geo_table = function(session, table_name, file_name, copy_params, row_desc, callback) {
-  this.send_import_geo_table(session, table_name, file_name, copy_params, row_desc, callback); 
+MapDClient.prototype.import_geo_table = function(session, table_name, file_name, copy_params, row_desc, create_params, callback) {
+  this.send_import_geo_table(session, table_name, file_name, copy_params, row_desc, create_params, callback); 
   if (!callback) {
   this.recv_import_geo_table();
   }
 };
 
-MapDClient.prototype.send_import_geo_table = function(session, table_name, file_name, copy_params, row_desc, callback) {
+MapDClient.prototype.send_import_geo_table = function(session, table_name, file_name, copy_params, row_desc, create_params, callback) {
   this.output.writeMessageBegin('import_geo_table', Thrift.MessageType.CALL, this.seqid);
   var args = new MapD_import_geo_table_args();
   args.session = session;
@@ -14864,6 +14881,7 @@ MapDClient.prototype.send_import_geo_table = function(session, table_name, file_
   args.file_name = file_name;
   args.copy_params = copy_params;
   args.row_desc = row_desc;
+  args.create_params = create_params;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {
