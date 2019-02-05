@@ -6464,6 +6464,7 @@ MapD_share_dashboard_args = function(args) {
   this.groups = null;
   this.objects = null;
   this.permissions = null;
+  this.grant_role = false;
   if (args) {
     if (args.session !== undefined && args.session !== null) {
       this.session = args.session;
@@ -6479,6 +6480,9 @@ MapD_share_dashboard_args = function(args) {
     }
     if (args.permissions !== undefined && args.permissions !== null) {
       this.permissions = new TDashboardPermissions(args.permissions);
+    }
+    if (args.grant_role !== undefined && args.grant_role !== null) {
+      this.grant_role = args.grant_role;
     }
   }
 };
@@ -6558,6 +6562,13 @@ MapD_share_dashboard_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 6:
+      if (ftype == Thrift.Type.BOOL) {
+        this.grant_role = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -6610,6 +6621,11 @@ MapD_share_dashboard_args.prototype.write = function(output) {
   if (this.permissions !== null && this.permissions !== undefined) {
     output.writeFieldBegin('permissions', Thrift.Type.STRUCT, 5);
     this.permissions.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.grant_role !== null && this.grant_role !== undefined) {
+    output.writeFieldBegin('grant_role', Thrift.Type.BOOL, 6);
+    output.writeBool(this.grant_role);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -14237,14 +14253,14 @@ MapDClient.prototype.recv_delete_dashboard = function() {
   }
   return;
 };
-MapDClient.prototype.share_dashboard = function(session, dashboard_id, groups, objects, permissions, callback) {
-  this.send_share_dashboard(session, dashboard_id, groups, objects, permissions, callback); 
+MapDClient.prototype.share_dashboard = function(session, dashboard_id, groups, objects, permissions, grant_role, callback) {
+  this.send_share_dashboard(session, dashboard_id, groups, objects, permissions, grant_role, callback); 
   if (!callback) {
   this.recv_share_dashboard();
   }
 };
 
-MapDClient.prototype.send_share_dashboard = function(session, dashboard_id, groups, objects, permissions, callback) {
+MapDClient.prototype.send_share_dashboard = function(session, dashboard_id, groups, objects, permissions, grant_role, callback) {
   this.output.writeMessageBegin('share_dashboard', Thrift.MessageType.CALL, this.seqid);
   var args = new MapD_share_dashboard_args();
   args.session = session;
@@ -14252,6 +14268,7 @@ MapDClient.prototype.send_share_dashboard = function(session, dashboard_id, grou
   args.groups = groups;
   args.objects = objects;
   args.permissions = permissions;
+  args.grant_role = grant_role;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {
