@@ -501,6 +501,7 @@ TColumnType = function(args) {
   this.src_name = null;
   this.is_system = null;
   this.is_physical = null;
+  this.col_id = null;
   if (args) {
     if (args.col_name !== undefined && args.col_name !== null) {
       this.col_name = args.col_name;
@@ -519,6 +520,9 @@ TColumnType = function(args) {
     }
     if (args.is_physical !== undefined && args.is_physical !== null) {
       this.is_physical = args.is_physical;
+    }
+    if (args.col_id !== undefined && args.col_id !== null) {
+      this.col_id = args.col_id;
     }
   }
 };
@@ -579,6 +583,13 @@ TColumnType.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 7:
+      if (ftype == Thrift.Type.I64) {
+        this.col_id = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -618,6 +629,11 @@ TColumnType.prototype.write = function(output) {
   if (this.is_physical !== null && this.is_physical !== undefined) {
     output.writeFieldBegin('is_physical', Thrift.Type.BOOL, 6);
     output.writeBool(this.is_physical);
+    output.writeFieldEnd();
+  }
+  if (this.col_id !== null && this.col_id !== undefined) {
+    output.writeFieldBegin('col_id', Thrift.Type.I64, 7);
+    output.writeI64(this.col_id);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -3717,6 +3733,7 @@ TTableMeta = function(args) {
   this.is_replicated = null;
   this.shard_count = null;
   this.max_rows = null;
+  this.table_id = null;
   this.max_table_id = null;
   if (args) {
     if (args.table_name !== undefined && args.table_name !== null) {
@@ -3739,6 +3756,9 @@ TTableMeta = function(args) {
     }
     if (args.max_rows !== undefined && args.max_rows !== null) {
       this.max_rows = args.max_rows;
+    }
+    if (args.table_id !== undefined && args.table_id !== null) {
+      this.table_id = args.table_id;
     }
     if (args.max_table_id !== undefined && args.max_table_id !== null) {
       this.max_table_id = args.max_table_id;
@@ -3823,6 +3843,13 @@ TTableMeta.prototype.read = function(input) {
       break;
       case 8:
       if (ftype == Thrift.Type.I64) {
+        this.table_id = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.I64) {
         this.max_table_id = input.readI64().value;
       } else {
         input.skip(ftype);
@@ -3883,8 +3910,13 @@ TTableMeta.prototype.write = function(output) {
     output.writeI64(this.max_rows);
     output.writeFieldEnd();
   }
+  if (this.table_id !== null && this.table_id !== undefined) {
+    output.writeFieldBegin('table_id', Thrift.Type.I64, 8);
+    output.writeI64(this.table_id);
+    output.writeFieldEnd();
+  }
   if (this.max_table_id !== null && this.max_table_id !== undefined) {
-    output.writeFieldBegin('max_table_id', Thrift.Type.I64, 8);
+    output.writeFieldBegin('max_table_id', Thrift.Type.I64, 9);
     output.writeI64(this.max_table_id);
     output.writeFieldEnd();
   }
