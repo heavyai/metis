@@ -12,11 +12,11 @@ export default function sample(sql: SQL, transform: Sample): SQL {
   if (transform.method === "multiplicativeRowid") {
     if (ratio < 1) {
       sql.where.push(
-        `((MOD( MOD (${sql.from}.rowid, ${THIRTY_TWO_BITS}) * ${GOLDEN_RATIO} , ${THIRTY_TWO_BITS}) < ${threshold}) OR (${sql.from}.rowid IN (${transform.expr.join(", ")})))`
+        `((MOD( MOD (${transform.field}, ${THIRTY_TWO_BITS}) * ${GOLDEN_RATIO} , ${THIRTY_TWO_BITS}) < ${threshold}) OR (${transform.field} IN (${transform.expr.join(", ")})))`
       );
     } else {
       sql.where.push(
-        `(${sql.from}.rowid IN (${transform.expr.join(", ")}))`
+        `(${transform.field} IN (${transform.expr.join(", ")}))`
       );
     }
   } else if (transform.method === "multiplicative") {
@@ -32,7 +32,7 @@ export default function sample(sql: SQL, transform: Sample): SQL {
     }
   } else if (transform.method === "rowid") {
     sql.where.push(
-      `(${sql.from}.rowid IN (${transform.expr.join(", ")}))`
+      `(${transform.field} IN (${transform.expr.join(", ")}))`
     );
   }
 
