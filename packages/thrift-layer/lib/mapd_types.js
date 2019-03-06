@@ -61,6 +61,11 @@ TGeoFileLayerContents = {
   'NON_GEO' : 2,
   'UNSUPPORTED_GEO' : 3
 };
+TImportHeaderRow = {
+  'AUTODETECT' : 0,
+  'NO_HEADER' : 1,
+  'HAS_HEADER' : 2
+};
 TMergeType = {
   'UNION' : 0,
   'REDUCE' : 1
@@ -1725,7 +1730,7 @@ TMapDException.prototype.write = function(output) {
 TCopyParams = function(args) {
   this.delimiter = null;
   this.null_str = null;
-  this.has_header = null;
+  this.has_header = 0;
   this.quoted = null;
   this.quote = null;
   this.escape = null;
@@ -1839,8 +1844,8 @@ TCopyParams.prototype.read = function(input) {
       }
       break;
       case 3:
-      if (ftype == Thrift.Type.BOOL) {
-        this.has_header = input.readBool().value;
+      if (ftype == Thrift.Type.I32) {
+        this.has_header = input.readI32().value;
       } else {
         input.skip(ftype);
       }
@@ -1993,8 +1998,8 @@ TCopyParams.prototype.write = function(output) {
     output.writeFieldEnd();
   }
   if (this.has_header !== null && this.has_header !== undefined) {
-    output.writeFieldBegin('has_header', Thrift.Type.BOOL, 3);
-    output.writeBool(this.has_header);
+    output.writeFieldBegin('has_header', Thrift.Type.I32, 3);
+    output.writeI32(this.has_header);
     output.writeFieldEnd();
   }
   if (this.quoted !== null && this.quoted !== undefined) {
