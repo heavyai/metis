@@ -271,6 +271,130 @@ MapD_disconnect_result.prototype.write = function(output) {
   return;
 };
 
+MapD_switch_database_args = function(args) {
+  this.session = null;
+  this.dbname = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+    if (args.dbname !== undefined && args.dbname !== null) {
+      this.dbname = args.dbname;
+    }
+  }
+};
+MapD_switch_database_args.prototype = {};
+MapD_switch_database_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.dbname = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_switch_database_args.prototype.write = function(output) {
+  output.writeStructBegin('MapD_switch_database_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  if (this.dbname !== null && this.dbname !== undefined) {
+    output.writeFieldBegin('dbname', Thrift.Type.STRING, 2);
+    output.writeString(this.dbname);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+MapD_switch_database_result = function(args) {
+  this.e = null;
+  if (args instanceof TMapDException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+MapD_switch_database_result.prototype = {};
+MapD_switch_database_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TMapDException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+MapD_switch_database_result.prototype.write = function(output) {
+  output.writeStructBegin('MapD_switch_database_result');
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 MapD_get_server_status_args = function(args) {
   this.session = null;
   if (args) {
@@ -12226,6 +12350,56 @@ MapDClient.prototype.recv_disconnect = function() {
     throw x;
   }
   var result = new MapD_disconnect_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  return;
+};
+MapDClient.prototype.switch_database = function(session, dbname, callback) {
+  this.send_switch_database(session, dbname, callback); 
+  if (!callback) {
+  this.recv_switch_database();
+  }
+};
+
+MapDClient.prototype.send_switch_database = function(session, dbname, callback) {
+  this.output.writeMessageBegin('switch_database', Thrift.MessageType.CALL, this.seqid);
+  var args = new MapD_switch_database_args();
+  args.session = session;
+  args.dbname = dbname;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_switch_database();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+MapDClient.prototype.recv_switch_database = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new MapD_switch_database_result();
   result.read(this.input);
   this.input.readMessageEnd();
 
