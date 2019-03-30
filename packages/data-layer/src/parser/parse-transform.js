@@ -5,6 +5,7 @@ import parseCrossfilter from "./parse-crossfilter";
 import parseSort from "./parse-sort";
 import parseLimit from "./parse-limit";
 import parseFilter from "./parse-filter";
+import parsePostFilter from "./parse-postFilter";
 import parseProject from "./parse-project";
 import parseResolvefilter from "./parse-resolvefilter";
 import parseSample from "./parse-sample";
@@ -29,6 +30,8 @@ export default function parseTransform(
       return parseLimit(sql, t);
     case "filter":
       return parseFilter(sql, t, parser);
+    case "postFilter":
+      return parsePostFilter(sql, t, parser);
     case "project":
       return parseProject(sql, t, parser);
     case "sample":
