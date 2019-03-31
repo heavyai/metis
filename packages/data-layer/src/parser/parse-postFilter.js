@@ -7,7 +7,6 @@ const operator = {
 }
 
 function comparisonOperator(ops, min, max) {
-  debugger
   switch (ops) {
     case ">" || "=":
       return `${ops} ${min}`
@@ -17,21 +16,21 @@ function comparisonOperator(ops, min, max) {
       return ""
   }
 }
+
 export default function parsePostFilter(
   sql: SQL,
   transform: Filter
 ): SQL {
   switch (transform.type) {
     case "postFilter":
-      let expr;
+      let operatorExpr;
       if (transform.ops === "between" || transform.ops === "not between") {
-        expr = `${transform.ops} ${transform.min} AND ${transform.max}`
+        operatorExpr = `${transform.ops} ${transform.min} AND ${transform.max}`
       } else {
-        expr = comparisonOperator(operator[transform.ops], transform.min, transform.max)
+        operatorExpr = comparisonOperator(operator[transform.ops], transform.min, transform.max)
       }
-      sql.having.push(
-        `${transform.aggType}(cast(${transform.fields[0]} as float)) ${expr}`
-      );
+      let expr =transform.custom ? `${transform.fields[0]} ${operatorExpr}` : `${transform.aggType}(cast(${transform.table}.${transform.fields[0]} as float)) ${operatorExpr}`
+      sql.having.push(expr);
     default:
       return sql;
   }
