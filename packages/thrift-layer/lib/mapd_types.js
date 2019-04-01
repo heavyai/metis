@@ -1750,6 +1750,7 @@ TCopyParams = function(args) {
   this.geo_coords_srid = 4326;
   this.sanitize_column_names = true;
   this.geo_layer_name = null;
+  this.s3_endpoint = null;
   if (args) {
     if (args.delimiter !== undefined && args.delimiter !== null) {
       this.delimiter = args.delimiter;
@@ -1813,6 +1814,9 @@ TCopyParams = function(args) {
     }
     if (args.geo_layer_name !== undefined && args.geo_layer_name !== null) {
       this.geo_layer_name = args.geo_layer_name;
+    }
+    if (args.s3_endpoint !== undefined && args.s3_endpoint !== null) {
+      this.s3_endpoint = args.s3_endpoint;
     }
   }
 };
@@ -1977,6 +1981,13 @@ TCopyParams.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 22:
+      if (ftype == Thrift.Type.STRING) {
+        this.s3_endpoint = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2091,6 +2102,11 @@ TCopyParams.prototype.write = function(output) {
   if (this.geo_layer_name !== null && this.geo_layer_name !== undefined) {
     output.writeFieldBegin('geo_layer_name', Thrift.Type.STRING, 21);
     output.writeString(this.geo_layer_name);
+    output.writeFieldEnd();
+  }
+  if (this.s3_endpoint !== null && this.s3_endpoint !== undefined) {
+    output.writeFieldBegin('s3_endpoint', Thrift.Type.STRING, 22);
+    output.writeString(this.s3_endpoint);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
