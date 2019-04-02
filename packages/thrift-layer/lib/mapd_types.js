@@ -67,6 +67,12 @@ TImportHeaderRow = {
   'NO_HEADER' : 1,
   'HAS_HEADER' : 2
 };
+TRole = {
+  'SERVER' : 0,
+  'AGGREGATOR' : 1,
+  'LEAF' : 2,
+  'STRING_DICTIONARY' : 3
+};
 TMergeType = {
   'UNION' : 0,
   'REDUCE' : 1
@@ -2617,6 +2623,7 @@ TServerStatus = function(args) {
   this.edition = null;
   this.host_name = null;
   this.poly_rendering_enabled = null;
+  this.role = null;
   if (args) {
     if (args.read_only !== undefined && args.read_only !== null) {
       this.read_only = args.read_only;
@@ -2638,6 +2645,9 @@ TServerStatus = function(args) {
     }
     if (args.poly_rendering_enabled !== undefined && args.poly_rendering_enabled !== null) {
       this.poly_rendering_enabled = args.poly_rendering_enabled;
+    }
+    if (args.role !== undefined && args.role !== null) {
+      this.role = args.role;
     }
   }
 };
@@ -2704,6 +2714,13 @@ TServerStatus.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 8:
+      if (ftype == Thrift.Type.I32) {
+        this.role = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2748,6 +2765,11 @@ TServerStatus.prototype.write = function(output) {
   if (this.poly_rendering_enabled !== null && this.poly_rendering_enabled !== undefined) {
     output.writeFieldBegin('poly_rendering_enabled', Thrift.Type.BOOL, 7);
     output.writeBool(this.poly_rendering_enabled);
+    output.writeFieldEnd();
+  }
+  if (this.role !== null && this.role !== undefined) {
+    output.writeFieldBegin('role', Thrift.Type.I32, 8);
+    output.writeI32(this.role);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
