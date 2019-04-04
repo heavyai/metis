@@ -8,7 +8,8 @@ const operator = {
 
 function comparisonOperator(ops, min, max) {
   switch (ops) {
-    case ">" || "=":
+    case ">":
+    case "=":
       return `${ops} ${min}`
     case "<":
       return `${ops} ${max}`
