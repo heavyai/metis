@@ -117,6 +117,7 @@ export default function parseExpression(
     case "min":
     case "max":
     case "sum":
+    case "sample":
       return expression.type + "(" + expression.field + ")";
     case "average":
       return "avg(" + expression.field + ")";
