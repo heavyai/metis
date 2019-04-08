@@ -30,7 +30,7 @@ export default function parsePostFilter(
       } else {
         operatorExpr = comparisonOperator(operator[transform.ops], transform.min, transform.max)
       }
-      let expr =transform.custom ? `${transform.fields[0]} ${operatorExpr}` : `${transform.aggType}(cast(${transform.table}.${transform.fields[0]} as float)) ${operatorExpr}`
+      let expr =transform.custom ? `${transform.fields[0]} ${operatorExpr}` : `${transform.aggType}(${transform.table}.${transform.fields[0]}) ${operatorExpr}`
       sql.having.push(expr);
     default:
       return sql;
