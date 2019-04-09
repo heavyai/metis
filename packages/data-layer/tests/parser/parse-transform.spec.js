@@ -133,7 +133,7 @@ tape("sample", assert => {
     {
       select: [],
       from: "taxis",
-      where: ["MOD( MOD (taxis.rowid, 4294967296) * 2654435761 , 4294967296) < 12469954"],
+      where: ["MOD( MOD (taxis.rowid, 2147483648) * 2654435761 , 4294967296) < 12469954"],
       groupby: [],
       having: [],
       orderby: [],
