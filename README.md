@@ -4,8 +4,8 @@ Tools for massively parallel and multi-variate data exploration.
 
 Quickly build interactive visualizations powered by the speed of MapD Core.
 
-* [dc.js Example](https://mapd.github.io/metis/examples/dc/)
-* [Vega Example](https://mapd.github.io/metis/examples/vega/)
+* [dc.js Example](https://omnisci.github.io/metis/examples/dc/)
+* [Vega Example](https://omnisci.github.io/metis/examples/vega/)
 
 ### Data Layer
 
