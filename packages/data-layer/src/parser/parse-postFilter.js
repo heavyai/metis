@@ -31,8 +31,10 @@ export default function parsePostFilter(
         operatorExpr = `${transform.ops} ${transform.min} AND ${transform.max}`
       } else if (transform.ops === "null" || transform.ops === "not null") {
         operatorExpr = `is ${transform.ops}`
+      } else if(transform.aggType === "AVG" && (transform.ops === "equals" || transform.ops === "not equals")) {
+        operatorExpr = `${operator[transform.ops]} cast(${transform.min} as DOUBLE)`
       } else {
-        operatorExpr = comparisonOperator(operator[transform.ops], transform.min, transform.max)
+        operatorExpr = comparisonOperator(operator[transform.ops], transform.min, transform.max, transform.aggType)
       }
       let expr =transform.custom ? `${transform.fields[0]} ${operatorExpr}` : `${transform.aggType}(${transform.fields[0]}) ${operatorExpr}`
       sql.having.push(expr);
