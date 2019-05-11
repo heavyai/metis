@@ -13,15 +13,18 @@ export type SQL = {|
   offset: string,
   unresolved?: {
     [string]: ResolveFilter
-  }
+  },
+  with: Array<string>
 |};
 
 export default function writeSQL(state: DataState, parser: Parser): string {
-  return write(parser.parseDataState(state));
+  debugger
+  return write(parser.parseDataState(state), state, parser);
 }
 
-export function write(sql: SQL): string {
-  return writeSelect(sql.select) +
+export function write(sql: SQL, state: DataState, parser: Parser): string {
+  return writeWith(state, parser) +
+    writeSelect(sql.select) +
     writeFrom(sql.from) +
     writeWhere(sql.where) +
     writeGroupby(sql.groupby) +
@@ -31,11 +34,11 @@ export function write(sql: SQL): string {
     writeOffset(sql.offset);
 }
 
-function writeSelect(select: Array<string>): string {
+export function writeSelect(select: Array<string>): string {
   return select.length ? "SELECT " + select.join(", ") : "SELECT *";
 }
 
-function writeFrom(from: string): string {
+export function writeFrom(from: string): string {
   return " FROM " + from;
 }
 
@@ -43,7 +46,7 @@ function writeWhere(where: Array<string>): string {
   return where.length ? " WHERE " + where.join(" AND ") : "";
 }
 
-function writeGroupby(groupby: Array<string>): string {
+export function writeGroupby(groupby: Array<string>): string {
   return groupby.length ? " GROUP BY " + groupby.join(", ") : "";
 }
 
@@ -61,4 +64,12 @@ function writeLimit(limit: string): string {
 
 function writeOffset(offset: string): string {
   return offset.length ? " OFFSET " + offset : "";
+}
+
+function writeWith(state: DataState, parser: Parser): string {
+  if(state.transform.length>1) {
+    const withClause = writeSQL(state.transform[1].fields, parser)
+    return withClause ? "WITH colors AS ("+withClaus+")" : "";
+  }
+  else { return ""}
 }
