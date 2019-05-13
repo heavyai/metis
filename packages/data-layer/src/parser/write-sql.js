@@ -14,7 +14,7 @@ export type SQL = {|
   unresolved?: {
     [string]: ResolveFilter
   },
-  with: Array<string>
+  with?: Array<string>
 |};
 
 export default function writeSQL(state: DataState, parser: Parser): string {
@@ -66,5 +66,5 @@ function writeOffset(offset: string): string {
 }
 
 function writeWith(With: Array<string>): string {
-  return With.length ? "WITH colors AS ("+With+") " : "";
+  return (With && With.length) ? "WITH colors AS ("+With+") " : "";
 }
