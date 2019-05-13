@@ -18,12 +18,11 @@ export type SQL = {|
 |};
 
 export default function writeSQL(state: DataState, parser: Parser): string {
-  debugger
-  return write(parser.parseDataState(state), state, parser);
+  return write(parser.parseDataState(state));
 }
 
-export function write(sql: SQL, state: DataState, parser: Parser): string {
-  return writeWith(state, parser) +
+export function write(sql: SQL): string {
+  return writeWith(sql.with) +
     writeSelect(sql.select) +
     writeFrom(sql.from) +
     writeWhere(sql.where) +
@@ -34,11 +33,11 @@ export function write(sql: SQL, state: DataState, parser: Parser): string {
     writeOffset(sql.offset);
 }
 
-export function writeSelect(select: Array<string>): string {
+function writeSelect(select: Array<string>): string {
   return select.length ? "SELECT " + select.join(", ") : "SELECT *";
 }
 
-export function writeFrom(from: string): string {
+function writeFrom(from: string): string {
   return " FROM " + from;
 }
 
@@ -46,7 +45,7 @@ function writeWhere(where: Array<string>): string {
   return where.length ? " WHERE " + where.join(" AND ") : "";
 }
 
-export function writeGroupby(groupby: Array<string>): string {
+function writeGroupby(groupby: Array<string>): string {
   return groupby.length ? " GROUP BY " + groupby.join(", ") : "";
 }
 
@@ -66,10 +65,6 @@ function writeOffset(offset: string): string {
   return offset.length ? " OFFSET " + offset : "";
 }
 
-function writeWith(state: DataState, parser: Parser): string {
-  if(state.transform.length>1) {
-    const withClause = writeSQL(state.transform[1].fields, parser)
-    return withClause ? "WITH colors AS ("+withClaus+")" : "";
-  }
-  else { return ""}
+function writeWith(With: Array<string>): string {
+  return With.length ? "WITH colors AS ("+With+") " : "";
 }
