@@ -13,7 +13,8 @@ export type SQL = {|
   offset: string,
   unresolved?: {
     [string]: ResolveFilter
-  }
+  },
+  with?: Array<string>
 |};
 
 export default function writeSQL(state: DataState, parser: Parser): string {
@@ -21,7 +22,8 @@ export default function writeSQL(state: DataState, parser: Parser): string {
 }
 
 export function write(sql: SQL): string {
-  return writeSelect(sql.select) +
+  return writeWith(sql.with) +
+    writeSelect(sql.select) +
     writeFrom(sql.from) +
     writeWhere(sql.where) +
     writeGroupby(sql.groupby) +
@@ -61,4 +63,9 @@ function writeLimit(limit: string): string {
 
 function writeOffset(offset: string): string {
   return offset.length ? " OFFSET " + offset : "";
+}
+
+function writeWith(With: Array<string>): string {
+  // with clause will get passed as obj in an array. Not expecting more than one WITH clause as of FE-8036
+  return (With && With.length) ? "WITH "+With[0].temp+" AS ("+With[0].subQuery+") " : "";
 }

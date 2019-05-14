@@ -67,7 +67,8 @@ tape("parseDataState", assert => {
       orderby: [],
       limit: "",
       offset: "",
-      unresolved: {}
+      unresolved: {},
+      with: []
     }
   );
 });

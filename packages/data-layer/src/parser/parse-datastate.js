@@ -15,7 +15,8 @@ export default function parseDataState(
     orderby: [],
     limit: "",
     offset: "",
-    unresolved: {}
+    unresolved: {},
+    with: []
   }
 ): SQL {
   return state.transform.reduce(
@@ -33,7 +34,8 @@ export default function parseDataState(
       orderby: initialSQL.orderby,
       limit: initialSQL.limit,
       offset: initialSQL.offset,
-      unresolved: initialSQL.unresolved
+      unresolved: initialSQL.unresolved,
+      with: initialSQL.with
     }
   );
 }

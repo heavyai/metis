@@ -10,6 +10,7 @@ import parseProject from "./parse-project";
 import parseResolvefilter from "./parse-resolvefilter";
 import parseSample from "./parse-sample";
 import parseSource from "./parse-source";
+import parseWith from "./parse-with"
 
 import type { SQL } from "./write-sql";
 import type { Parser } from "./create-parser";
@@ -40,6 +41,8 @@ export default function parseTransform(
       return parseResolvefilter(sql, t);
     case "crossfilter":
       return parseCrossfilter(sql, t);
+    case "with":
+      return parseWith(sql, t, parser);
     /* istanbul ignore next */
     default:
       return sql;
