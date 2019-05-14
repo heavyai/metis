@@ -7,9 +7,10 @@ export default function parseWith(
   transform: With,
   parser: any = Parser
 ): SQL {
-  const withClause = parser.write(parser.parseDataState(transform.fields))
+  const subQuery = parser.write(parser.parseDataState(transform.fields))
+  // need to pass the name for the subquery from mapd-charting, so including with clause in the sql as an object
   sql.with.push(
-    withClause ? withClause : ""
+    subQuery ? {temp: transform.expr, subQuery} : ""
   );
   return sql;
 }

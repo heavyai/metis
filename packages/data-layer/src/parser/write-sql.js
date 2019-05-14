@@ -66,5 +66,6 @@ function writeOffset(offset: string): string {
 }
 
 function writeWith(With: Array<string>): string {
-  return (With && With.length) ? "WITH colors AS ("+With+") " : "";
+  // with clause will get passed as obj in an array. Not expecting more than one WITH clause as of FE-8036
+  return (With && With.length) ? "WITH "+With[0].temp+" AS ("+With[0].subQuery+") " : "";
 }
