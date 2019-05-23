@@ -10,6 +10,9 @@ export default function sample(sql: SQL, transform: Sample): SQL {
   const ratio = Math.min(limit / size, 1.0);
   const threshold = Math.floor(THIRTY_TWO_BITS * ratio);
 
+  // sampleTable prop is in the transform from point, poly, linestring charts
+  const samplingTable = transform.sampleTable || sql.from
+
   if (transform.method === "multiplicativeRowid" && ratio < 1) {
     sql.where.push(
       `((MOD( MOD (${transform.field}, ${THIRTY_ONE_BITS}) * ${GOLDEN_RATIO} , ${THIRTY_TWO_BITS}) < ${threshold}) OR (${transform.field} IN (${transform.expr.join(", ")})))`
@@ -21,7 +24,7 @@ export default function sample(sql: SQL, transform: Sample): SQL {
     // We don't have the full modulo expression for golden ratio since 
     // that is a constant expression and we can avoid that execution
     sql.where.push(
-      `MOD( MOD (${sql.from}.rowid, ${THIRTY_ONE_BITS}) * ${GOLDEN_RATIO} , ${THIRTY_TWO_BITS}) < ${threshold}`
+      `MOD( MOD (${samplingTable}.rowid, ${THIRTY_ONE_BITS}) * ${GOLDEN_RATIO} , ${THIRTY_TWO_BITS}) < ${threshold}`
     );
   }
 
