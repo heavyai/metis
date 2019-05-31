@@ -885,7 +885,6 @@ TStringRow.prototype.write = function(output) {
 
 TStepResult = function(args) {
   this.serialized_rows = null;
-  this.uncompressed_size = null;
   this.execution_finished = null;
   this.merge_type = null;
   this.sharded = null;
@@ -894,9 +893,6 @@ TStepResult = function(args) {
   if (args) {
     if (args.serialized_rows !== undefined && args.serialized_rows !== null) {
       this.serialized_rows = new TSerializedRows(args.serialized_rows);
-    }
-    if (args.uncompressed_size !== undefined && args.uncompressed_size !== null) {
-      this.uncompressed_size = args.uncompressed_size;
     }
     if (args.execution_finished !== undefined && args.execution_finished !== null) {
       this.execution_finished = args.execution_finished;
@@ -938,34 +934,27 @@ TStepResult.prototype.read = function(input) {
       }
       break;
       case 2:
-      if (ftype == Thrift.Type.I64) {
-        this.uncompressed_size = input.readI64().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
       if (ftype == Thrift.Type.BOOL) {
         this.execution_finished = input.readBool().value;
       } else {
         input.skip(ftype);
       }
       break;
-      case 4:
+      case 3:
       if (ftype == Thrift.Type.I32) {
         this.merge_type = input.readI32().value;
       } else {
         input.skip(ftype);
       }
       break;
-      case 5:
+      case 4:
       if (ftype == Thrift.Type.BOOL) {
         this.sharded = input.readBool().value;
       } else {
         input.skip(ftype);
       }
       break;
-      case 6:
+      case 5:
       if (ftype == Thrift.Type.LIST) {
         var _size64 = 0;
         var _rtmp368;
@@ -986,7 +975,7 @@ TStepResult.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 7:
+      case 6:
       if (ftype == Thrift.Type.I32) {
         this.node_id = input.readI32().value;
       } else {
@@ -1009,28 +998,23 @@ TStepResult.prototype.write = function(output) {
     this.serialized_rows.write(output);
     output.writeFieldEnd();
   }
-  if (this.uncompressed_size !== null && this.uncompressed_size !== undefined) {
-    output.writeFieldBegin('uncompressed_size', Thrift.Type.I64, 2);
-    output.writeI64(this.uncompressed_size);
-    output.writeFieldEnd();
-  }
   if (this.execution_finished !== null && this.execution_finished !== undefined) {
-    output.writeFieldBegin('execution_finished', Thrift.Type.BOOL, 3);
+    output.writeFieldBegin('execution_finished', Thrift.Type.BOOL, 2);
     output.writeBool(this.execution_finished);
     output.writeFieldEnd();
   }
   if (this.merge_type !== null && this.merge_type !== undefined) {
-    output.writeFieldBegin('merge_type', Thrift.Type.I32, 4);
+    output.writeFieldBegin('merge_type', Thrift.Type.I32, 3);
     output.writeI32(this.merge_type);
     output.writeFieldEnd();
   }
   if (this.sharded !== null && this.sharded !== undefined) {
-    output.writeFieldBegin('sharded', Thrift.Type.BOOL, 5);
+    output.writeFieldBegin('sharded', Thrift.Type.BOOL, 4);
     output.writeBool(this.sharded);
     output.writeFieldEnd();
   }
   if (this.row_desc !== null && this.row_desc !== undefined) {
-    output.writeFieldBegin('row_desc', Thrift.Type.LIST, 6);
+    output.writeFieldBegin('row_desc', Thrift.Type.LIST, 5);
     output.writeListBegin(Thrift.Type.STRUCT, this.row_desc.length);
     for (var iter71 in this.row_desc)
     {
@@ -1044,7 +1028,7 @@ TStepResult.prototype.write = function(output) {
     output.writeFieldEnd();
   }
   if (this.node_id !== null && this.node_id !== undefined) {
-    output.writeFieldBegin('node_id', Thrift.Type.I32, 7);
+    output.writeFieldBegin('node_id', Thrift.Type.I32, 6);
     output.writeI32(this.node_id);
     output.writeFieldEnd();
   }

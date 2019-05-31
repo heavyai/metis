@@ -15,7 +15,7 @@ export default function sample(sql: SQL, transform: Sample): SQL {
 
   if (transform.method === "multiplicativeRowid" && ratio < 1) {
     sql.where.push(
-      `((MOD( MOD (${transform.field}, ${THIRTY_ONE_BITS}) * ${GOLDEN_RATIO} , ${THIRTY_TWO_BITS}) < ${threshold}) OR (${transform.field} IN (${transform.expr.join(", ")})))`
+      `((MOD( MOD (${samplingTable}.rowid, ${THIRTY_ONE_BITS}) * ${GOLDEN_RATIO} , ${THIRTY_TWO_BITS}) < ${threshold}) OR (${transform.field} IN (${transform.expr.map(e => typeof e === "string" ? `'${e}'` : `${e}`).join(", ")})))`
     );
   } else if (transform.method === "multiplicative" && ratio < 1) {
     // We are using simple modulo arithmetic expression conversion, 
