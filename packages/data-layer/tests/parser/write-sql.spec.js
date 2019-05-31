@@ -96,7 +96,7 @@ tape("writeSQL", assert => {
         }
       ]
     }),
-    "SELECT cast((cast(airtime as float) - -3818) * 0.001638001638001638 as int) as key0, cast((cast(distance as float) - 0) * 0.002408187838651415 as int) as key1, COUNT(*) as val FROM flights WHERE ((airtime >= -3818 AND airtime <= 3508) OR (airtime IS NULL)) AND ((distance >= 0 AND distance <= 4983) OR (distance IS NULL)) GROUP BY key0, key1 HAVING (key0 >= 0 AND key0 < 12 OR key0 IS NULL) AND (key1 >= 0 AND key1 < 12 OR key1 IS NULL) ORDER BY val DESC LIMIT 10"
+    "SELECT case when\n      airtime >= 3508\n    then\n      11\n    else\n      cast((cast(airtime as float) - -3818) * 0.001638001638001638 as int)\n    end\n    as key0, case when\n      distance >= 4983\n    then\n      11\n    else\n      cast((cast(distance as float) - 0) * 0.002408187838651415 as int)\n    end\n    as key1, COUNT(*) as val FROM flights WHERE ((airtime >= -3818 AND airtime <= 3508) OR (airtime IS NULL)) AND ((distance >= 0 AND distance <= 4983) OR (distance IS NULL)) GROUP BY key0, key1 HAVING (key0 >= 0 AND key0 < 12 OR key0 IS NULL) AND (key1 >= 0 AND key1 < 12 OR key1 IS NULL) ORDER BY val DESC LIMIT 10"
   );
 
   assert.equal(
