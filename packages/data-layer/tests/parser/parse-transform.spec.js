@@ -53,7 +53,7 @@ tape("parseDataState", assert => {
     }),
     {
       select: [
-        "cast((cast(total_amount as float) - -21474830) * 4.719682036909046e-7 as int) as key0",
+        "case when\n      total_amount >= 3950611.6\n    then\n      11\n    else\n      cast((cast(total_amount as float) - -21474830) * 4.719682036909046e-7 as int)\n    end\n    as key0",
         "COUNT(*) as series_1"
       ],
       from: "taxis",
@@ -97,7 +97,7 @@ tape("bin", assert => {
     ),
     {
       select: [
-        "cast((cast(airtime as float) - 0) * 0.008888888888888889 as int) as key0"
+        "case when\n      airtime >= 1350\n    then\n      11\n    else\n      cast((cast(airtime as float) - 0) * 0.008888888888888889 as int)\n    end\n    as key0"
       ],
       from: "",
       where: ["((airtime >= 0 AND airtime <= 1350) OR (airtime IS NULL))"],

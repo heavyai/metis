@@ -285,6 +285,6 @@ assert.equal(
         }
       ]
     }),
-    "(SELECT cast((cast(total_amount as float) - -21474830) * 4.719682036909046e-7 as int) as key0, COUNT(*) as series_1 FROM taxis WHERE ((total_amount >= -21474830 AND total_amount <= 3950611.6) OR (total_amount IS NULL)) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 12 OR key0 IS NULL))"
+    "(SELECT case when\n      total_amount >= 3950611.6\n    then\n      11\n    else\n      cast((cast(total_amount as float) - -21474830) * 4.719682036909046e-7 as int)\n    end\n    as key0, COUNT(*) as series_1 FROM taxis WHERE ((total_amount >= -21474830 AND total_amount <= 3950611.6) OR (total_amount IS NULL)) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 12 OR key0 IS NULL))"
   );
 });
