@@ -7,8 +7,7 @@ export default function parseBin(
 ): SQL {
   sql.select.push(
     `case when
-      cast((cast(${field} as float) - ${extent[0]}) * ${maxbins /
-      (extent[1] - extent[0])} as int) >= ${maxbins}
+      ${field} >= ${extent[1]}
     then
       ${maxbins - 1}
     else
