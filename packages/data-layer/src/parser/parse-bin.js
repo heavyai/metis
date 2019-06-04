@@ -12,7 +12,7 @@ export default function parseBin(
       ${maxbins - 1}
     else
       cast((cast(${field} as float) - ${extent[0]}) * ${maxbins /
-      (extent[1] - extent[0])} as int)
+      ((extent[1] - extent[0]) || 1)} as int)
     end
     as ${as}`
   );
