@@ -5,14 +5,16 @@ export default function parseBin(
   sql: SQL,
   { field, as, extent, maxbins }: Bin
 ): SQL {
+  const binRange = extent[1] - extent[0];
+  
   sql.select.push(
     `case when
       ${field} >= ${extent[1]}
     then
-      ${maxbins - 1}
+      ${ binRange === 0 ? 0 : maxbins - 1}
     else
       cast((cast(${field} as float) - ${extent[0]}) * ${maxbins /
-      ((extent[1] - extent[0]) || 1)} as int)
+      (binRange || 1) } as int)
     end
     as ${as}`
   );
