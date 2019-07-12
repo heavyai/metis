@@ -49,10 +49,10 @@ export const pointmapGroup = {
   },
   getProjectOn() {
     return [
-      "conv_4326_900913_x(lon) as x",
-      "conv_4326_900913_y(lat) as y",
-      "lang as color",
-      "followers as size"
+      "conv_4326_900913_x(lon) AS x",
+      "conv_4326_900913_y(lat) AS y",
+      "lang AS color",
+      "followers AS size"
     ];
   }
 };

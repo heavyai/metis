@@ -26,7 +26,7 @@ export default function parseBin(
       cast((cast(${field} as float) - ${extent[0]}) * ${maxbins /
       (numBins || 1) } as int)
     end
-    as ${as}`
+    AS ${as}`
   );
   sql.where.push(
     `((${field} >= ${extent[0]} AND ${field} <= ${

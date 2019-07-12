@@ -42,7 +42,7 @@ function aggregateField(op: string, field: string, as: string): string {
     str += `${op}(${field})`;
   }
 
-  return str + `${as ? " as " + as : ""}`;
+  return str + `${as ? " AS " + as : ""}`;
 }
 
 function parseGroupBy(
@@ -59,7 +59,7 @@ function parseGroupBy(
   } else if (groupby.type === "project") {
     sql.select.push(
       parser.parseExpression(groupby.expr) +
-        (groupby.as ? " as " + groupby.as : "")
+        (groupby.as ? " AS " + groupby.as : "")
     );
     if (groupby.as) {
       sql.groupby.push(groupby.as);

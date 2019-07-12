@@ -36,7 +36,7 @@ tape("writeSQL", assert => {
         }
       ]
     }),
-    "SELECT dest_city, AVG(depdelay) as val FROM flights GROUP BY dest_city"
+    "SELECT dest_city, AVG(depdelay) AS val FROM flights GROUP BY dest_city"
   );
 
   assert.equal(
@@ -96,7 +96,7 @@ tape("writeSQL", assert => {
         }
       ]
     }),
-    "SELECT case when\n      airtime >= 3508\n    then\n      11\n    else\n      cast((cast(airtime as float) - -3818) * 0.001638001638001638 as int)\n    end\n    as key0, case when\n      distance >= 4983\n    then\n      11\n    else\n      cast((cast(distance as float) - 0) * 0.002408187838651415 as int)\n    end\n    as key1, COUNT(*) as val FROM flights WHERE ((airtime >= -3818 AND airtime <= 3508) OR (airtime IS NULL)) AND ((distance >= 0 AND distance <= 4983) OR (distance IS NULL)) GROUP BY key0, key1 HAVING (key0 >= 0 AND key0 < 12 OR key0 IS NULL) AND (key1 >= 0 AND key1 < 12 OR key1 IS NULL) ORDER BY val DESC LIMIT 10"
+    "SELECT case when\n      airtime >= 3508\n    then\n      11\n    else\n      cast((cast(airtime as float) - -3818) * 0.001638001638001638 as int)\n    end\n    AS key0, case when\n      distance >= 4983\n    then\n      11\n    else\n      cast((cast(distance as float) - 0) * 0.002408187838651415 as int)\n    end\n    AS key1, COUNT(*) AS val FROM flights WHERE ((airtime >= -3818 AND airtime <= 3508) OR (airtime IS NULL)) AND ((distance >= 0 AND distance <= 4983) OR (distance IS NULL)) GROUP BY key0, key1 HAVING (key0 >= 0 AND key0 < 12 OR key0 IS NULL) AND (key1 >= 0 AND key1 < 12 OR key1 IS NULL) ORDER BY val DESC LIMIT 10"
   );
 
   assert.equal(
@@ -142,7 +142,7 @@ tape("writeSQL", assert => {
         }
       ]
     }),
-    "SELECT date_trunc(year, CAST(contrib_date AS TIMESTAMP(0))) as key0, AVG(amount) as series_1 FROM contributions WHERE (CAST(contrib_date AS TIMESTAMP(0)) BETWEEN TIMESTAMP(0) '1996-11-05 17:47:30' AND TIMESTAMP(0) '2010-10-21 10:54:07') AND (amount IS NOT NULL) GROUP BY key0 ORDER BY key0"
+    "SELECT date_trunc(year, CAST(contrib_date AS TIMESTAMP(0))) AS key0, AVG(amount) AS series_1 FROM contributions WHERE (CAST(contrib_date AS TIMESTAMP(0)) BETWEEN TIMESTAMP(0) '1996-11-05 17:47:30' AND TIMESTAMP(0) '2010-10-21 10:54:07') AND (amount IS NOT NULL) GROUP BY key0 ORDER BY key0"
   );
 
   assert.equal(
@@ -174,7 +174,7 @@ tape("writeSQL", assert => {
       children: [],
       transform: []
     }),
-    "SELECT * FROM flights JOIN zipcode as table1 JOIN contrib as table2"
+    "SELECT * FROM flights JOIN zipcode AS table1 JOIN contrib AS table2"
   );
 
   assert.equal(
@@ -190,6 +190,6 @@ tape("writeSQL", assert => {
         ...rel.top("key0", 10)
       ]
     }),
-    "SELECT carrier_name as key0, COUNT(*) as val, MAX(delay) as color FROM flights WHERE (delay BETWEEN -50 AND 50) GROUP BY key0 ORDER BY key0 DESC LIMIT 10"
+    "SELECT carrier_name AS key0, COUNT(*) AS val, MAX(delay) AS color FROM flights WHERE (delay BETWEEN -50 AND 50) GROUP BY key0 ORDER BY key0 DESC LIMIT 10"
   );
 });

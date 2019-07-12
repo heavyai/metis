@@ -10,7 +10,7 @@ export default function parseProject(
 ): SQL {
   sql.select.push(
     parser.parseExpression(transform.expr) +
-      (transform.as ? " as " + transform.as : "")
+      (transform.as ? " AS " + transform.as : "")
   );
   return sql;
 }

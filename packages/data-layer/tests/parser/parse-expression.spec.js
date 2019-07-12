@@ -189,7 +189,7 @@ tape("parseExpression", assert => {
       ],
       else: "other"
     }),
-    "CASE WHEN recipient_party IN (SELECT recipient_party, MAX(amount) as val FROM contributions GROUP BY recipient_party LIMIT 10) THEN recipient_party ELSE 'other' END"
+    "CASE WHEN recipient_party IN (SELECT recipient_party, MAX(amount) AS val FROM contributions GROUP BY recipient_party LIMIT 10) THEN recipient_party ELSE 'other' END"
   );
 
 assert.equal(
@@ -223,7 +223,7 @@ assert.equal(
         ]
       ]
     }),
-    "CASE WHEN recipient_party IN (SELECT recipient_party, MAX(amount) as val FROM contributions GROUP BY recipient_party LIMIT 10) THEN recipient_party END"
+    "CASE WHEN recipient_party IN (SELECT recipient_party, MAX(amount) AS val FROM contributions GROUP BY recipient_party LIMIT 10) THEN recipient_party END"
   );
 
   // case statement may be constructed from a set array, single quotes should be escaped as two single quotes
@@ -285,6 +285,6 @@ assert.equal(
         }
       ]
     }),
-    "(SELECT case when\n      total_amount >= 3950611.6\n    then\n      11\n    else\n      cast((cast(total_amount as float) - -21474830) * 4.719682036909046e-7 as int)\n    end\n    as key0, COUNT(*) as series_1 FROM taxis WHERE ((total_amount >= -21474830 AND total_amount <= 3950611.6) OR (total_amount IS NULL)) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 12 OR key0 IS NULL))"
+    "(SELECT case when\n      total_amount >= 3950611.6\n    then\n      11\n    else\n      cast((cast(total_amount as float) - -21474830) * 4.719682036909046e-7 as int)\n    end\n    AS key0, COUNT(*) AS series_1 FROM taxis WHERE ((total_amount >= -21474830 AND total_amount <= 3950611.6) OR (total_amount IS NULL)) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 12 OR key0 IS NULL))"
   );
 });
