@@ -75,12 +75,12 @@ tape("Integration Test", assert => {
 
   assert.equal(
     chartNode1.toSQL(),
-    "SELECT payment_type as key0, COUNT(*) as val FROM flights GROUP BY key0 ORDER BY val ASC LIMIT 10"
+    "SELECT payment_type AS key0, COUNT(*) AS val FROM flights GROUP BY key0 ORDER BY val ASC LIMIT 10"
   );
 
   assert.equal(
     chartNode2.toSQL(),
-    "SELECT case when\n      trip_distance >= 30\n    then\n      29\n    else\n      cast((cast(trip_distance as float) - 0) * 1 as int)\n    end\n    as key0, COUNT(*) as val FROM flights WHERE ((trip_distance >= 0 AND trip_distance <= 30) OR (trip_distance IS NULL)) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 30 OR key0 IS NULL)"
+    "SELECT case when\n      trip_distance >= 30\n    then\n      29\n    else\n      cast((cast(trip_distance as float) - 0) * 1 as int)\n    end\n    AS key0, COUNT(*) AS val FROM flights WHERE ((trip_distance >= 0 AND trip_distance <= 30) OR (trip_distance IS NULL)) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 30 OR key0 IS NULL)"
   );
 
   globalFilterNode.transform(
@@ -157,11 +157,11 @@ tape("Integration Test", assert => {
 
   assert.equal(
     chartNode1.toSQL(),
-    "SELECT payment_type as key0, COUNT(*) as val FROM flights WHERE (trip_distance BETWEEN 12 AND 20) AND (dropoff_longitude BETWEEN -73.99828105055514 AND -73.7766089742046) AND (dropoff_latitude BETWEEN 40.63646686110235 AND 40.81468768513369) GROUP BY key0 ORDER BY val ASC LIMIT 10"
+    "SELECT payment_type AS key0, COUNT(*) AS val FROM flights WHERE (trip_distance BETWEEN 12 AND 20) AND (dropoff_longitude BETWEEN -73.99828105055514 AND -73.7766089742046) AND (dropoff_latitude BETWEEN 40.63646686110235 AND 40.81468768513369) GROUP BY key0 ORDER BY val ASC LIMIT 10"
   );
 
   assert.equal(
     chartNode2.toSQL(),
-    "SELECT case when\n      trip_distance >= 30\n    then\n      29\n    else\n      cast((cast(trip_distance as float) - 0) * 1 as int)\n    end\n    as key0, COUNT(*) as val FROM flights WHERE ((trip_distance >= 0 AND trip_distance <= 30) OR (trip_distance IS NULL)) AND (payment_type = \'cash\') AND (dropoff_longitude BETWEEN -73.99828105055514 AND -73.7766089742046) AND (dropoff_latitude BETWEEN 40.63646686110235 AND 40.81468768513369) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 30 OR key0 IS NULL)"
+    "SELECT case when\n      trip_distance >= 30\n    then\n      29\n    else\n      cast((cast(trip_distance as float) - 0) * 1 as int)\n    end\n    AS key0, COUNT(*) AS val FROM flights WHERE ((trip_distance >= 0 AND trip_distance <= 30) OR (trip_distance IS NULL)) AND (payment_type = \'cash\') AND (dropoff_longitude BETWEEN -73.99828105055514 AND -73.7766089742046) AND (dropoff_latitude BETWEEN 40.63646686110235 AND 40.81468768513369) GROUP BY key0 HAVING (key0 >= 0 AND key0 < 30 OR key0 IS NULL)"
   );
 });

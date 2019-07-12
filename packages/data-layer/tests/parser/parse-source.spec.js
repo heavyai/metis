@@ -27,7 +27,7 @@ tape("parseSource", assert => {
         as: "table2"
       }
     ]),
-    "flights JOIN zipcode as table1 RIGHT JOIN contrib as table2"
+    "flights JOIN zipcode AS table1 RIGHT JOIN contrib AS table2"
   );
 
   assert.deepEqual(
@@ -63,6 +63,6 @@ tape("parseSource", assert => {
         as: "table2"
       }
     ]),
-    "flights INNER JOIN zipcode as table1 LEFT JOIN (SELECT dest_city, AVG(depdelay) as val FROM flights GROUP BY dest_city) as table2"
+    "flights INNER JOIN zipcode AS table1 LEFT JOIN (SELECT dest_city, AVG(depdelay) AS val FROM flights GROUP BY dest_city) AS table2"
   );
 });

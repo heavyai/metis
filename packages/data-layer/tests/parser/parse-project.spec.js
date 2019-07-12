@@ -53,7 +53,7 @@ tape("parseProject", assert => {
       }
     ),
     {
-      select: ["AVG(amount) as val"],
+      select: ["AVG(amount) AS val"],
       from: "",
       where: [],
       groupby: [],
@@ -87,7 +87,7 @@ tape("parseProject", assert => {
       }
     ),
     {
-      select: ["date_trunc(quarter, contrib_date) as key0"],
+      select: ["date_trunc(quarter, contrib_date) AS key0"],
       from: "",
       where: [],
       groupby: [],
@@ -121,7 +121,7 @@ tape("parseProject", assert => {
       }
     ),
     {
-      select: ["extract(day from contrib_date) as key0"],
+      select: ["extract(day from contrib_date) AS key0"],
       from: "",
       where: [],
       groupby: [],
@@ -165,7 +165,7 @@ tape("parseProject", assert => {
     ),
     {
       select: [
-        "CASE WHEN recipient_party IN ('R', 'D', 'I', '3', 'L') THEN recipient_party ELSE 'other' END as key1"
+        "CASE WHEN recipient_party IN ('R', 'D', 'I', '3', 'L') THEN recipient_party ELSE 'other' END AS key1"
       ],
       from: "",
       where: [],

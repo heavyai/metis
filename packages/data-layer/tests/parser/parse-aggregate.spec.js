@@ -45,9 +45,9 @@ tape("aggregate", assert => {
     ),
     {
       select: [
-        "date_trunc(day, dep_timestamp) as x",
-        "extract(month from dep_timestamp) as z",
-        "COUNT(*) as y"
+        "date_trunc(day, dep_timestamp) AS x",
+        "extract(month from dep_timestamp) AS z",
+        "COUNT(*) AS y"
       ],
       from: "",
       where: [],
@@ -87,7 +87,7 @@ tape("aggregate", assert => {
       }
     ),
     {
-      select: ["date_trunc(day, dep_timestamp) as x", "COUNT(*) as y"],
+      select: ["date_trunc(day, dep_timestamp) AS x", "COUNT(*) AS y"],
       from: "",
       where: [],
       groupby: ["x"],
@@ -118,7 +118,7 @@ tape("aggregate", assert => {
       }
     ),
     {
-      select: ["party", "COUNT(*) as key0"],
+      select: ["party", "COUNT(*) AS key0"],
       from: "",
       where: [],
       groupby: ["party"],
@@ -152,8 +152,8 @@ tape("aggregate", assert => {
       select: [
         "city",
         "state",
-        "AVG(airtime) as val",
-        "COUNT(depdelay) as color"
+        "AVG(airtime) AS val",
+        "COUNT(depdelay) AS color"
       ],
       from: "",
       where: [],
@@ -185,7 +185,7 @@ tape("aggregate", assert => {
       }
     ),
     {
-      select: ["carrier", "SUM(airtime) as val", "MIN(depdelay) as color"],
+      select: ["carrier", "SUM(airtime) AS val", "MIN(depdelay) AS color"],
       from: "",
       where: [],
       groupby: ["carrier"],

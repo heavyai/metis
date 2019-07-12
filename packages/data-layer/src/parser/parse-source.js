@@ -47,7 +47,7 @@ export default function parseSource(
           // $FlowFixMe
           const joinStmt = left + " " + joinRelation(joinType) + " " + right;
           const aliasStmt = typeof transform.as === "string"
-            ? " as " + transform.as
+            ? " AS " + transform.as
             : "";
           return stmt.concat(joinStmt + aliasStmt);
         } else if (transform.type === "data" || transform.type === "root") {
