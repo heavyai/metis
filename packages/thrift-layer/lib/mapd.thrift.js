@@ -9189,7 +9189,7 @@ MapD_start_query_result.prototype.write = function(output) {
   return;
 };
 
-MapD_execute_first_step_args = function(args) {
+MapD_execute_query_step_args = function(args) {
   this.pending_query = null;
   if (args) {
     if (args.pending_query !== undefined && args.pending_query !== null) {
@@ -9197,8 +9197,8 @@ MapD_execute_first_step_args = function(args) {
     }
   }
 };
-MapD_execute_first_step_args.prototype = {};
-MapD_execute_first_step_args.prototype.read = function(input) {
+MapD_execute_query_step_args.prototype = {};
+MapD_execute_query_step_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -9231,8 +9231,8 @@ MapD_execute_first_step_args.prototype.read = function(input) {
   return;
 };
 
-MapD_execute_first_step_args.prototype.write = function(output) {
-  output.writeStructBegin('MapD_execute_first_step_args');
+MapD_execute_query_step_args.prototype.write = function(output) {
+  output.writeStructBegin('MapD_execute_query_step_args');
   if (this.pending_query !== null && this.pending_query !== undefined) {
     output.writeFieldBegin('pending_query', Thrift.Type.STRUCT, 1);
     this.pending_query.write(output);
@@ -9243,7 +9243,7 @@ MapD_execute_first_step_args.prototype.write = function(output) {
   return;
 };
 
-MapD_execute_first_step_result = function(args) {
+MapD_execute_query_step_result = function(args) {
   this.success = null;
   this.e = null;
   if (args instanceof TMapDException) {
@@ -9259,8 +9259,8 @@ MapD_execute_first_step_result = function(args) {
     }
   }
 };
-MapD_execute_first_step_result.prototype = {};
-MapD_execute_first_step_result.prototype.read = function(input) {
+MapD_execute_query_step_result.prototype = {};
+MapD_execute_query_step_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -9298,8 +9298,8 @@ MapD_execute_first_step_result.prototype.read = function(input) {
   return;
 };
 
-MapD_execute_first_step_result.prototype.write = function(output) {
-  output.writeStructBegin('MapD_execute_first_step_result');
+MapD_execute_query_step_result.prototype.write = function(output) {
+  output.writeStructBegin('MapD_execute_query_step_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
     this.success.write(output);
@@ -14779,16 +14779,16 @@ MapDClient.prototype.recv_start_query = function() {
   }
   throw 'start_query failed: unknown result';
 };
-MapDClient.prototype.execute_first_step = function(pending_query, callback) {
-  this.send_execute_first_step(pending_query, callback); 
+MapDClient.prototype.execute_query_step = function(pending_query, callback) {
+  this.send_execute_query_step(pending_query, callback); 
   if (!callback) {
-    return this.recv_execute_first_step();
+    return this.recv_execute_query_step();
   }
 };
 
-MapDClient.prototype.send_execute_first_step = function(pending_query, callback) {
-  this.output.writeMessageBegin('execute_first_step', Thrift.MessageType.CALL, this.seqid);
-  var args = new MapD_execute_first_step_args();
+MapDClient.prototype.send_execute_query_step = function(pending_query, callback) {
+  this.output.writeMessageBegin('execute_query_step', Thrift.MessageType.CALL, this.seqid);
+  var args = new MapD_execute_query_step_args();
   args.pending_query = pending_query;
   args.write(this.output);
   this.output.writeMessageEnd();
@@ -14797,7 +14797,7 @@ MapDClient.prototype.send_execute_first_step = function(pending_query, callback)
     this.output.getTransport().flush(true, function() {
       var result = null;
       try {
-        result = self.recv_execute_first_step();
+        result = self.recv_execute_query_step();
       } catch (e) {
         result = e;
       }
@@ -14808,7 +14808,7 @@ MapDClient.prototype.send_execute_first_step = function(pending_query, callback)
   }
 };
 
-MapDClient.prototype.recv_execute_first_step = function() {
+MapDClient.prototype.recv_execute_query_step = function() {
   var ret = this.input.readMessageBegin();
   var fname = ret.fname;
   var mtype = ret.mtype;
@@ -14819,7 +14819,7 @@ MapDClient.prototype.recv_execute_first_step = function() {
     this.input.readMessageEnd();
     throw x;
   }
-  var result = new MapD_execute_first_step_result();
+  var result = new MapD_execute_query_step_result();
   result.read(this.input);
   this.input.readMessageEnd();
 
@@ -14829,7 +14829,7 @@ MapDClient.prototype.recv_execute_first_step = function() {
   if (null !== result.success) {
     return result.success;
   }
-  throw 'execute_first_step failed: unknown result';
+  throw 'execute_query_step failed: unknown result';
 };
 MapDClient.prototype.broadcast_serialized_rows = function(serialized_rows, row_desc, query_id, callback) {
   this.send_broadcast_serialized_rows(serialized_rows, row_desc, query_id, callback); 
