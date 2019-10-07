@@ -11615,6 +11615,12 @@ MapD_get_license_claims_result.prototype.write = function(output) {
 };
 
 MapD_get_device_parameters_args = function(args) {
+  this.session = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+  }
 };
 MapD_get_device_parameters_args.prototype = {};
 MapD_get_device_parameters_args.prototype.read = function(input) {
@@ -11628,7 +11634,21 @@ MapD_get_device_parameters_args.prototype.read = function(input) {
     if (ftype == Thrift.Type.STOP) {
       break;
     }
-    input.skip(ftype);
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
     input.readFieldEnd();
   }
   input.readStructEnd();
@@ -11637,6 +11657,11 @@ MapD_get_device_parameters_args.prototype.read = function(input) {
 
 MapD_get_device_parameters_args.prototype.write = function(output) {
   output.writeStructBegin('MapD_get_device_parameters_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
@@ -15864,16 +15889,17 @@ MapDClient.prototype.recv_get_license_claims = function() {
   }
   throw 'get_license_claims failed: unknown result';
 };
-MapDClient.prototype.get_device_parameters = function(callback) {
-  this.send_get_device_parameters(callback); 
+MapDClient.prototype.get_device_parameters = function(session, callback) {
+  this.send_get_device_parameters(session, callback); 
   if (!callback) {
     return this.recv_get_device_parameters();
   }
 };
 
-MapDClient.prototype.send_get_device_parameters = function(callback) {
+MapDClient.prototype.send_get_device_parameters = function(session, callback) {
   this.output.writeMessageBegin('get_device_parameters', Thrift.MessageType.CALL, this.seqid);
   var args = new MapD_get_device_parameters_args();
+  args.session = session;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {
