@@ -1610,6 +1610,7 @@ TCopyParams = function(args) {
   this.sanitize_column_names = true;
   this.geo_layer_name = null;
   this.s3_endpoint = null;
+  this.geo_assign_render_groups = true;
   if (args) {
     if (args.delimiter !== undefined && args.delimiter !== null) {
       this.delimiter = args.delimiter;
@@ -1676,6 +1677,9 @@ TCopyParams = function(args) {
     }
     if (args.s3_endpoint !== undefined && args.s3_endpoint !== null) {
       this.s3_endpoint = args.s3_endpoint;
+    }
+    if (args.geo_assign_render_groups !== undefined && args.geo_assign_render_groups !== null) {
+      this.geo_assign_render_groups = args.geo_assign_render_groups;
     }
   }
 };
@@ -1847,6 +1851,13 @@ TCopyParams.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 23:
+      if (ftype == Thrift.Type.BOOL) {
+        this.geo_assign_render_groups = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -1966,6 +1977,11 @@ TCopyParams.prototype.write = function(output) {
   if (this.s3_endpoint !== null && this.s3_endpoint !== undefined) {
     output.writeFieldBegin('s3_endpoint', Thrift.Type.STRING, 22);
     output.writeString(this.s3_endpoint);
+    output.writeFieldEnd();
+  }
+  if (this.geo_assign_render_groups !== null && this.geo_assign_render_groups !== undefined) {
+    output.writeFieldBegin('geo_assign_render_groups', Thrift.Type.BOOL, 23);
+    output.writeBool(this.geo_assign_render_groups);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
