@@ -11770,24 +11770,28 @@ MapD_get_device_parameters_result.prototype.write = function(output) {
   return;
 };
 
-MapD_register_runtime_udf_args = function(args) {
+MapD_register_runtime_extension_functions_args = function(args) {
   this.session = null;
-  this.signatures = null;
+  this.udfs = null;
+  this.udtfs = null;
   this.device_ir_map = null;
   if (args) {
     if (args.session !== undefined && args.session !== null) {
       this.session = args.session;
     }
-    if (args.signatures !== undefined && args.signatures !== null) {
-      this.signatures = args.signatures;
+    if (args.udfs !== undefined && args.udfs !== null) {
+      this.udfs = Thrift.copyList(args.udfs, [TUserDefinedFunction]);
+    }
+    if (args.udtfs !== undefined && args.udtfs !== null) {
+      this.udtfs = Thrift.copyList(args.udtfs, [TUserDefinedTableFunction]);
     }
     if (args.device_ir_map !== undefined && args.device_ir_map !== null) {
       this.device_ir_map = Thrift.copyMap(args.device_ir_map, [null]);
     }
   }
 };
-MapD_register_runtime_udf_args.prototype = {};
-MapD_register_runtime_udf_args.prototype.read = function(input) {
+MapD_register_runtime_extension_functions_args.prototype = {};
+MapD_register_runtime_extension_functions_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -11808,35 +11812,70 @@ MapD_register_runtime_udf_args.prototype.read = function(input) {
       }
       break;
       case 2:
-      if (ftype == Thrift.Type.STRING) {
-        this.signatures = input.readString().value;
+      if (ftype == Thrift.Type.LIST) {
+        var _size592 = 0;
+        var _rtmp3596;
+        this.udfs = [];
+        var _etype595 = 0;
+        _rtmp3596 = input.readListBegin();
+        _etype595 = _rtmp3596.etype;
+        _size592 = _rtmp3596.size;
+        for (var _i597 = 0; _i597 < _size592; ++_i597)
+        {
+          var elem598 = null;
+          elem598 = new TUserDefinedFunction();
+          elem598.read(input);
+          this.udfs.push(elem598);
+        }
+        input.readListEnd();
       } else {
         input.skip(ftype);
       }
       break;
       case 3:
-      if (ftype == Thrift.Type.MAP) {
-        var _size592 = 0;
-        var _rtmp3596;
-        this.device_ir_map = {};
-        var _ktype593 = 0;
-        var _vtype594 = 0;
-        _rtmp3596 = input.readMapBegin();
-        _ktype593 = _rtmp3596.ktype;
-        _vtype594 = _rtmp3596.vtype;
-        _size592 = _rtmp3596.size;
-        for (var _i597 = 0; _i597 < _size592; ++_i597)
+      if (ftype == Thrift.Type.LIST) {
+        var _size599 = 0;
+        var _rtmp3603;
+        this.udtfs = [];
+        var _etype602 = 0;
+        _rtmp3603 = input.readListBegin();
+        _etype602 = _rtmp3603.etype;
+        _size599 = _rtmp3603.size;
+        for (var _i604 = 0; _i604 < _size599; ++_i604)
         {
-          if (_i597 > 0 ) {
+          var elem605 = null;
+          elem605 = new TUserDefinedTableFunction();
+          elem605.read(input);
+          this.udtfs.push(elem605);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.MAP) {
+        var _size606 = 0;
+        var _rtmp3610;
+        this.device_ir_map = {};
+        var _ktype607 = 0;
+        var _vtype608 = 0;
+        _rtmp3610 = input.readMapBegin();
+        _ktype607 = _rtmp3610.ktype;
+        _vtype608 = _rtmp3610.vtype;
+        _size606 = _rtmp3610.size;
+        for (var _i611 = 0; _i611 < _size606; ++_i611)
+        {
+          if (_i611 > 0 ) {
             if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
               input.rstack.pop();
             }
           }
-          var key598 = null;
-          var val599 = null;
-          key598 = input.readString().value;
-          val599 = input.readString().value;
-          this.device_ir_map[key598] = val599;
+          var key612 = null;
+          var val613 = null;
+          key612 = input.readString().value;
+          val613 = input.readString().value;
+          this.device_ir_map[key612] = val613;
         }
         input.readMapEnd();
       } else {
@@ -11852,28 +11891,51 @@ MapD_register_runtime_udf_args.prototype.read = function(input) {
   return;
 };
 
-MapD_register_runtime_udf_args.prototype.write = function(output) {
-  output.writeStructBegin('MapD_register_runtime_udf_args');
+MapD_register_runtime_extension_functions_args.prototype.write = function(output) {
+  output.writeStructBegin('MapD_register_runtime_extension_functions_args');
   if (this.session !== null && this.session !== undefined) {
     output.writeFieldBegin('session', Thrift.Type.STRING, 1);
     output.writeString(this.session);
     output.writeFieldEnd();
   }
-  if (this.signatures !== null && this.signatures !== undefined) {
-    output.writeFieldBegin('signatures', Thrift.Type.STRING, 2);
-    output.writeString(this.signatures);
+  if (this.udfs !== null && this.udfs !== undefined) {
+    output.writeFieldBegin('udfs', Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.STRUCT, this.udfs.length);
+    for (var iter614 in this.udfs)
+    {
+      if (this.udfs.hasOwnProperty(iter614))
+      {
+        iter614 = this.udfs[iter614];
+        iter614.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.udtfs !== null && this.udtfs !== undefined) {
+    output.writeFieldBegin('udtfs', Thrift.Type.LIST, 3);
+    output.writeListBegin(Thrift.Type.STRUCT, this.udtfs.length);
+    for (var iter615 in this.udtfs)
+    {
+      if (this.udtfs.hasOwnProperty(iter615))
+      {
+        iter615 = this.udtfs[iter615];
+        iter615.write(output);
+      }
+    }
+    output.writeListEnd();
     output.writeFieldEnd();
   }
   if (this.device_ir_map !== null && this.device_ir_map !== undefined) {
-    output.writeFieldBegin('device_ir_map', Thrift.Type.MAP, 3);
+    output.writeFieldBegin('device_ir_map', Thrift.Type.MAP, 4);
     output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.device_ir_map));
-    for (var kiter600 in this.device_ir_map)
+    for (var kiter616 in this.device_ir_map)
     {
-      if (this.device_ir_map.hasOwnProperty(kiter600))
+      if (this.device_ir_map.hasOwnProperty(kiter616))
       {
-        var viter601 = this.device_ir_map[kiter600];
-        output.writeString(kiter600);
-        output.writeString(viter601);
+        var viter617 = this.device_ir_map[kiter616];
+        output.writeString(kiter616);
+        output.writeString(viter617);
       }
     }
     output.writeMapEnd();
@@ -11884,7 +11946,7 @@ MapD_register_runtime_udf_args.prototype.write = function(output) {
   return;
 };
 
-MapD_register_runtime_udf_result = function(args) {
+MapD_register_runtime_extension_functions_result = function(args) {
   this.e = null;
   if (args instanceof TMapDException) {
     this.e = args;
@@ -11896,8 +11958,8 @@ MapD_register_runtime_udf_result = function(args) {
     }
   }
 };
-MapD_register_runtime_udf_result.prototype = {};
-MapD_register_runtime_udf_result.prototype.read = function(input) {
+MapD_register_runtime_extension_functions_result.prototype = {};
+MapD_register_runtime_extension_functions_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -11930,8 +11992,8 @@ MapD_register_runtime_udf_result.prototype.read = function(input) {
   return;
 };
 
-MapD_register_runtime_udf_result.prototype.write = function(output) {
-  output.writeStructBegin('MapD_register_runtime_udf_result');
+MapD_register_runtime_extension_functions_result.prototype.write = function(output) {
+  output.writeStructBegin('MapD_register_runtime_extension_functions_result');
   if (this.e !== null && this.e !== undefined) {
     output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
     this.e.write(output);
@@ -15941,18 +16003,19 @@ MapDClient.prototype.recv_get_device_parameters = function() {
   }
   throw 'get_device_parameters failed: unknown result';
 };
-MapDClient.prototype.register_runtime_udf = function(session, signatures, device_ir_map, callback) {
-  this.send_register_runtime_udf(session, signatures, device_ir_map, callback); 
+MapDClient.prototype.register_runtime_extension_functions = function(session, udfs, udtfs, device_ir_map, callback) {
+  this.send_register_runtime_extension_functions(session, udfs, udtfs, device_ir_map, callback); 
   if (!callback) {
-  this.recv_register_runtime_udf();
+  this.recv_register_runtime_extension_functions();
   }
 };
 
-MapDClient.prototype.send_register_runtime_udf = function(session, signatures, device_ir_map, callback) {
-  this.output.writeMessageBegin('register_runtime_udf', Thrift.MessageType.CALL, this.seqid);
-  var args = new MapD_register_runtime_udf_args();
+MapDClient.prototype.send_register_runtime_extension_functions = function(session, udfs, udtfs, device_ir_map, callback) {
+  this.output.writeMessageBegin('register_runtime_extension_functions', Thrift.MessageType.CALL, this.seqid);
+  var args = new MapD_register_runtime_extension_functions_args();
   args.session = session;
-  args.signatures = signatures;
+  args.udfs = udfs;
+  args.udtfs = udtfs;
   args.device_ir_map = device_ir_map;
   args.write(this.output);
   this.output.writeMessageEnd();
@@ -15961,7 +16024,7 @@ MapDClient.prototype.send_register_runtime_udf = function(session, signatures, d
     this.output.getTransport().flush(true, function() {
       var result = null;
       try {
-        result = self.recv_register_runtime_udf();
+        result = self.recv_register_runtime_extension_functions();
       } catch (e) {
         result = e;
       }
@@ -15972,7 +16035,7 @@ MapDClient.prototype.send_register_runtime_udf = function(session, signatures, d
   }
 };
 
-MapDClient.prototype.recv_register_runtime_udf = function() {
+MapDClient.prototype.recv_register_runtime_extension_functions = function() {
   var ret = this.input.readMessageBegin();
   var fname = ret.fname;
   var mtype = ret.mtype;
@@ -15983,7 +16046,7 @@ MapDClient.prototype.recv_register_runtime_udf = function() {
     this.input.readMessageEnd();
     throw x;
   }
-  var result = new MapD_register_runtime_udf_result();
+  var result = new MapD_register_runtime_extension_functions_result();
   result.read(this.input);
   this.input.readMessageEnd();
 
