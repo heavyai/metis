@@ -1374,6 +1374,8 @@ TDataFrame = function(args) {
   this.sm_size = null;
   this.df_handle = null;
   this.df_size = null;
+  this.execution_time_ms = null;
+  this.arrow_conversion_time_ms = null;
   if (args) {
     if (args.sm_handle !== undefined && args.sm_handle !== null) {
       this.sm_handle = args.sm_handle;
@@ -1386,6 +1388,12 @@ TDataFrame = function(args) {
     }
     if (args.df_size !== undefined && args.df_size !== null) {
       this.df_size = args.df_size;
+    }
+    if (args.execution_time_ms !== undefined && args.execution_time_ms !== null) {
+      this.execution_time_ms = args.execution_time_ms;
+    }
+    if (args.arrow_conversion_time_ms !== undefined && args.arrow_conversion_time_ms !== null) {
+      this.arrow_conversion_time_ms = args.arrow_conversion_time_ms;
     }
   }
 };
@@ -1431,6 +1439,20 @@ TDataFrame.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 5:
+      if (ftype == Thrift.Type.I64) {
+        this.execution_time_ms = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.I64) {
+        this.arrow_conversion_time_ms = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -1460,6 +1482,16 @@ TDataFrame.prototype.write = function(output) {
   if (this.df_size !== null && this.df_size !== undefined) {
     output.writeFieldBegin('df_size', Thrift.Type.I64, 4);
     output.writeI64(this.df_size);
+    output.writeFieldEnd();
+  }
+  if (this.execution_time_ms !== null && this.execution_time_ms !== undefined) {
+    output.writeFieldBegin('execution_time_ms', Thrift.Type.I64, 5);
+    output.writeI64(this.execution_time_ms);
+    output.writeFieldEnd();
+  }
+  if (this.arrow_conversion_time_ms !== null && this.arrow_conversion_time_ms !== undefined) {
+    output.writeFieldBegin('arrow_conversion_time_ms', Thrift.Type.I64, 6);
+    output.writeI64(this.arrow_conversion_time_ms);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
