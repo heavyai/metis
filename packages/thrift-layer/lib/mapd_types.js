@@ -5152,6 +5152,7 @@ TRawRenderPassDataResult = function(args) {
   this.row_ids_B = null;
   this.table_ids = null;
   this.accum_data = null;
+  this.accum_depth = null;
   if (args) {
     if (args.num_pixel_channels !== undefined && args.num_pixel_channels !== null) {
       this.num_pixel_channels = args.num_pixel_channels;
@@ -5173,6 +5174,9 @@ TRawRenderPassDataResult = function(args) {
     }
     if (args.accum_data !== undefined && args.accum_data !== null) {
       this.accum_data = args.accum_data;
+    }
+    if (args.accum_depth !== undefined && args.accum_depth !== null) {
+      this.accum_depth = args.accum_depth;
     }
   }
 };
@@ -5239,6 +5243,13 @@ TRawRenderPassDataResult.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 8:
+      if (ftype == Thrift.Type.I32) {
+        this.accum_depth = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -5283,6 +5294,11 @@ TRawRenderPassDataResult.prototype.write = function(output) {
   if (this.accum_data !== null && this.accum_data !== undefined) {
     output.writeFieldBegin('accum_data', Thrift.Type.STRING, 7);
     output.writeBinary(this.accum_data);
+    output.writeFieldEnd();
+  }
+  if (this.accum_depth !== null && this.accum_depth !== undefined) {
+    output.writeFieldBegin('accum_depth', Thrift.Type.I32, 8);
+    output.writeI32(this.accum_depth);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
