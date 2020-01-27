@@ -1275,6 +1275,7 @@ TQueryResult = function(args) {
   this.execution_time_ms = null;
   this.total_time_ms = null;
   this.nonce = null;
+  this.debug = null;
   if (args) {
     if (args.row_set !== undefined && args.row_set !== null) {
       this.row_set = new TRowSet(args.row_set);
@@ -1287,6 +1288,9 @@ TQueryResult = function(args) {
     }
     if (args.nonce !== undefined && args.nonce !== null) {
       this.nonce = args.nonce;
+    }
+    if (args.debug !== undefined && args.debug !== null) {
+      this.debug = args.debug;
     }
   }
 };
@@ -1333,6 +1337,13 @@ TQueryResult.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 5:
+      if (ftype == Thrift.Type.STRING) {
+        this.debug = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -1362,6 +1373,11 @@ TQueryResult.prototype.write = function(output) {
   if (this.nonce !== null && this.nonce !== undefined) {
     output.writeFieldBegin('nonce', Thrift.Type.STRING, 4);
     output.writeString(this.nonce);
+    output.writeFieldEnd();
+  }
+  if (this.debug !== null && this.debug !== undefined) {
+    output.writeFieldBegin('debug', Thrift.Type.STRING, 5);
+    output.writeString(this.debug);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
