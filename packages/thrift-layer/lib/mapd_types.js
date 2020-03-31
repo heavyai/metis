@@ -4517,6 +4517,7 @@ TPendingQuery = function(args) {
   this.column_ranges = null;
   this.dictionary_generations = null;
   this.table_generations = null;
+  this.parent_session_id = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
       this.id = args.id;
@@ -4529,6 +4530,9 @@ TPendingQuery = function(args) {
     }
     if (args.table_generations !== undefined && args.table_generations !== null) {
       this.table_generations = Thrift.copyList(args.table_generations, [TTableGeneration]);
+    }
+    if (args.parent_session_id !== undefined && args.parent_session_id !== null) {
+      this.parent_session_id = args.parent_session_id;
     }
   }
 };
@@ -4616,6 +4620,13 @@ TPendingQuery.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 5:
+      if (ftype == Thrift.Type.STRING) {
+        this.parent_session_id = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -4672,6 +4683,11 @@ TPendingQuery.prototype.write = function(output) {
       }
     }
     output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.parent_session_id !== null && this.parent_session_id !== undefined) {
+    output.writeFieldBegin('parent_session_id', Thrift.Type.STRING, 5);
+    output.writeString(this.parent_session_id);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

@@ -4426,10 +4426,14 @@ MapD_deallocate_df_result.prototype.write = function(output) {
 };
 
 MapD_interrupt_args = function(args) {
-  this.session = null;
+  this.query_session = null;
+  this.interrupt_session = null;
   if (args) {
-    if (args.session !== undefined && args.session !== null) {
-      this.session = args.session;
+    if (args.query_session !== undefined && args.query_session !== null) {
+      this.query_session = args.query_session;
+    }
+    if (args.interrupt_session !== undefined && args.interrupt_session !== null) {
+      this.interrupt_session = args.interrupt_session;
     }
   }
 };
@@ -4449,14 +4453,18 @@ MapD_interrupt_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRING) {
-        this.session = input.readString().value;
+        this.query_session = input.readString().value;
       } else {
         input.skip(ftype);
       }
       break;
-      case 0:
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.interrupt_session = input.readString().value;
+      } else {
         input.skip(ftype);
-        break;
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -4468,9 +4476,14 @@ MapD_interrupt_args.prototype.read = function(input) {
 
 MapD_interrupt_args.prototype.write = function(output) {
   output.writeStructBegin('MapD_interrupt_args');
-  if (this.session !== null && this.session !== undefined) {
-    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
-    output.writeString(this.session);
+  if (this.query_session !== null && this.query_session !== undefined) {
+    output.writeFieldBegin('query_session', Thrift.Type.STRING, 1);
+    output.writeString(this.query_session);
+    output.writeFieldEnd();
+  }
+  if (this.interrupt_session !== null && this.interrupt_session !== undefined) {
+    output.writeFieldBegin('interrupt_session', Thrift.Type.STRING, 2);
+    output.writeString(this.interrupt_session);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -9298,12 +9311,16 @@ MapD_check_table_consistency_result.prototype.write = function(output) {
 };
 
 MapD_start_query_args = function(args) {
-  this.session = null;
+  this.leaf_session = null;
+  this.parent_session = null;
   this.query_ra = null;
   this.just_explain = null;
   if (args) {
-    if (args.session !== undefined && args.session !== null) {
-      this.session = args.session;
+    if (args.leaf_session !== undefined && args.leaf_session !== null) {
+      this.leaf_session = args.leaf_session;
+    }
+    if (args.parent_session !== undefined && args.parent_session !== null) {
+      this.parent_session = args.parent_session;
     }
     if (args.query_ra !== undefined && args.query_ra !== null) {
       this.query_ra = args.query_ra;
@@ -9329,19 +9346,26 @@ MapD_start_query_args.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRING) {
-        this.session = input.readString().value;
+        this.leaf_session = input.readString().value;
       } else {
         input.skip(ftype);
       }
       break;
       case 2:
       if (ftype == Thrift.Type.STRING) {
-        this.query_ra = input.readString().value;
+        this.parent_session = input.readString().value;
       } else {
         input.skip(ftype);
       }
       break;
       case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.query_ra = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
       if (ftype == Thrift.Type.BOOL) {
         this.just_explain = input.readBool().value;
       } else {
@@ -9359,18 +9383,23 @@ MapD_start_query_args.prototype.read = function(input) {
 
 MapD_start_query_args.prototype.write = function(output) {
   output.writeStructBegin('MapD_start_query_args');
-  if (this.session !== null && this.session !== undefined) {
-    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
-    output.writeString(this.session);
+  if (this.leaf_session !== null && this.leaf_session !== undefined) {
+    output.writeFieldBegin('leaf_session', Thrift.Type.STRING, 1);
+    output.writeString(this.leaf_session);
+    output.writeFieldEnd();
+  }
+  if (this.parent_session !== null && this.parent_session !== undefined) {
+    output.writeFieldBegin('parent_session', Thrift.Type.STRING, 2);
+    output.writeString(this.parent_session);
     output.writeFieldEnd();
   }
   if (this.query_ra !== null && this.query_ra !== undefined) {
-    output.writeFieldBegin('query_ra', Thrift.Type.STRING, 2);
+    output.writeFieldBegin('query_ra', Thrift.Type.STRING, 3);
     output.writeString(this.query_ra);
     output.writeFieldEnd();
   }
   if (this.just_explain !== null && this.just_explain !== undefined) {
-    output.writeFieldBegin('just_explain', Thrift.Type.BOOL, 3);
+    output.writeFieldBegin('just_explain', Thrift.Type.BOOL, 4);
     output.writeBool(this.just_explain);
     output.writeFieldEnd();
   }
@@ -13794,17 +13823,18 @@ MapDClient.prototype.recv_deallocate_df = function() {
   }
   return;
 };
-MapDClient.prototype.interrupt = function(session, callback) {
-  this.send_interrupt(session, callback); 
+MapDClient.prototype.interrupt = function(query_session, interrupt_session, callback) {
+  this.send_interrupt(query_session, interrupt_session, callback); 
   if (!callback) {
   this.recv_interrupt();
   }
 };
 
-MapDClient.prototype.send_interrupt = function(session, callback) {
+MapDClient.prototype.send_interrupt = function(query_session, interrupt_session, callback) {
   this.output.writeMessageBegin('interrupt', Thrift.MessageType.CALL, this.seqid);
   var args = new MapD_interrupt_args();
-  args.session = session;
+  args.query_session = query_session;
+  args.interrupt_session = interrupt_session;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {
@@ -15332,17 +15362,18 @@ MapDClient.prototype.recv_check_table_consistency = function() {
   }
   throw 'check_table_consistency failed: unknown result';
 };
-MapDClient.prototype.start_query = function(session, query_ra, just_explain, callback) {
-  this.send_start_query(session, query_ra, just_explain, callback); 
+MapDClient.prototype.start_query = function(leaf_session, parent_session, query_ra, just_explain, callback) {
+  this.send_start_query(leaf_session, parent_session, query_ra, just_explain, callback); 
   if (!callback) {
     return this.recv_start_query();
   }
 };
 
-MapDClient.prototype.send_start_query = function(session, query_ra, just_explain, callback) {
+MapDClient.prototype.send_start_query = function(leaf_session, parent_session, query_ra, just_explain, callback) {
   this.output.writeMessageBegin('start_query', Thrift.MessageType.CALL, this.seqid);
   var args = new MapD_start_query_args();
-  args.session = session;
+  args.leaf_session = leaf_session;
+  args.parent_session = parent_session;
   args.query_ra = query_ra;
   args.just_explain = just_explain;
   args.write(this.output);
