@@ -1276,6 +1276,7 @@ TQueryResult = function(args) {
   this.total_time_ms = null;
   this.nonce = null;
   this.debug = null;
+  this.success = true;
   if (args) {
     if (args.row_set !== undefined && args.row_set !== null) {
       this.row_set = new TRowSet(args.row_set);
@@ -1291,6 +1292,9 @@ TQueryResult = function(args) {
     }
     if (args.debug !== undefined && args.debug !== null) {
       this.debug = args.debug;
+    }
+    if (args.success !== undefined && args.success !== null) {
+      this.success = args.success;
     }
   }
 };
@@ -1344,6 +1348,13 @@ TQueryResult.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 6:
+      if (ftype == Thrift.Type.BOOL) {
+        this.success = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -1378,6 +1389,11 @@ TQueryResult.prototype.write = function(output) {
   if (this.debug !== null && this.debug !== undefined) {
     output.writeFieldBegin('debug', Thrift.Type.STRING, 5);
     output.writeString(this.debug);
+    output.writeFieldEnd();
+  }
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.BOOL, 6);
+    output.writeBool(this.success);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
