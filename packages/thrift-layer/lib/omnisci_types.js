@@ -44,6 +44,13 @@ TMergeType = {
   'UNION' : 0,
   'REDUCE' : 1
 };
+TQueryType = {
+  'UNKNOWN' : 0,
+  'READ' : 1,
+  'WRITE' : 2,
+  'SCHEMA_READ' : 3,
+  'SCHEMA_WRITE' : 4
+};
 TExpressionRangeType = {
   'INVALID' : 0,
   'INTEGER' : 1,
@@ -1163,6 +1170,7 @@ TQueryResult = function(args) {
   this.nonce = null;
   this.debug = null;
   this.success = true;
+  this.query_type = 0;
   if (args) {
     if (args.row_set !== undefined && args.row_set !== null) {
       this.row_set = new TRowSet(args.row_set);
@@ -1181,6 +1189,9 @@ TQueryResult = function(args) {
     }
     if (args.success !== undefined && args.success !== null) {
       this.success = args.success;
+    }
+    if (args.query_type !== undefined && args.query_type !== null) {
+      this.query_type = args.query_type;
     }
   }
 };
@@ -1238,6 +1249,13 @@ TQueryResult.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 7:
+      if (ftype == Thrift.Type.I32) {
+        this.query_type = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -1277,6 +1295,11 @@ TQueryResult.prototype.write = function(output) {
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.BOOL, 6);
     output.writeBool(this.success);
+    output.writeFieldEnd();
+  }
+  if (this.query_type !== null && this.query_type !== undefined) {
+    output.writeFieldBegin('query_type', Thrift.Type.I32, 7);
+    output.writeI32(this.query_type);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
