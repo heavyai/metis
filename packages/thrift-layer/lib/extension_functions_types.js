@@ -32,7 +32,14 @@ TExtArgumentType = {
   'GeoLineString' : 23,
   'Cursor' : 24,
   'GeoPolygon' : 25,
-  'GeoMultiPolygon' : 26
+  'GeoMultiPolygon' : 26,
+  'ColumnInt8' : 27,
+  'ColumnInt16' : 28,
+  'ColumnInt32' : 29,
+  'ColumnInt64' : 30,
+  'ColumnFloat' : 31,
+  'ColumnDouble' : 32,
+  'ColumnBool' : 33
 };
 TOutputBufferSizeType = {
   'kUserSpecifiedConstantParameter' : 0,
