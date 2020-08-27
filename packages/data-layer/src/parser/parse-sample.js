@@ -1,21 +1,13 @@
 // @flow
 import type { SQL } from "./write-sql";
 
-const GOLDEN_RATIO = 2654435761;
-const THIRTY_ONE_BITS = 2147483648;
-const THIRTY_TWO_BITS = 4294967296;
-
 export default function sample(sql: SQL, transform: Sample): SQL {
   const { size, limit } = transform;
   const ratio = Math.min(limit / size, 1.0);
-  const threshold = Math.floor(THIRTY_TWO_BITS * ratio);
-
-  // sampleTable prop is in the transform from point, poly, linestring charts
-  const samplingTable = transform.sampleTable || sql.from
 
   if (transform.method === "multiplicativeRowid" && ratio < 1) {
     sql.where.push(
-      `((MOD( MOD (${samplingTable}.rowid, ${THIRTY_ONE_BITS}) * ${GOLDEN_RATIO} , ${THIRTY_TWO_BITS}) < ${threshold}) OR (${transform.field} IN (${transform.expr.map(e => typeof e === "string" ? `'${e}'` : `${e}`).join(", ")})))`
+      `(SAMPLE_RATIO(${ratio}) OR (${transform.field} IN (${transform.expr.map(e => typeof e === "string" ? `'${e}'` : `${e}`).join(", ")})))`
     );
   } else if (transform.method === "multiplicative" && ratio < 1) {
     // We are using simple modulo arithmetic expression conversion, 
@@ -24,7 +16,7 @@ export default function sample(sql: SQL, transform: Sample): SQL {
     // We don't have the full modulo expression for golden ratio since 
     // that is a constant expression and we can avoid that execution
     sql.where.push(
-      `MOD( MOD (${samplingTable}.rowid, ${THIRTY_ONE_BITS}) * ${GOLDEN_RATIO} , ${THIRTY_TWO_BITS}) < ${threshold}`
+      `SAMPLE_RATIO(${ratio})`
     );
   }
 
