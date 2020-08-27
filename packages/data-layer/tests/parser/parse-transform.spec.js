@@ -134,7 +134,7 @@ tape("sample", assert => {
     {
       select: [],
       from: "taxis",
-      where: ["MOD( MOD (taxis.rowid, 2147483648) * 2654435761 , 4294967296) < 12469954"],
+      where: ["SAMPLE_RATIO(0.002903387524200134)"],
       groupby: [],
       having: [],
       orderby: [],
