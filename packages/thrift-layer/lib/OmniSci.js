@@ -3918,6 +3918,7 @@ OmniSci_sql_execute_df_args = function(args) {
   this.device_type = null;
   this.device_id = 0;
   this.first_n = -1;
+  this.transport_method = null;
   if (args) {
     if (args.session !== undefined && args.session !== null) {
       this.session = args.session;
@@ -3933,6 +3934,9 @@ OmniSci_sql_execute_df_args = function(args) {
     }
     if (args.first_n !== undefined && args.first_n !== null) {
       this.first_n = args.first_n;
+    }
+    if (args.transport_method !== undefined && args.transport_method !== null) {
+      this.transport_method = args.transport_method;
     }
   }
 };
@@ -3985,6 +3989,13 @@ OmniSci_sql_execute_df_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 6:
+      if (ftype == Thrift.Type.I32) {
+        this.transport_method = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -4019,6 +4030,11 @@ OmniSci_sql_execute_df_args.prototype.write = function(output) {
   if (this.first_n !== null && this.first_n !== undefined) {
     output.writeFieldBegin('first_n', Thrift.Type.I32, 5);
     output.writeI32(this.first_n);
+    output.writeFieldEnd();
+  }
+  if (this.transport_method !== null && this.transport_method !== undefined) {
+    output.writeFieldBegin('transport_method', Thrift.Type.I32, 6);
+    output.writeI32(this.transport_method);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -14373,14 +14389,14 @@ OmniSciClient.prototype.recv_sql_execute = function() {
   }
   throw 'sql_execute failed: unknown result';
 };
-OmniSciClient.prototype.sql_execute_df = function(session, query, device_type, device_id, first_n, callback) {
-  this.send_sql_execute_df(session, query, device_type, device_id, first_n, callback); 
+OmniSciClient.prototype.sql_execute_df = function(session, query, device_type, device_id, first_n, transport_method, callback) {
+  this.send_sql_execute_df(session, query, device_type, device_id, first_n, transport_method, callback); 
   if (!callback) {
     return this.recv_sql_execute_df();
   }
 };
 
-OmniSciClient.prototype.send_sql_execute_df = function(session, query, device_type, device_id, first_n, callback) {
+OmniSciClient.prototype.send_sql_execute_df = function(session, query, device_type, device_id, first_n, transport_method, callback) {
   this.output.writeMessageBegin('sql_execute_df', Thrift.MessageType.CALL, this.seqid);
   var args = new OmniSci_sql_execute_df_args();
   args.session = session;
@@ -14388,6 +14404,7 @@ OmniSciClient.prototype.send_sql_execute_df = function(session, query, device_ty
   args.device_type = device_type;
   args.device_id = device_id;
   args.first_n = first_n;
+  args.transport_method = transport_method;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {

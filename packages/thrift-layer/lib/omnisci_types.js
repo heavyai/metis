@@ -48,6 +48,10 @@ TQueryType = {
   'SCHEMA_READ' : 3,
   'SCHEMA_WRITE' : 4
 };
+TArrowTransport = {
+  'SHARED_MEMORY' : 0,
+  'WIRE' : 1
+};
 TExpressionRangeType = {
   'INVALID' : 0,
   'INTEGER' : 1,
@@ -1431,6 +1435,7 @@ TDataFrame = function(args) {
   this.df_size = null;
   this.execution_time_ms = null;
   this.arrow_conversion_time_ms = null;
+  this.df_buffer = null;
   if (args) {
     if (args.sm_handle !== undefined && args.sm_handle !== null) {
       this.sm_handle = args.sm_handle;
@@ -1449,6 +1454,9 @@ TDataFrame = function(args) {
     }
     if (args.arrow_conversion_time_ms !== undefined && args.arrow_conversion_time_ms !== null) {
       this.arrow_conversion_time_ms = args.arrow_conversion_time_ms;
+    }
+    if (args.df_buffer !== undefined && args.df_buffer !== null) {
+      this.df_buffer = args.df_buffer;
     }
   }
 };
@@ -1508,6 +1516,13 @@ TDataFrame.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 7:
+      if (ftype == Thrift.Type.STRING) {
+        this.df_buffer = input.readBinary().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -1547,6 +1562,11 @@ TDataFrame.prototype.write = function(output) {
   if (this.arrow_conversion_time_ms !== null && this.arrow_conversion_time_ms !== undefined) {
     output.writeFieldBegin('arrow_conversion_time_ms', Thrift.Type.I64, 6);
     output.writeI64(this.arrow_conversion_time_ms);
+    output.writeFieldEnd();
+  }
+  if (this.df_buffer !== null && this.df_buffer !== undefined) {
+    output.writeFieldBegin('df_buffer', Thrift.Type.STRING, 7);
+    output.writeBinary(this.df_buffer);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
