@@ -6908,3 +6908,85 @@ TGeoFileLayerInfo.prototype.write = function(output) {
   return;
 };
 
+TTableEpochInfo = function(args) {
+  this.table_id = null;
+  this.table_epoch = null;
+  this.leaf_index = null;
+  if (args) {
+    if (args.table_id !== undefined && args.table_id !== null) {
+      this.table_id = args.table_id;
+    }
+    if (args.table_epoch !== undefined && args.table_epoch !== null) {
+      this.table_epoch = args.table_epoch;
+    }
+    if (args.leaf_index !== undefined && args.leaf_index !== null) {
+      this.leaf_index = args.leaf_index;
+    }
+  }
+};
+TTableEpochInfo.prototype = {};
+TTableEpochInfo.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I32) {
+        this.table_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.table_epoch = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.leaf_index = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TTableEpochInfo.prototype.write = function(output) {
+  output.writeStructBegin('TTableEpochInfo');
+  if (this.table_id !== null && this.table_id !== undefined) {
+    output.writeFieldBegin('table_id', Thrift.Type.I32, 1);
+    output.writeI32(this.table_id);
+    output.writeFieldEnd();
+  }
+  if (this.table_epoch !== null && this.table_epoch !== undefined) {
+    output.writeFieldBegin('table_epoch', Thrift.Type.I32, 2);
+    output.writeI32(this.table_epoch);
+    output.writeFieldEnd();
+  }
+  if (this.leaf_index !== null && this.leaf_index !== undefined) {
+    output.writeFieldBegin('leaf_index', Thrift.Type.I32, 3);
+    output.writeI32(this.leaf_index);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
