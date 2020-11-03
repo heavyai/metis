@@ -10502,9 +10502,13 @@ OmniSci_start_query_result.prototype.write = function(output) {
 
 OmniSci_execute_query_step_args = function(args) {
   this.pending_query = null;
+  this.subquery_id = null;
   if (args) {
     if (args.pending_query !== undefined && args.pending_query !== null) {
       this.pending_query = new TPendingQuery(args.pending_query);
+    }
+    if (args.subquery_id !== undefined && args.subquery_id !== null) {
+      this.subquery_id = args.subquery_id;
     }
   }
 };
@@ -10530,9 +10534,13 @@ OmniSci_execute_query_step_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 0:
+      case 2:
+      if (ftype == Thrift.Type.I64) {
+        this.subquery_id = input.readI64().value;
+      } else {
         input.skip(ftype);
-        break;
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -10547,6 +10555,11 @@ OmniSci_execute_query_step_args.prototype.write = function(output) {
   if (this.pending_query !== null && this.pending_query !== undefined) {
     output.writeFieldBegin('pending_query', Thrift.Type.STRUCT, 1);
     this.pending_query.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.subquery_id !== null && this.subquery_id !== undefined) {
+    output.writeFieldBegin('subquery_id', Thrift.Type.I64, 2);
+    output.writeI64(this.subquery_id);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -10630,6 +10643,8 @@ OmniSci_broadcast_serialized_rows_args = function(args) {
   this.serialized_rows = null;
   this.row_desc = null;
   this.query_id = null;
+  this.subquery_id = null;
+  this.is_final_subquery_result = null;
   if (args) {
     if (args.serialized_rows !== undefined && args.serialized_rows !== null) {
       this.serialized_rows = new TSerializedRows(args.serialized_rows);
@@ -10639,6 +10654,12 @@ OmniSci_broadcast_serialized_rows_args = function(args) {
     }
     if (args.query_id !== undefined && args.query_id !== null) {
       this.query_id = args.query_id;
+    }
+    if (args.subquery_id !== undefined && args.subquery_id !== null) {
+      this.subquery_id = args.subquery_id;
+    }
+    if (args.is_final_subquery_result !== undefined && args.is_final_subquery_result !== null) {
+      this.is_final_subquery_result = args.is_final_subquery_result;
     }
   }
 };
@@ -10692,6 +10713,20 @@ OmniSci_broadcast_serialized_rows_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 4:
+      if (ftype == Thrift.Type.I64) {
+        this.subquery_id = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.BOOL) {
+        this.is_final_subquery_result = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -10725,6 +10760,16 @@ OmniSci_broadcast_serialized_rows_args.prototype.write = function(output) {
   if (this.query_id !== null && this.query_id !== undefined) {
     output.writeFieldBegin('query_id', Thrift.Type.I64, 3);
     output.writeI64(this.query_id);
+    output.writeFieldEnd();
+  }
+  if (this.subquery_id !== null && this.subquery_id !== undefined) {
+    output.writeFieldBegin('subquery_id', Thrift.Type.I64, 4);
+    output.writeI64(this.subquery_id);
+    output.writeFieldEnd();
+  }
+  if (this.is_final_subquery_result !== null && this.is_final_subquery_result !== undefined) {
+    output.writeFieldBegin('is_final_subquery_result', Thrift.Type.BOOL, 5);
+    output.writeBool(this.is_final_subquery_result);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -16745,17 +16790,18 @@ OmniSciClient.prototype.recv_start_query = function() {
   }
   throw 'start_query failed: unknown result';
 };
-OmniSciClient.prototype.execute_query_step = function(pending_query, callback) {
-  this.send_execute_query_step(pending_query, callback); 
+OmniSciClient.prototype.execute_query_step = function(pending_query, subquery_id, callback) {
+  this.send_execute_query_step(pending_query, subquery_id, callback); 
   if (!callback) {
     return this.recv_execute_query_step();
   }
 };
 
-OmniSciClient.prototype.send_execute_query_step = function(pending_query, callback) {
+OmniSciClient.prototype.send_execute_query_step = function(pending_query, subquery_id, callback) {
   this.output.writeMessageBegin('execute_query_step', Thrift.MessageType.CALL, this.seqid);
   var args = new OmniSci_execute_query_step_args();
   args.pending_query = pending_query;
+  args.subquery_id = subquery_id;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {
@@ -16797,19 +16843,21 @@ OmniSciClient.prototype.recv_execute_query_step = function() {
   }
   throw 'execute_query_step failed: unknown result';
 };
-OmniSciClient.prototype.broadcast_serialized_rows = function(serialized_rows, row_desc, query_id, callback) {
-  this.send_broadcast_serialized_rows(serialized_rows, row_desc, query_id, callback); 
+OmniSciClient.prototype.broadcast_serialized_rows = function(serialized_rows, row_desc, query_id, subquery_id, is_final_subquery_result, callback) {
+  this.send_broadcast_serialized_rows(serialized_rows, row_desc, query_id, subquery_id, is_final_subquery_result, callback); 
   if (!callback) {
   this.recv_broadcast_serialized_rows();
   }
 };
 
-OmniSciClient.prototype.send_broadcast_serialized_rows = function(serialized_rows, row_desc, query_id, callback) {
+OmniSciClient.prototype.send_broadcast_serialized_rows = function(serialized_rows, row_desc, query_id, subquery_id, is_final_subquery_result, callback) {
   this.output.writeMessageBegin('broadcast_serialized_rows', Thrift.MessageType.CALL, this.seqid);
   var args = new OmniSci_broadcast_serialized_rows_args();
   args.serialized_rows = serialized_rows;
   args.row_desc = row_desc;
   args.query_id = query_id;
+  args.subquery_id = subquery_id;
+  args.is_final_subquery_result = is_final_subquery_result;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {

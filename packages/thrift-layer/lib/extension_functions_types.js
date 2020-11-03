@@ -42,9 +42,9 @@ TExtArgumentType = {
   'ColumnBool' : 33
 };
 TOutputBufferSizeType = {
-  'kUserSpecifiedConstantParameter' : 0,
-  'kUserSpecifiedRowMultiplier' : 1,
-  'kConstant' : 2
+  'kConstant' : 0,
+  'kUserSpecifiedConstantParameter' : 1,
+  'kUserSpecifiedRowMultiplier' : 2
 };
 TUserDefinedFunction = function(args) {
   this.name = null;
