@@ -11422,14 +11422,10 @@ OmniSci_insert_data_result.prototype.write = function(output) {
 
 OmniSci_checkpoint_args = function(args) {
   this.session = null;
-  this.db_id = null;
   this.table_id = null;
   if (args) {
     if (args.session !== undefined && args.session !== null) {
       this.session = args.session;
-    }
-    if (args.db_id !== undefined && args.db_id !== null) {
-      this.db_id = args.db_id;
     }
     if (args.table_id !== undefined && args.table_id !== null) {
       this.table_id = args.table_id;
@@ -11459,13 +11455,6 @@ OmniSci_checkpoint_args.prototype.read = function(input) {
       break;
       case 2:
       if (ftype == Thrift.Type.I32) {
-        this.db_id = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 3:
-      if (ftype == Thrift.Type.I32) {
         this.table_id = input.readI32().value;
       } else {
         input.skip(ftype);
@@ -11487,13 +11476,8 @@ OmniSci_checkpoint_args.prototype.write = function(output) {
     output.writeString(this.session);
     output.writeFieldEnd();
   }
-  if (this.db_id !== null && this.db_id !== undefined) {
-    output.writeFieldBegin('db_id', Thrift.Type.I32, 2);
-    output.writeI32(this.db_id);
-    output.writeFieldEnd();
-  }
   if (this.table_id !== null && this.table_id !== undefined) {
-    output.writeFieldBegin('table_id', Thrift.Type.I32, 3);
+    output.writeFieldBegin('table_id', Thrift.Type.I32, 2);
     output.writeI32(this.table_id);
     output.writeFieldEnd();
   }
@@ -17054,18 +17038,17 @@ OmniSciClient.prototype.recv_insert_data = function() {
   }
   return;
 };
-OmniSciClient.prototype.checkpoint = function(session, db_id, table_id, callback) {
-  this.send_checkpoint(session, db_id, table_id, callback); 
+OmniSciClient.prototype.checkpoint = function(session, table_id, callback) {
+  this.send_checkpoint(session, table_id, callback); 
   if (!callback) {
   this.recv_checkpoint();
   }
 };
 
-OmniSciClient.prototype.send_checkpoint = function(session, db_id, table_id, callback) {
+OmniSciClient.prototype.send_checkpoint = function(session, table_id, callback) {
   this.output.writeMessageBegin('checkpoint', Thrift.MessageType.CALL, this.seqid);
   var args = new OmniSci_checkpoint_args();
   args.session = session;
-  args.db_id = db_id;
   args.table_id = table_id;
   args.write(this.output);
   this.output.writeMessageEnd();
