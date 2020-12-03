@@ -63,7 +63,8 @@ TDBObjectType = {
   'DatabaseDBObjectType' : 1,
   'TableDBObjectType' : 2,
   'DashboardDBObjectType' : 3,
-  'ViewDBObjectType' : 4
+  'ViewDBObjectType' : 4,
+  'ServerDBObjectType' : 5
 };
 TDatumVal = function(args) {
   this.int_val = null;
@@ -6348,11 +6349,94 @@ TViewPermissions.prototype.write = function(output) {
   return;
 };
 
+TServerPermissions = function(args) {
+  this.create_ = null;
+  this.drop_ = null;
+  this.alter_ = null;
+  if (args) {
+    if (args.create_ !== undefined && args.create_ !== null) {
+      this.create_ = args.create_;
+    }
+    if (args.drop_ !== undefined && args.drop_ !== null) {
+      this.drop_ = args.drop_;
+    }
+    if (args.alter_ !== undefined && args.alter_ !== null) {
+      this.alter_ = args.alter_;
+    }
+  }
+};
+TServerPermissions.prototype = {};
+TServerPermissions.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.BOOL) {
+        this.create_ = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.BOOL) {
+        this.drop_ = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.BOOL) {
+        this.alter_ = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TServerPermissions.prototype.write = function(output) {
+  output.writeStructBegin('TServerPermissions');
+  if (this.create_ !== null && this.create_ !== undefined) {
+    output.writeFieldBegin('create_', Thrift.Type.BOOL, 1);
+    output.writeBool(this.create_);
+    output.writeFieldEnd();
+  }
+  if (this.drop_ !== null && this.drop_ !== undefined) {
+    output.writeFieldBegin('drop_', Thrift.Type.BOOL, 2);
+    output.writeBool(this.drop_);
+    output.writeFieldEnd();
+  }
+  if (this.alter_ !== null && this.alter_ !== undefined) {
+    output.writeFieldBegin('alter_', Thrift.Type.BOOL, 3);
+    output.writeBool(this.alter_);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 TDBObjectPermissions = function(args) {
   this.database_permissions_ = null;
   this.table_permissions_ = null;
   this.dashboard_permissions_ = null;
   this.view_permissions_ = null;
+  this.server_permissions_ = null;
   if (args) {
     if (args.database_permissions_ !== undefined && args.database_permissions_ !== null) {
       this.database_permissions_ = new TDatabasePermissions(args.database_permissions_);
@@ -6365,6 +6449,9 @@ TDBObjectPermissions = function(args) {
     }
     if (args.view_permissions_ !== undefined && args.view_permissions_ !== null) {
       this.view_permissions_ = new TViewPermissions(args.view_permissions_);
+    }
+    if (args.server_permissions_ !== undefined && args.server_permissions_ !== null) {
+      this.server_permissions_ = new TServerPermissions(args.server_permissions_);
     }
   }
 };
@@ -6414,6 +6501,14 @@ TDBObjectPermissions.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 5:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.server_permissions_ = new TServerPermissions();
+        this.server_permissions_.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -6443,6 +6538,11 @@ TDBObjectPermissions.prototype.write = function(output) {
   if (this.view_permissions_ !== null && this.view_permissions_ !== undefined) {
     output.writeFieldBegin('view_permissions_', Thrift.Type.STRUCT, 4);
     this.view_permissions_.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.server_permissions_ !== null && this.server_permissions_ !== undefined) {
+    output.writeFieldBegin('server_permissions_', Thrift.Type.STRUCT, 5);
+    this.server_permissions_.write(output);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
