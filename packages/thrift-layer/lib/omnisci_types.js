@@ -1720,6 +1720,7 @@ TCopyParams = function(args) {
   this.s3_endpoint = null;
   this.geo_assign_render_groups = true;
   this.geo_explode_collections = false;
+  this.source_srid = 0;
   if (args) {
     if (args.delimiter !== undefined && args.delimiter !== null) {
       this.delimiter = args.delimiter;
@@ -1792,6 +1793,9 @@ TCopyParams = function(args) {
     }
     if (args.geo_explode_collections !== undefined && args.geo_explode_collections !== null) {
       this.geo_explode_collections = args.geo_explode_collections;
+    }
+    if (args.source_srid !== undefined && args.source_srid !== null) {
+      this.source_srid = args.source_srid;
     }
   }
 };
@@ -1977,6 +1981,13 @@ TCopyParams.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 25:
+      if (ftype == Thrift.Type.I32) {
+        this.source_srid = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2106,6 +2117,11 @@ TCopyParams.prototype.write = function(output) {
   if (this.geo_explode_collections !== null && this.geo_explode_collections !== undefined) {
     output.writeFieldBegin('geo_explode_collections', Thrift.Type.BOOL, 24);
     output.writeBool(this.geo_explode_collections);
+    output.writeFieldEnd();
+  }
+  if (this.source_srid !== null && this.source_srid !== undefined) {
+    output.writeFieldBegin('source_srid', Thrift.Type.I32, 25);
+    output.writeI32(this.source_srid);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
