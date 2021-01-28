@@ -104,6 +104,8 @@ export default function parseExpression(
       } else {
         return "count(" + expression.field + ")";
       }
+    case "median":
+      return "approx_median(" + expression.x + ")";
     case "stddev":
     case "stddev_pop":
     case "stddev_samp":
