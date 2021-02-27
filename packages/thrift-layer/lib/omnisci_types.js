@@ -6207,6 +6207,7 @@ TServerPermissions = function(args) {
   this.create_ = null;
   this.drop_ = null;
   this.alter_ = null;
+  this.usage_ = null;
   if (args) {
     if (args.create_ !== undefined && args.create_ !== null) {
       this.create_ = args.create_;
@@ -6216,6 +6217,9 @@ TServerPermissions = function(args) {
     }
     if (args.alter_ !== undefined && args.alter_ !== null) {
       this.alter_ = args.alter_;
+    }
+    if (args.usage_ !== undefined && args.usage_ !== null) {
+      this.usage_ = args.usage_;
     }
   }
 };
@@ -6254,6 +6258,13 @@ TServerPermissions.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 4:
+      if (ftype == Thrift.Type.BOOL) {
+        this.usage_ = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -6278,6 +6289,11 @@ TServerPermissions.prototype.write = function(output) {
   if (this.alter_ !== null && this.alter_ !== undefined) {
     output.writeFieldBegin('alter_', Thrift.Type.BOOL, 3);
     output.writeBool(this.alter_);
+    output.writeFieldEnd();
+  }
+  if (this.usage_ !== null && this.usage_ !== undefined) {
+    output.writeFieldBegin('usage_', Thrift.Type.BOOL, 4);
+    output.writeBool(this.usage_);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
