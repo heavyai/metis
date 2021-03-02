@@ -3035,6 +3035,318 @@ OmniSci_clear_gpu_memory_result.prototype.write = function(output) {
   return;
 };
 
+OmniSci_set_cur_session_args = function(args) {
+  this.parent_session = null;
+  this.leaf_session = null;
+  this.start_time_str = null;
+  this.label = null;
+  if (args) {
+    if (args.parent_session !== undefined && args.parent_session !== null) {
+      this.parent_session = args.parent_session;
+    }
+    if (args.leaf_session !== undefined && args.leaf_session !== null) {
+      this.leaf_session = args.leaf_session;
+    }
+    if (args.start_time_str !== undefined && args.start_time_str !== null) {
+      this.start_time_str = args.start_time_str;
+    }
+    if (args.label !== undefined && args.label !== null) {
+      this.label = args.label;
+    }
+  }
+};
+OmniSci_set_cur_session_args.prototype = {};
+OmniSci_set_cur_session_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.parent_session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.leaf_session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.start_time_str = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.label = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+OmniSci_set_cur_session_args.prototype.write = function(output) {
+  output.writeStructBegin('OmniSci_set_cur_session_args');
+  if (this.parent_session !== null && this.parent_session !== undefined) {
+    output.writeFieldBegin('parent_session', Thrift.Type.STRING, 1);
+    output.writeString(this.parent_session);
+    output.writeFieldEnd();
+  }
+  if (this.leaf_session !== null && this.leaf_session !== undefined) {
+    output.writeFieldBegin('leaf_session', Thrift.Type.STRING, 2);
+    output.writeString(this.leaf_session);
+    output.writeFieldEnd();
+  }
+  if (this.start_time_str !== null && this.start_time_str !== undefined) {
+    output.writeFieldBegin('start_time_str', Thrift.Type.STRING, 3);
+    output.writeString(this.start_time_str);
+    output.writeFieldEnd();
+  }
+  if (this.label !== null && this.label !== undefined) {
+    output.writeFieldBegin('label', Thrift.Type.STRING, 4);
+    output.writeString(this.label);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+OmniSci_set_cur_session_result = function(args) {
+  this.e = null;
+  if (args instanceof TOmniSciException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+OmniSci_set_cur_session_result.prototype = {};
+OmniSci_set_cur_session_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TOmniSciException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+OmniSci_set_cur_session_result.prototype.write = function(output) {
+  output.writeStructBegin('OmniSci_set_cur_session_result');
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+OmniSci_invalidate_cur_session_args = function(args) {
+  this.parent_session = null;
+  this.leaf_session = null;
+  this.start_time_str = null;
+  this.label = null;
+  if (args) {
+    if (args.parent_session !== undefined && args.parent_session !== null) {
+      this.parent_session = args.parent_session;
+    }
+    if (args.leaf_session !== undefined && args.leaf_session !== null) {
+      this.leaf_session = args.leaf_session;
+    }
+    if (args.start_time_str !== undefined && args.start_time_str !== null) {
+      this.start_time_str = args.start_time_str;
+    }
+    if (args.label !== undefined && args.label !== null) {
+      this.label = args.label;
+    }
+  }
+};
+OmniSci_invalidate_cur_session_args.prototype = {};
+OmniSci_invalidate_cur_session_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.parent_session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.leaf_session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.start_time_str = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.label = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+OmniSci_invalidate_cur_session_args.prototype.write = function(output) {
+  output.writeStructBegin('OmniSci_invalidate_cur_session_args');
+  if (this.parent_session !== null && this.parent_session !== undefined) {
+    output.writeFieldBegin('parent_session', Thrift.Type.STRING, 1);
+    output.writeString(this.parent_session);
+    output.writeFieldEnd();
+  }
+  if (this.leaf_session !== null && this.leaf_session !== undefined) {
+    output.writeFieldBegin('leaf_session', Thrift.Type.STRING, 2);
+    output.writeString(this.leaf_session);
+    output.writeFieldEnd();
+  }
+  if (this.start_time_str !== null && this.start_time_str !== undefined) {
+    output.writeFieldBegin('start_time_str', Thrift.Type.STRING, 3);
+    output.writeString(this.start_time_str);
+    output.writeFieldEnd();
+  }
+  if (this.label !== null && this.label !== undefined) {
+    output.writeFieldBegin('label', Thrift.Type.STRING, 4);
+    output.writeString(this.label);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+OmniSci_invalidate_cur_session_result = function(args) {
+  this.e = null;
+  if (args instanceof TOmniSciException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+OmniSci_invalidate_cur_session_result.prototype = {};
+OmniSci_invalidate_cur_session_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TOmniSciException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+OmniSci_invalidate_cur_session_result.prototype.write = function(output) {
+  output.writeStructBegin('OmniSci_invalidate_cur_session_result');
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 OmniSci_set_table_epoch_args = function(args) {
   this.session = null;
   this.db_id = null;
@@ -10426,6 +10738,7 @@ OmniSci_start_query_args = function(args) {
   this.leaf_session = null;
   this.parent_session = null;
   this.query_ra = null;
+  this.start_time_str = null;
   this.just_explain = null;
   this.outer_fragment_indices = null;
   if (args) {
@@ -10437,6 +10750,9 @@ OmniSci_start_query_args = function(args) {
     }
     if (args.query_ra !== undefined && args.query_ra !== null) {
       this.query_ra = args.query_ra;
+    }
+    if (args.start_time_str !== undefined && args.start_time_str !== null) {
+      this.start_time_str = args.start_time_str;
     }
     if (args.just_explain !== undefined && args.just_explain !== null) {
       this.just_explain = args.just_explain;
@@ -10482,13 +10798,20 @@ OmniSci_start_query_args.prototype.read = function(input) {
       }
       break;
       case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.start_time_str = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
       if (ftype == Thrift.Type.BOOL) {
         this.just_explain = input.readBool().value;
       } else {
         input.skip(ftype);
       }
       break;
-      case 5:
+      case 6:
       if (ftype == Thrift.Type.LIST) {
         var _size572 = 0;
         var _rtmp3576;
@@ -10534,13 +10857,18 @@ OmniSci_start_query_args.prototype.write = function(output) {
     output.writeString(this.query_ra);
     output.writeFieldEnd();
   }
+  if (this.start_time_str !== null && this.start_time_str !== undefined) {
+    output.writeFieldBegin('start_time_str', Thrift.Type.STRING, 4);
+    output.writeString(this.start_time_str);
+    output.writeFieldEnd();
+  }
   if (this.just_explain !== null && this.just_explain !== undefined) {
-    output.writeFieldBegin('just_explain', Thrift.Type.BOOL, 4);
+    output.writeFieldBegin('just_explain', Thrift.Type.BOOL, 5);
     output.writeBool(this.just_explain);
     output.writeFieldEnd();
   }
   if (this.outer_fragment_indices !== null && this.outer_fragment_indices !== undefined) {
-    output.writeFieldBegin('outer_fragment_indices', Thrift.Type.LIST, 5);
+    output.writeFieldBegin('outer_fragment_indices', Thrift.Type.LIST, 6);
     output.writeListBegin(Thrift.Type.I64, this.outer_fragment_indices.length);
     for (var iter579 in this.outer_fragment_indices)
     {
@@ -10633,12 +10961,16 @@ OmniSci_start_query_result.prototype.write = function(output) {
 OmniSci_execute_query_step_args = function(args) {
   this.pending_query = null;
   this.subquery_id = null;
+  this.start_time_str = null;
   if (args) {
     if (args.pending_query !== undefined && args.pending_query !== null) {
       this.pending_query = new TPendingQuery(args.pending_query);
     }
     if (args.subquery_id !== undefined && args.subquery_id !== null) {
       this.subquery_id = args.subquery_id;
+    }
+    if (args.start_time_str !== undefined && args.start_time_str !== null) {
+      this.start_time_str = args.start_time_str;
     }
   }
 };
@@ -10671,6 +11003,13 @@ OmniSci_execute_query_step_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.start_time_str = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -10690,6 +11029,11 @@ OmniSci_execute_query_step_args.prototype.write = function(output) {
   if (this.subquery_id !== null && this.subquery_id !== undefined) {
     output.writeFieldBegin('subquery_id', Thrift.Type.I64, 2);
     output.writeI64(this.subquery_id);
+    output.writeFieldEnd();
+  }
+  if (this.start_time_str !== null && this.start_time_str !== undefined) {
+    output.writeFieldBegin('start_time_str', Thrift.Type.STRING, 3);
+    output.writeString(this.start_time_str);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -14526,6 +14870,110 @@ OmniSciClient.prototype.recv_clear_gpu_memory = function() {
   }
   return;
 };
+OmniSciClient.prototype.set_cur_session = function(parent_session, leaf_session, start_time_str, label, callback) {
+  this.send_set_cur_session(parent_session, leaf_session, start_time_str, label, callback); 
+  if (!callback) {
+  this.recv_set_cur_session();
+  }
+};
+
+OmniSciClient.prototype.send_set_cur_session = function(parent_session, leaf_session, start_time_str, label, callback) {
+  this.output.writeMessageBegin('set_cur_session', Thrift.MessageType.CALL, this.seqid);
+  var args = new OmniSci_set_cur_session_args();
+  args.parent_session = parent_session;
+  args.leaf_session = leaf_session;
+  args.start_time_str = start_time_str;
+  args.label = label;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_set_cur_session();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+OmniSciClient.prototype.recv_set_cur_session = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new OmniSci_set_cur_session_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  return;
+};
+OmniSciClient.prototype.invalidate_cur_session = function(parent_session, leaf_session, start_time_str, label, callback) {
+  this.send_invalidate_cur_session(parent_session, leaf_session, start_time_str, label, callback); 
+  if (!callback) {
+  this.recv_invalidate_cur_session();
+  }
+};
+
+OmniSciClient.prototype.send_invalidate_cur_session = function(parent_session, leaf_session, start_time_str, label, callback) {
+  this.output.writeMessageBegin('invalidate_cur_session', Thrift.MessageType.CALL, this.seqid);
+  var args = new OmniSci_invalidate_cur_session_args();
+  args.parent_session = parent_session;
+  args.leaf_session = leaf_session;
+  args.start_time_str = start_time_str;
+  args.label = label;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_invalidate_cur_session();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+OmniSciClient.prototype.recv_invalidate_cur_session = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new OmniSci_invalidate_cur_session_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  return;
+};
 OmniSciClient.prototype.set_table_epoch = function(session, db_id, table_id, new_epoch, callback) {
   this.send_set_table_epoch(session, db_id, table_id, new_epoch, callback); 
   if (!callback) {
@@ -16852,19 +17300,20 @@ OmniSciClient.prototype.recv_check_table_consistency = function() {
   }
   throw 'check_table_consistency failed: unknown result';
 };
-OmniSciClient.prototype.start_query = function(leaf_session, parent_session, query_ra, just_explain, outer_fragment_indices, callback) {
-  this.send_start_query(leaf_session, parent_session, query_ra, just_explain, outer_fragment_indices, callback); 
+OmniSciClient.prototype.start_query = function(leaf_session, parent_session, query_ra, start_time_str, just_explain, outer_fragment_indices, callback) {
+  this.send_start_query(leaf_session, parent_session, query_ra, start_time_str, just_explain, outer_fragment_indices, callback); 
   if (!callback) {
     return this.recv_start_query();
   }
 };
 
-OmniSciClient.prototype.send_start_query = function(leaf_session, parent_session, query_ra, just_explain, outer_fragment_indices, callback) {
+OmniSciClient.prototype.send_start_query = function(leaf_session, parent_session, query_ra, start_time_str, just_explain, outer_fragment_indices, callback) {
   this.output.writeMessageBegin('start_query', Thrift.MessageType.CALL, this.seqid);
   var args = new OmniSci_start_query_args();
   args.leaf_session = leaf_session;
   args.parent_session = parent_session;
   args.query_ra = query_ra;
+  args.start_time_str = start_time_str;
   args.just_explain = just_explain;
   args.outer_fragment_indices = outer_fragment_indices;
   args.write(this.output);
@@ -16908,18 +17357,19 @@ OmniSciClient.prototype.recv_start_query = function() {
   }
   throw 'start_query failed: unknown result';
 };
-OmniSciClient.prototype.execute_query_step = function(pending_query, subquery_id, callback) {
-  this.send_execute_query_step(pending_query, subquery_id, callback); 
+OmniSciClient.prototype.execute_query_step = function(pending_query, subquery_id, start_time_str, callback) {
+  this.send_execute_query_step(pending_query, subquery_id, start_time_str, callback); 
   if (!callback) {
     return this.recv_execute_query_step();
   }
 };
 
-OmniSciClient.prototype.send_execute_query_step = function(pending_query, subquery_id, callback) {
+OmniSciClient.prototype.send_execute_query_step = function(pending_query, subquery_id, start_time_str, callback) {
   this.output.writeMessageBegin('execute_query_step', Thrift.MessageType.CALL, this.seqid);
   var args = new OmniSci_execute_query_step_args();
   args.pending_query = pending_query;
   args.subquery_id = subquery_id;
+  args.start_time_str = start_time_str;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {
