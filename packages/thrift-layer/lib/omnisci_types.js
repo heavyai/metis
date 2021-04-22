@@ -6464,6 +6464,7 @@ TDBObject = function(args) {
   this.privs = null;
   this.grantee = null;
   this.privilegeObjectType = null;
+  this.objectId = null;
   if (args) {
     if (args.objectName !== undefined && args.objectName !== null) {
       this.objectName = args.objectName;
@@ -6479,6 +6480,9 @@ TDBObject = function(args) {
     }
     if (args.privilegeObjectType !== undefined && args.privilegeObjectType !== null) {
       this.privilegeObjectType = args.privilegeObjectType;
+    }
+    if (args.objectId !== undefined && args.objectId !== null) {
+      this.objectId = args.objectId;
     }
   }
 };
@@ -6544,6 +6548,13 @@ TDBObject.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 6:
+      if (ftype == Thrift.Type.I32) {
+        this.objectId = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -6587,6 +6598,11 @@ TDBObject.prototype.write = function(output) {
   if (this.privilegeObjectType !== null && this.privilegeObjectType !== undefined) {
     output.writeFieldBegin('privilegeObjectType', Thrift.Type.I32, 5);
     output.writeI32(this.privilegeObjectType);
+    output.writeFieldEnd();
+  }
+  if (this.objectId !== null && this.objectId !== undefined) {
+    output.writeFieldBegin('objectId', Thrift.Type.I32, 6);
+    output.writeI32(this.objectId);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
