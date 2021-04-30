@@ -66,6 +66,9 @@ TDBObjectType = {
   'ViewDBObjectType' : 4,
   'ServerDBObjectType' : 5
 };
+TDataSourceType = {
+  'TABLE' : 0
+};
 TDatumVal = function(args) {
   this.int_val = null;
   this.real_val = null;
@@ -7186,6 +7189,136 @@ TTableEpochInfo.prototype.write = function(output) {
   if (this.leaf_index !== null && this.leaf_index !== undefined) {
     output.writeFieldBegin('leaf_index', Thrift.Type.I32, 3);
     output.writeI32(this.leaf_index);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TCustomExpression = function(args) {
+  this.id = null;
+  this.name = null;
+  this.expression_json = null;
+  this.data_source_type = null;
+  this.data_source_id = null;
+  this.is_deleted = null;
+  if (args) {
+    if (args.id !== undefined && args.id !== null) {
+      this.id = args.id;
+    }
+    if (args.name !== undefined && args.name !== null) {
+      this.name = args.name;
+    }
+    if (args.expression_json !== undefined && args.expression_json !== null) {
+      this.expression_json = args.expression_json;
+    }
+    if (args.data_source_type !== undefined && args.data_source_type !== null) {
+      this.data_source_type = args.data_source_type;
+    }
+    if (args.data_source_id !== undefined && args.data_source_id !== null) {
+      this.data_source_id = args.data_source_id;
+    }
+    if (args.is_deleted !== undefined && args.is_deleted !== null) {
+      this.is_deleted = args.is_deleted;
+    }
+  }
+};
+TCustomExpression.prototype = {};
+TCustomExpression.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I32) {
+        this.id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.name = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.STRING) {
+        this.expression_json = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.I32) {
+        this.data_source_type = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.I32) {
+        this.data_source_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.BOOL) {
+        this.is_deleted = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TCustomExpression.prototype.write = function(output) {
+  output.writeStructBegin('TCustomExpression');
+  if (this.id !== null && this.id !== undefined) {
+    output.writeFieldBegin('id', Thrift.Type.I32, 1);
+    output.writeI32(this.id);
+    output.writeFieldEnd();
+  }
+  if (this.name !== null && this.name !== undefined) {
+    output.writeFieldBegin('name', Thrift.Type.STRING, 2);
+    output.writeString(this.name);
+    output.writeFieldEnd();
+  }
+  if (this.expression_json !== null && this.expression_json !== undefined) {
+    output.writeFieldBegin('expression_json', Thrift.Type.STRING, 4);
+    output.writeString(this.expression_json);
+    output.writeFieldEnd();
+  }
+  if (this.data_source_type !== null && this.data_source_type !== undefined) {
+    output.writeFieldBegin('data_source_type', Thrift.Type.I32, 5);
+    output.writeI32(this.data_source_type);
+    output.writeFieldEnd();
+  }
+  if (this.data_source_id !== null && this.data_source_id !== undefined) {
+    output.writeFieldBegin('data_source_id', Thrift.Type.I32, 6);
+    output.writeI32(this.data_source_id);
+    output.writeFieldEnd();
+  }
+  if (this.is_deleted !== null && this.is_deleted !== undefined) {
+    output.writeFieldBegin('is_deleted', Thrift.Type.BOOL, 7);
+    output.writeBool(this.is_deleted);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
