@@ -1187,8 +1187,8 @@ vega-transforms@1:
     vega-util "1"
 
 vega-util@1, vega-util@^1.1, vega-util@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.5.0.tgz#05fcec83557be38de5328b54ad2a7a0597740cc0"
+  version "1.16.1"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.16.1.tgz#992bf3c3b6e145797214d99862841baea417ba39"
 
 vega-view-transforms@1:
   version "1.0.0"
