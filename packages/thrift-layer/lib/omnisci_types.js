@@ -1724,6 +1724,7 @@ TCopyParams = function(args) {
   this.geo_assign_render_groups = true;
   this.geo_explode_collections = false;
   this.source_srid = 0;
+  this.s3_session_token = null;
   if (args) {
     if (args.delimiter !== undefined && args.delimiter !== null) {
       this.delimiter = args.delimiter;
@@ -1799,6 +1800,9 @@ TCopyParams = function(args) {
     }
     if (args.source_srid !== undefined && args.source_srid !== null) {
       this.source_srid = args.source_srid;
+    }
+    if (args.s3_session_token !== undefined && args.s3_session_token !== null) {
+      this.s3_session_token = args.s3_session_token;
     }
   }
 };
@@ -1991,6 +1995,13 @@ TCopyParams.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 26:
+      if (ftype == Thrift.Type.STRING) {
+        this.s3_session_token = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2125,6 +2136,11 @@ TCopyParams.prototype.write = function(output) {
   if (this.source_srid !== null && this.source_srid !== undefined) {
     output.writeFieldBegin('source_srid', Thrift.Type.I32, 25);
     output.writeI32(this.source_srid);
+    output.writeFieldEnd();
+  }
+  if (this.s3_session_token !== null && this.s3_session_token !== undefined) {
+    output.writeFieldBegin('s3_session_token', Thrift.Type.STRING, 26);
+    output.writeString(this.s3_session_token);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
