@@ -2490,6 +2490,7 @@ TServerStatus = function(args) {
   this.host_name = null;
   this.poly_rendering_enabled = null;
   this.role = null;
+  this.renderer_status_json = null;
   if (args) {
     if (args.read_only !== undefined && args.read_only !== null) {
       this.read_only = args.read_only;
@@ -2514,6 +2515,9 @@ TServerStatus = function(args) {
     }
     if (args.role !== undefined && args.role !== null) {
       this.role = args.role;
+    }
+    if (args.renderer_status_json !== undefined && args.renderer_status_json !== null) {
+      this.renderer_status_json = args.renderer_status_json;
     }
   }
 };
@@ -2587,6 +2591,13 @@ TServerStatus.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 9:
+      if (ftype == Thrift.Type.STRING) {
+        this.renderer_status_json = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2636,6 +2647,11 @@ TServerStatus.prototype.write = function(output) {
   if (this.role !== null && this.role !== undefined) {
     output.writeFieldBegin('role', Thrift.Type.I32, 8);
     output.writeI32(this.role);
+    output.writeFieldEnd();
+  }
+  if (this.renderer_status_json !== null && this.renderer_status_json !== undefined) {
+    output.writeFieldBegin('renderer_status_json', Thrift.Type.STRING, 9);
+    output.writeString(this.renderer_status_json);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
