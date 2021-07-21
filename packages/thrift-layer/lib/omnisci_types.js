@@ -331,6 +331,7 @@ TColumnType = function(args) {
   this.is_system = null;
   this.is_physical = null;
   this.col_id = null;
+  this.default_value = null;
   if (args) {
     if (args.col_name !== undefined && args.col_name !== null) {
       this.col_name = args.col_name;
@@ -352,6 +353,9 @@ TColumnType = function(args) {
     }
     if (args.col_id !== undefined && args.col_id !== null) {
       this.col_id = args.col_id;
+    }
+    if (args.default_value !== undefined && args.default_value !== null) {
+      this.default_value = args.default_value;
     }
   }
 };
@@ -419,6 +423,13 @@ TColumnType.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 8:
+      if (ftype == Thrift.Type.STRING) {
+        this.default_value = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -463,6 +474,11 @@ TColumnType.prototype.write = function(output) {
   if (this.col_id !== null && this.col_id !== undefined) {
     output.writeFieldBegin('col_id', Thrift.Type.I64, 7);
     output.writeI64(this.col_id);
+    output.writeFieldEnd();
+  }
+  if (this.default_value !== null && this.default_value !== undefined) {
+    output.writeFieldBegin('default_value', Thrift.Type.STRING, 8);
+    output.writeString(this.default_value);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
