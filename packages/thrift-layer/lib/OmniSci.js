@@ -3507,6 +3507,7 @@ OmniSci_set_cur_session_args = function(args) {
   this.leaf_session = null;
   this.start_time_str = null;
   this.label = null;
+  this.for_running_query_kernel = null;
   if (args) {
     if (args.parent_session !== undefined && args.parent_session !== null) {
       this.parent_session = args.parent_session;
@@ -3519,6 +3520,9 @@ OmniSci_set_cur_session_args = function(args) {
     }
     if (args.label !== undefined && args.label !== null) {
       this.label = args.label;
+    }
+    if (args.for_running_query_kernel !== undefined && args.for_running_query_kernel !== null) {
+      this.for_running_query_kernel = args.for_running_query_kernel;
     }
   }
 };
@@ -3564,6 +3568,13 @@ OmniSci_set_cur_session_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 5:
+      if (ftype == Thrift.Type.BOOL) {
+        this.for_running_query_kernel = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -3593,6 +3604,11 @@ OmniSci_set_cur_session_args.prototype.write = function(output) {
   if (this.label !== null && this.label !== undefined) {
     output.writeFieldBegin('label', Thrift.Type.STRING, 4);
     output.writeString(this.label);
+    output.writeFieldEnd();
+  }
+  if (this.for_running_query_kernel !== null && this.for_running_query_kernel !== undefined) {
+    output.writeFieldBegin('for_running_query_kernel', Thrift.Type.BOOL, 5);
+    output.writeBool(this.for_running_query_kernel);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -3663,6 +3679,7 @@ OmniSci_invalidate_cur_session_args = function(args) {
   this.leaf_session = null;
   this.start_time_str = null;
   this.label = null;
+  this.for_running_query_kernel = null;
   if (args) {
     if (args.parent_session !== undefined && args.parent_session !== null) {
       this.parent_session = args.parent_session;
@@ -3675,6 +3692,9 @@ OmniSci_invalidate_cur_session_args = function(args) {
     }
     if (args.label !== undefined && args.label !== null) {
       this.label = args.label;
+    }
+    if (args.for_running_query_kernel !== undefined && args.for_running_query_kernel !== null) {
+      this.for_running_query_kernel = args.for_running_query_kernel;
     }
   }
 };
@@ -3720,6 +3740,13 @@ OmniSci_invalidate_cur_session_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 5:
+      if (ftype == Thrift.Type.BOOL) {
+        this.for_running_query_kernel = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -3749,6 +3776,11 @@ OmniSci_invalidate_cur_session_args.prototype.write = function(output) {
   if (this.label !== null && this.label !== undefined) {
     output.writeFieldBegin('label', Thrift.Type.STRING, 4);
     output.writeString(this.label);
+    output.writeFieldEnd();
+  }
+  if (this.for_running_query_kernel !== null && this.for_running_query_kernel !== undefined) {
+    output.writeFieldBegin('for_running_query_kernel', Thrift.Type.BOOL, 5);
+    output.writeBool(this.for_running_query_kernel);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -16302,20 +16334,21 @@ OmniSciClient.prototype.recv_clear_gpu_memory = function() {
   }
   return;
 };
-OmniSciClient.prototype.set_cur_session = function(parent_session, leaf_session, start_time_str, label, callback) {
-  this.send_set_cur_session(parent_session, leaf_session, start_time_str, label, callback); 
+OmniSciClient.prototype.set_cur_session = function(parent_session, leaf_session, start_time_str, label, for_running_query_kernel, callback) {
+  this.send_set_cur_session(parent_session, leaf_session, start_time_str, label, for_running_query_kernel, callback); 
   if (!callback) {
   this.recv_set_cur_session();
   }
 };
 
-OmniSciClient.prototype.send_set_cur_session = function(parent_session, leaf_session, start_time_str, label, callback) {
+OmniSciClient.prototype.send_set_cur_session = function(parent_session, leaf_session, start_time_str, label, for_running_query_kernel, callback) {
   this.output.writeMessageBegin('set_cur_session', Thrift.MessageType.CALL, this.seqid);
   var args = new OmniSci_set_cur_session_args();
   args.parent_session = parent_session;
   args.leaf_session = leaf_session;
   args.start_time_str = start_time_str;
   args.label = label;
+  args.for_running_query_kernel = for_running_query_kernel;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {
@@ -16354,20 +16387,21 @@ OmniSciClient.prototype.recv_set_cur_session = function() {
   }
   return;
 };
-OmniSciClient.prototype.invalidate_cur_session = function(parent_session, leaf_session, start_time_str, label, callback) {
-  this.send_invalidate_cur_session(parent_session, leaf_session, start_time_str, label, callback); 
+OmniSciClient.prototype.invalidate_cur_session = function(parent_session, leaf_session, start_time_str, label, for_running_query_kernel, callback) {
+  this.send_invalidate_cur_session(parent_session, leaf_session, start_time_str, label, for_running_query_kernel, callback); 
   if (!callback) {
   this.recv_invalidate_cur_session();
   }
 };
 
-OmniSciClient.prototype.send_invalidate_cur_session = function(parent_session, leaf_session, start_time_str, label, callback) {
+OmniSciClient.prototype.send_invalidate_cur_session = function(parent_session, leaf_session, start_time_str, label, for_running_query_kernel, callback) {
   this.output.writeMessageBegin('invalidate_cur_session', Thrift.MessageType.CALL, this.seqid);
   var args = new OmniSci_invalidate_cur_session_args();
   args.parent_session = parent_session;
   args.leaf_session = leaf_session;
   args.start_time_str = start_time_str;
   args.label = label;
+  args.for_running_query_kernel = for_running_query_kernel;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {
