@@ -7251,6 +7251,7 @@ TCustomExpression = function(args) {
   this.data_source_type = null;
   this.data_source_id = null;
   this.is_deleted = null;
+  this.data_source_name = null;
   if (args) {
     if (args.id !== undefined && args.id !== null) {
       this.id = args.id;
@@ -7269,6 +7270,9 @@ TCustomExpression = function(args) {
     }
     if (args.is_deleted !== undefined && args.is_deleted !== null) {
       this.is_deleted = args.is_deleted;
+    }
+    if (args.data_source_name !== undefined && args.data_source_name !== null) {
+      this.data_source_name = args.data_source_name;
     }
   }
 };
@@ -7328,6 +7332,13 @@ TCustomExpression.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 8:
+      if (ftype == Thrift.Type.STRING) {
+        this.data_source_name = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -7367,6 +7378,11 @@ TCustomExpression.prototype.write = function(output) {
   if (this.is_deleted !== null && this.is_deleted !== undefined) {
     output.writeFieldBegin('is_deleted', Thrift.Type.BOOL, 7);
     output.writeBool(this.is_deleted);
+    output.writeFieldEnd();
+  }
+  if (this.data_source_name !== null && this.data_source_name !== undefined) {
+    output.writeFieldBegin('data_source_name', Thrift.Type.STRING, 8);
+    output.writeString(this.data_source_name);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
