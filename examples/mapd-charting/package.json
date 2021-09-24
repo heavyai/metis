@@ -11,7 +11,7 @@
     "css-loader": "^0.28.4",
     "lodash": "^4.17.4",
     "mapbox-gl": "https://github.com/mapd/mapbox-gl-js/tarball/9c04de6949fe498c8c79f5c0627dfd6d6321f307",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.13.1",
     "sass-loader": "^6.0.5",
     "script-loader": "^0.7.0",
     "style-loader": "^0.18.1",
