@@ -5,34 +5,18 @@ export default function parseBin(
   sql: SQL,
   { field, as, extent, maxbins }: Bin
 ): SQL {
+  if (extent[0] >= extent[1]) {
+    // Why "1 - 1"? There is a bug in calcite that will throw an error if you
+    // try to SELECT a constant integer with a group by clause. This gets
+    // around it by returning an expression ¯\_(ツ)_/¯
+    sql.select.push(`1 - 1 AS ${as}`);
+  } else {
+    sql.select.push(`CASE WHEN ${field} >= ${extent[1]} THEN ${maxbins} ELSE WIDTH_BUCKET(${field}, ${extent[0]}, ${extent[1]}, ${maxbins}) END - 1 AS ${as}`);
+  }
 
-  // numBins is used conditionally in our query building below.
-  // first of all, if we're going to fall into the overflow bin AND we have
-  // 0 bins, then we should land in bin 0. Otherwise, we should land in the last
-  // bin.
-  //
-  // later, we calculate the binning magic number based on numBins - dividing either
-  // by it or 1 if it doesn't exist, to prevent a divide by zero / infinity error.
-  //
-  // The logic used by mapd-crossfilter's getBinnedDimExpression is completely different.
-  const numBins  = extent[1] - extent[0];
+  sql.where.push(`((${field} >= ${extent[0]} AND ${field} <= ${extent[1]}) OR (${field} IS NULL))`);
 
-  sql.select.push(
-    `case when
-      ${field} >= ${extent[1]}
-    then
-      ${ numBins === 0 ? 0 : maxbins - 1}
-    else
-      cast((cast(${field} as float) - ${extent[0]}) * ${maxbins /
-      (numBins || 1) } as int)
-    end
-    AS ${as}`
-  );
-  sql.where.push(
-    `((${field} >= ${extent[0]} AND ${field} <= ${
-      extent[1]
-    }) OR (${field} IS NULL))`
-  );
   sql.having.push(`(${as} >= 0 AND ${as} < ${maxbins} OR ${as} IS NULL)`);
+
   return sql;
 }
