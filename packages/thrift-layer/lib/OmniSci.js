@@ -13962,6 +13962,165 @@ OmniSci_get_all_roles_for_user_result.prototype.write = function(output) {
   return;
 };
 
+OmniSci_get_all_effective_roles_for_user_args = function(args) {
+  this.session = null;
+  this.userName = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+    if (args.userName !== undefined && args.userName !== null) {
+      this.userName = args.userName;
+    }
+  }
+};
+OmniSci_get_all_effective_roles_for_user_args.prototype = {};
+OmniSci_get_all_effective_roles_for_user_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.userName = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+OmniSci_get_all_effective_roles_for_user_args.prototype.write = function(output) {
+  output.writeStructBegin('OmniSci_get_all_effective_roles_for_user_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  if (this.userName !== null && this.userName !== undefined) {
+    output.writeFieldBegin('userName', Thrift.Type.STRING, 2);
+    output.writeString(this.userName);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+OmniSci_get_all_effective_roles_for_user_result = function(args) {
+  this.success = null;
+  this.e = null;
+  if (args instanceof TOmniSciException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = Thrift.copyList(args.success, [null]);
+    }
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+OmniSci_get_all_effective_roles_for_user_result.prototype = {};
+OmniSci_get_all_effective_roles_for_user_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.LIST) {
+        var _size716 = 0;
+        var _rtmp3720;
+        this.success = [];
+        var _etype719 = 0;
+        _rtmp3720 = input.readListBegin();
+        _etype719 = _rtmp3720.etype;
+        _size716 = _rtmp3720.size;
+        for (var _i721 = 0; _i721 < _size716; ++_i721)
+        {
+          var elem722 = null;
+          elem722 = input.readString().value;
+          this.success.push(elem722);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TOmniSciException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+OmniSci_get_all_effective_roles_for_user_result.prototype.write = function(output) {
+  output.writeStructBegin('OmniSci_get_all_effective_roles_for_user_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRING, this.success.length);
+    for (var iter723 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter723))
+      {
+        iter723 = this.success[iter723];
+        output.writeString(iter723);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 OmniSci_has_role_args = function(args) {
   this.session = null;
   this.granteeName = null;
@@ -14678,27 +14837,27 @@ OmniSci_get_device_parameters_result.prototype.read = function(input) {
     {
       case 0:
       if (ftype == Thrift.Type.MAP) {
-        var _size716 = 0;
-        var _rtmp3720;
+        var _size724 = 0;
+        var _rtmp3728;
         this.success = {};
-        var _ktype717 = 0;
-        var _vtype718 = 0;
-        _rtmp3720 = input.readMapBegin();
-        _ktype717 = _rtmp3720.ktype;
-        _vtype718 = _rtmp3720.vtype;
-        _size716 = _rtmp3720.size;
-        for (var _i721 = 0; _i721 < _size716; ++_i721)
+        var _ktype725 = 0;
+        var _vtype726 = 0;
+        _rtmp3728 = input.readMapBegin();
+        _ktype725 = _rtmp3728.ktype;
+        _vtype726 = _rtmp3728.vtype;
+        _size724 = _rtmp3728.size;
+        for (var _i729 = 0; _i729 < _size724; ++_i729)
         {
-          if (_i721 > 0 ) {
+          if (_i729 > 0 ) {
             if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
               input.rstack.pop();
             }
           }
-          var key722 = null;
-          var val723 = null;
-          key722 = input.readString().value;
-          val723 = input.readString().value;
-          this.success[key722] = val723;
+          var key730 = null;
+          var val731 = null;
+          key730 = input.readString().value;
+          val731 = input.readString().value;
+          this.success[key730] = val731;
         }
         input.readMapEnd();
       } else {
@@ -14727,13 +14886,13 @@ OmniSci_get_device_parameters_result.prototype.write = function(output) {
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.MAP, 0);
     output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.success));
-    for (var kiter724 in this.success)
+    for (var kiter732 in this.success)
     {
-      if (this.success.hasOwnProperty(kiter724))
+      if (this.success.hasOwnProperty(kiter732))
       {
-        var viter725 = this.success[kiter724];
-        output.writeString(kiter724);
-        output.writeString(viter725);
+        var viter733 = this.success[kiter732];
+        output.writeString(kiter732);
+        output.writeString(viter733);
       }
     }
     output.writeMapEnd();
@@ -14792,19 +14951,19 @@ OmniSci_register_runtime_extension_functions_args.prototype.read = function(inpu
       break;
       case 2:
       if (ftype == Thrift.Type.LIST) {
-        var _size726 = 0;
-        var _rtmp3730;
+        var _size734 = 0;
+        var _rtmp3738;
         this.udfs = [];
-        var _etype729 = 0;
-        _rtmp3730 = input.readListBegin();
-        _etype729 = _rtmp3730.etype;
-        _size726 = _rtmp3730.size;
-        for (var _i731 = 0; _i731 < _size726; ++_i731)
+        var _etype737 = 0;
+        _rtmp3738 = input.readListBegin();
+        _etype737 = _rtmp3738.etype;
+        _size734 = _rtmp3738.size;
+        for (var _i739 = 0; _i739 < _size734; ++_i739)
         {
-          var elem732 = null;
-          elem732 = new TUserDefinedFunction();
-          elem732.read(input);
-          this.udfs.push(elem732);
+          var elem740 = null;
+          elem740 = new TUserDefinedFunction();
+          elem740.read(input);
+          this.udfs.push(elem740);
         }
         input.readListEnd();
       } else {
@@ -14813,19 +14972,19 @@ OmniSci_register_runtime_extension_functions_args.prototype.read = function(inpu
       break;
       case 3:
       if (ftype == Thrift.Type.LIST) {
-        var _size733 = 0;
-        var _rtmp3737;
+        var _size741 = 0;
+        var _rtmp3745;
         this.udtfs = [];
-        var _etype736 = 0;
-        _rtmp3737 = input.readListBegin();
-        _etype736 = _rtmp3737.etype;
-        _size733 = _rtmp3737.size;
-        for (var _i738 = 0; _i738 < _size733; ++_i738)
+        var _etype744 = 0;
+        _rtmp3745 = input.readListBegin();
+        _etype744 = _rtmp3745.etype;
+        _size741 = _rtmp3745.size;
+        for (var _i746 = 0; _i746 < _size741; ++_i746)
         {
-          var elem739 = null;
-          elem739 = new TUserDefinedTableFunction();
-          elem739.read(input);
-          this.udtfs.push(elem739);
+          var elem747 = null;
+          elem747 = new TUserDefinedTableFunction();
+          elem747.read(input);
+          this.udtfs.push(elem747);
         }
         input.readListEnd();
       } else {
@@ -14834,27 +14993,27 @@ OmniSci_register_runtime_extension_functions_args.prototype.read = function(inpu
       break;
       case 4:
       if (ftype == Thrift.Type.MAP) {
-        var _size740 = 0;
-        var _rtmp3744;
+        var _size748 = 0;
+        var _rtmp3752;
         this.device_ir_map = {};
-        var _ktype741 = 0;
-        var _vtype742 = 0;
-        _rtmp3744 = input.readMapBegin();
-        _ktype741 = _rtmp3744.ktype;
-        _vtype742 = _rtmp3744.vtype;
-        _size740 = _rtmp3744.size;
-        for (var _i745 = 0; _i745 < _size740; ++_i745)
+        var _ktype749 = 0;
+        var _vtype750 = 0;
+        _rtmp3752 = input.readMapBegin();
+        _ktype749 = _rtmp3752.ktype;
+        _vtype750 = _rtmp3752.vtype;
+        _size748 = _rtmp3752.size;
+        for (var _i753 = 0; _i753 < _size748; ++_i753)
         {
-          if (_i745 > 0 ) {
+          if (_i753 > 0 ) {
             if (input.rstack.length > input.rpos[input.rpos.length -1] + 1) {
               input.rstack.pop();
             }
           }
-          var key746 = null;
-          var val747 = null;
-          key746 = input.readString().value;
-          val747 = input.readString().value;
-          this.device_ir_map[key746] = val747;
+          var key754 = null;
+          var val755 = null;
+          key754 = input.readString().value;
+          val755 = input.readString().value;
+          this.device_ir_map[key754] = val755;
         }
         input.readMapEnd();
       } else {
@@ -14880,12 +15039,12 @@ OmniSci_register_runtime_extension_functions_args.prototype.write = function(out
   if (this.udfs !== null && this.udfs !== undefined) {
     output.writeFieldBegin('udfs', Thrift.Type.LIST, 2);
     output.writeListBegin(Thrift.Type.STRUCT, this.udfs.length);
-    for (var iter748 in this.udfs)
+    for (var iter756 in this.udfs)
     {
-      if (this.udfs.hasOwnProperty(iter748))
+      if (this.udfs.hasOwnProperty(iter756))
       {
-        iter748 = this.udfs[iter748];
-        iter748.write(output);
+        iter756 = this.udfs[iter756];
+        iter756.write(output);
       }
     }
     output.writeListEnd();
@@ -14894,12 +15053,12 @@ OmniSci_register_runtime_extension_functions_args.prototype.write = function(out
   if (this.udtfs !== null && this.udtfs !== undefined) {
     output.writeFieldBegin('udtfs', Thrift.Type.LIST, 3);
     output.writeListBegin(Thrift.Type.STRUCT, this.udtfs.length);
-    for (var iter749 in this.udtfs)
+    for (var iter757 in this.udtfs)
     {
-      if (this.udtfs.hasOwnProperty(iter749))
+      if (this.udtfs.hasOwnProperty(iter757))
       {
-        iter749 = this.udtfs[iter749];
-        iter749.write(output);
+        iter757 = this.udtfs[iter757];
+        iter757.write(output);
       }
     }
     output.writeListEnd();
@@ -14908,13 +15067,13 @@ OmniSci_register_runtime_extension_functions_args.prototype.write = function(out
   if (this.device_ir_map !== null && this.device_ir_map !== undefined) {
     output.writeFieldBegin('device_ir_map', Thrift.Type.MAP, 4);
     output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.device_ir_map));
-    for (var kiter750 in this.device_ir_map)
+    for (var kiter758 in this.device_ir_map)
     {
-      if (this.device_ir_map.hasOwnProperty(kiter750))
+      if (this.device_ir_map.hasOwnProperty(kiter758))
       {
-        var viter751 = this.device_ir_map[kiter750];
-        output.writeString(kiter750);
-        output.writeString(viter751);
+        var viter759 = this.device_ir_map[kiter758];
+        output.writeString(kiter758);
+        output.writeString(viter759);
       }
     }
     output.writeMapEnd();
@@ -19609,6 +19768,59 @@ OmniSciClient.prototype.recv_get_all_roles_for_user = function() {
     return result.success;
   }
   throw 'get_all_roles_for_user failed: unknown result';
+};
+OmniSciClient.prototype.get_all_effective_roles_for_user = function(session, userName, callback) {
+  this.send_get_all_effective_roles_for_user(session, userName, callback); 
+  if (!callback) {
+    return this.recv_get_all_effective_roles_for_user();
+  }
+};
+
+OmniSciClient.prototype.send_get_all_effective_roles_for_user = function(session, userName, callback) {
+  this.output.writeMessageBegin('get_all_effective_roles_for_user', Thrift.MessageType.CALL, this.seqid);
+  var args = new OmniSci_get_all_effective_roles_for_user_args();
+  args.session = session;
+  args.userName = userName;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_get_all_effective_roles_for_user();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+OmniSciClient.prototype.recv_get_all_effective_roles_for_user = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new OmniSci_get_all_effective_roles_for_user_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'get_all_effective_roles_for_user failed: unknown result';
 };
 OmniSciClient.prototype.has_role = function(session, granteeName, roleName, callback) {
   this.send_has_role(session, granteeName, roleName, callback); 
