@@ -11,8 +11,9 @@ TExecuteMode = {
 };
 TFileType = {
   'DELIMITED' : 0,
-  'POLYGON' : 1,
-  'PARQUET' : 2
+  'GEO' : 1,
+  'PARQUET' : 2,
+  'RASTER' : 3
 };
 TPartitionDetail = {
   'DEFAULT' : 0,
@@ -40,6 +41,21 @@ TRole = {
 TMergeType = {
   'UNION' : 0,
   'REDUCE' : 1
+};
+TRasterPointType = {
+  'NONE' : 0,
+  'AUTO' : 1,
+  'SMALLINT' : 2,
+  'INT' : 3,
+  'FLOAT' : 4,
+  'DOUBLE' : 5,
+  'POINT' : 6
+};
+TRasterPointTransform = {
+  'NONE' : 0,
+  'AUTO' : 1,
+  'FILE' : 2,
+  'WORLD' : 3
 };
 TQueryType = {
   'UNKNOWN' : 0,
@@ -1741,6 +1757,10 @@ TCopyParams = function(args) {
   this.geo_explode_collections = false;
   this.source_srid = 0;
   this.s3_session_token = null;
+  this.raster_point_type = 1;
+  this.raster_import_bands = null;
+  this.raster_scanlines_per_thread = null;
+  this.raster_point_transform = 1;
   if (args) {
     if (args.delimiter !== undefined && args.delimiter !== null) {
       this.delimiter = args.delimiter;
@@ -1819,6 +1839,18 @@ TCopyParams = function(args) {
     }
     if (args.s3_session_token !== undefined && args.s3_session_token !== null) {
       this.s3_session_token = args.s3_session_token;
+    }
+    if (args.raster_point_type !== undefined && args.raster_point_type !== null) {
+      this.raster_point_type = args.raster_point_type;
+    }
+    if (args.raster_import_bands !== undefined && args.raster_import_bands !== null) {
+      this.raster_import_bands = args.raster_import_bands;
+    }
+    if (args.raster_scanlines_per_thread !== undefined && args.raster_scanlines_per_thread !== null) {
+      this.raster_scanlines_per_thread = args.raster_scanlines_per_thread;
+    }
+    if (args.raster_point_transform !== undefined && args.raster_point_transform !== null) {
+      this.raster_point_transform = args.raster_point_transform;
     }
   }
 };
@@ -2018,6 +2050,34 @@ TCopyParams.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 27:
+      if (ftype == Thrift.Type.I32) {
+        this.raster_point_type = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 28:
+      if (ftype == Thrift.Type.STRING) {
+        this.raster_import_bands = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 29:
+      if (ftype == Thrift.Type.I32) {
+        this.raster_scanlines_per_thread = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 30:
+      if (ftype == Thrift.Type.I32) {
+        this.raster_point_transform = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2157,6 +2217,26 @@ TCopyParams.prototype.write = function(output) {
   if (this.s3_session_token !== null && this.s3_session_token !== undefined) {
     output.writeFieldBegin('s3_session_token', Thrift.Type.STRING, 26);
     output.writeString(this.s3_session_token);
+    output.writeFieldEnd();
+  }
+  if (this.raster_point_type !== null && this.raster_point_type !== undefined) {
+    output.writeFieldBegin('raster_point_type', Thrift.Type.I32, 27);
+    output.writeI32(this.raster_point_type);
+    output.writeFieldEnd();
+  }
+  if (this.raster_import_bands !== null && this.raster_import_bands !== undefined) {
+    output.writeFieldBegin('raster_import_bands', Thrift.Type.STRING, 28);
+    output.writeString(this.raster_import_bands);
+    output.writeFieldEnd();
+  }
+  if (this.raster_scanlines_per_thread !== null && this.raster_scanlines_per_thread !== undefined) {
+    output.writeFieldBegin('raster_scanlines_per_thread', Thrift.Type.I32, 29);
+    output.writeI32(this.raster_scanlines_per_thread);
+    output.writeFieldEnd();
+  }
+  if (this.raster_point_transform !== null && this.raster_point_transform !== undefined) {
+    output.writeFieldBegin('raster_point_transform', Thrift.Type.I32, 30);
+    output.writeI32(this.raster_point_transform);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
