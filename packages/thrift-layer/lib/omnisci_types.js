@@ -7470,3 +7470,197 @@ TCustomExpression.prototype.write = function(output) {
   return;
 };
 
+TQueryInfo = function(args) {
+  this.query_session_id = null;
+  this.query_public_session_id = null;
+  this.current_status = null;
+  this.executor_id = null;
+  this.submitted = null;
+  this.query_str = null;
+  this.login_name = null;
+  this.client_address = null;
+  this.db_name = null;
+  this.exec_device_type = null;
+  if (args) {
+    if (args.query_session_id !== undefined && args.query_session_id !== null) {
+      this.query_session_id = args.query_session_id;
+    }
+    if (args.query_public_session_id !== undefined && args.query_public_session_id !== null) {
+      this.query_public_session_id = args.query_public_session_id;
+    }
+    if (args.current_status !== undefined && args.current_status !== null) {
+      this.current_status = args.current_status;
+    }
+    if (args.executor_id !== undefined && args.executor_id !== null) {
+      this.executor_id = args.executor_id;
+    }
+    if (args.submitted !== undefined && args.submitted !== null) {
+      this.submitted = args.submitted;
+    }
+    if (args.query_str !== undefined && args.query_str !== null) {
+      this.query_str = args.query_str;
+    }
+    if (args.login_name !== undefined && args.login_name !== null) {
+      this.login_name = args.login_name;
+    }
+    if (args.client_address !== undefined && args.client_address !== null) {
+      this.client_address = args.client_address;
+    }
+    if (args.db_name !== undefined && args.db_name !== null) {
+      this.db_name = args.db_name;
+    }
+    if (args.exec_device_type !== undefined && args.exec_device_type !== null) {
+      this.exec_device_type = args.exec_device_type;
+    }
+  }
+};
+TQueryInfo.prototype = {};
+TQueryInfo.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.query_session_id = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.query_public_session_id = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.current_status = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I32) {
+        this.executor_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.STRING) {
+        this.submitted = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.STRING) {
+        this.query_str = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.STRING) {
+        this.login_name = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.STRING) {
+        this.client_address = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 9:
+      if (ftype == Thrift.Type.STRING) {
+        this.db_name = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 10:
+      if (ftype == Thrift.Type.STRING) {
+        this.exec_device_type = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TQueryInfo.prototype.write = function(output) {
+  output.writeStructBegin('TQueryInfo');
+  if (this.query_session_id !== null && this.query_session_id !== undefined) {
+    output.writeFieldBegin('query_session_id', Thrift.Type.STRING, 1);
+    output.writeString(this.query_session_id);
+    output.writeFieldEnd();
+  }
+  if (this.query_public_session_id !== null && this.query_public_session_id !== undefined) {
+    output.writeFieldBegin('query_public_session_id', Thrift.Type.STRING, 2);
+    output.writeString(this.query_public_session_id);
+    output.writeFieldEnd();
+  }
+  if (this.current_status !== null && this.current_status !== undefined) {
+    output.writeFieldBegin('current_status', Thrift.Type.STRING, 3);
+    output.writeString(this.current_status);
+    output.writeFieldEnd();
+  }
+  if (this.executor_id !== null && this.executor_id !== undefined) {
+    output.writeFieldBegin('executor_id', Thrift.Type.I32, 4);
+    output.writeI32(this.executor_id);
+    output.writeFieldEnd();
+  }
+  if (this.submitted !== null && this.submitted !== undefined) {
+    output.writeFieldBegin('submitted', Thrift.Type.STRING, 5);
+    output.writeString(this.submitted);
+    output.writeFieldEnd();
+  }
+  if (this.query_str !== null && this.query_str !== undefined) {
+    output.writeFieldBegin('query_str', Thrift.Type.STRING, 6);
+    output.writeString(this.query_str);
+    output.writeFieldEnd();
+  }
+  if (this.login_name !== null && this.login_name !== undefined) {
+    output.writeFieldBegin('login_name', Thrift.Type.STRING, 7);
+    output.writeString(this.login_name);
+    output.writeFieldEnd();
+  }
+  if (this.client_address !== null && this.client_address !== undefined) {
+    output.writeFieldBegin('client_address', Thrift.Type.STRING, 8);
+    output.writeString(this.client_address);
+    output.writeFieldEnd();
+  }
+  if (this.db_name !== null && this.db_name !== undefined) {
+    output.writeFieldBegin('db_name', Thrift.Type.STRING, 9);
+    output.writeString(this.db_name);
+    output.writeFieldEnd();
+  }
+  if (this.exec_device_type !== null && this.exec_device_type !== undefined) {
+    output.writeFieldBegin('exec_device_type', Thrift.Type.STRING, 10);
+    output.writeString(this.exec_device_type);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
