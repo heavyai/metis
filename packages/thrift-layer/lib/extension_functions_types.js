@@ -56,7 +56,8 @@ TOutputBufferSizeType = {
   'kConstant' : 0,
   'kUserSpecifiedConstantParameter' : 1,
   'kUserSpecifiedRowMultiplier' : 2,
-  'kTableFunctionSpecifiedParameter' : 3
+  'kTableFunctionSpecifiedParameter' : 3,
+  'kPreFlightParameter' : 4
 };
 TUserDefinedFunction = function(args) {
   this.name = null;

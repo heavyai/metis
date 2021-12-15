@@ -1762,6 +1762,7 @@ TCopyParams = function(args) {
   this.raster_scanlines_per_thread = null;
   this.raster_point_transform = 1;
   this.raster_point_compute_angle = false;
+  this.raster_import_dimensions = null;
   if (args) {
     if (args.delimiter !== undefined && args.delimiter !== null) {
       this.delimiter = args.delimiter;
@@ -1855,6 +1856,9 @@ TCopyParams = function(args) {
     }
     if (args.raster_point_compute_angle !== undefined && args.raster_point_compute_angle !== null) {
       this.raster_point_compute_angle = args.raster_point_compute_angle;
+    }
+    if (args.raster_import_dimensions !== undefined && args.raster_import_dimensions !== null) {
+      this.raster_import_dimensions = args.raster_import_dimensions;
     }
   }
 };
@@ -2089,6 +2093,13 @@ TCopyParams.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 32:
+      if (ftype == Thrift.Type.STRING) {
+        this.raster_import_dimensions = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2253,6 +2264,11 @@ TCopyParams.prototype.write = function(output) {
   if (this.raster_point_compute_angle !== null && this.raster_point_compute_angle !== undefined) {
     output.writeFieldBegin('raster_point_compute_angle', Thrift.Type.BOOL, 31);
     output.writeBool(this.raster_point_compute_angle);
+    output.writeFieldEnd();
+  }
+  if (this.raster_import_dimensions !== null && this.raster_import_dimensions !== undefined) {
+    output.writeFieldBegin('raster_import_dimensions', Thrift.Type.STRING, 32);
+    output.writeString(this.raster_import_dimensions);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
