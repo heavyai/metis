@@ -2093,12 +2093,16 @@ OmniSci_get_table_details_for_database_result.prototype.write = function(output)
 OmniSci_get_internal_table_details_args = function(args) {
   this.session = null;
   this.table_name = null;
+  this.include_system_columns = true;
   if (args) {
     if (args.session !== undefined && args.session !== null) {
       this.session = args.session;
     }
     if (args.table_name !== undefined && args.table_name !== null) {
       this.table_name = args.table_name;
+    }
+    if (args.include_system_columns !== undefined && args.include_system_columns !== null) {
+      this.include_system_columns = args.include_system_columns;
     }
   }
 };
@@ -2130,6 +2134,13 @@ OmniSci_get_internal_table_details_args.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 3:
+      if (ftype == Thrift.Type.BOOL) {
+        this.include_system_columns = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2149,6 +2160,11 @@ OmniSci_get_internal_table_details_args.prototype.write = function(output) {
   if (this.table_name !== null && this.table_name !== undefined) {
     output.writeFieldBegin('table_name', Thrift.Type.STRING, 2);
     output.writeString(this.table_name);
+    output.writeFieldEnd();
+  }
+  if (this.include_system_columns !== null && this.include_system_columns !== undefined) {
+    output.writeFieldBegin('include_system_columns', Thrift.Type.BOOL, 3);
+    output.writeBool(this.include_system_columns);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -16077,18 +16093,19 @@ OmniSciClient.prototype.recv_get_table_details_for_database = function() {
   }
   throw 'get_table_details_for_database failed: unknown result';
 };
-OmniSciClient.prototype.get_internal_table_details = function(session, table_name, callback) {
-  this.send_get_internal_table_details(session, table_name, callback); 
+OmniSciClient.prototype.get_internal_table_details = function(session, table_name, include_system_columns, callback) {
+  this.send_get_internal_table_details(session, table_name, include_system_columns, callback); 
   if (!callback) {
     return this.recv_get_internal_table_details();
   }
 };
 
-OmniSciClient.prototype.send_get_internal_table_details = function(session, table_name, callback) {
+OmniSciClient.prototype.send_get_internal_table_details = function(session, table_name, include_system_columns, callback) {
   this.output.writeMessageBegin('get_internal_table_details', Thrift.MessageType.CALL, this.seqid);
   var args = new OmniSci_get_internal_table_details_args();
   args.session = session;
   args.table_name = table_name;
+  args.include_system_columns = include_system_columns;
   args.write(this.output);
   this.output.writeMessageEnd();
   if (callback) {
