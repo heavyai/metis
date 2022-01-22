@@ -1778,6 +1778,7 @@ TCopyParams = function(args) {
   this.odbc_username = null;
   this.odbc_password = null;
   this.odbc_credential_string = null;
+  this.add_metadata_columns = null;
   if (args) {
     if (args.delimiter !== undefined && args.delimiter !== null) {
       this.delimiter = args.delimiter;
@@ -1898,6 +1899,9 @@ TCopyParams = function(args) {
     }
     if (args.odbc_credential_string !== undefined && args.odbc_credential_string !== null) {
       this.odbc_credential_string = args.odbc_credential_string;
+    }
+    if (args.add_metadata_columns !== undefined && args.add_metadata_columns !== null) {
+      this.add_metadata_columns = args.add_metadata_columns;
     }
   }
 };
@@ -2195,6 +2199,13 @@ TCopyParams.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 41:
+      if (ftype == Thrift.Type.STRING) {
+        this.add_metadata_columns = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2404,6 +2415,11 @@ TCopyParams.prototype.write = function(output) {
   if (this.odbc_credential_string !== null && this.odbc_credential_string !== undefined) {
     output.writeFieldBegin('odbc_credential_string', Thrift.Type.STRING, 40);
     output.writeString(this.odbc_credential_string);
+    output.writeFieldEnd();
+  }
+  if (this.add_metadata_columns !== null && this.add_metadata_columns !== undefined) {
+    output.writeFieldBegin('add_metadata_columns', Thrift.Type.STRING, 41);
+    output.writeString(this.add_metadata_columns);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
