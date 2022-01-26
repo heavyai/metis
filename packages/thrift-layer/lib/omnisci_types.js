@@ -45,6 +45,25 @@ TRole = {
   'LEAF' : 2,
   'STRING_DICTIONARY' : 3
 };
+TTableType = {
+  'DEFAULT' : 0,
+  'TEMPORARY' : 1,
+  'FOREIGN' : 2,
+  'VIEW' : 3
+};
+TTableRefreshUpdateType = {
+  'ALL' : 0,
+  'APPEND' : 1
+};
+TTableRefreshTimingType = {
+  'MANUAL' : 0,
+  'SCHEDULED' : 1
+};
+TTableRefreshIntervalType = {
+  'NONE' : 0,
+  'HOUR' : 1,
+  'DAY' : 2
+};
 TMergeType = {
   'UNION' : 0,
   'REDUCE' : 1
@@ -4213,6 +4232,152 @@ TTableMeta.prototype.write = function(output) {
   return;
 };
 
+TTableRefreshInfo = function(args) {
+  this.update_type = null;
+  this.timing_type = null;
+  this.start_date_time = null;
+  this.interval_type = null;
+  this.interval_count = null;
+  this.last_refresh_time = null;
+  this.next_refresh_time = null;
+  if (args) {
+    if (args.update_type !== undefined && args.update_type !== null) {
+      this.update_type = args.update_type;
+    }
+    if (args.timing_type !== undefined && args.timing_type !== null) {
+      this.timing_type = args.timing_type;
+    }
+    if (args.start_date_time !== undefined && args.start_date_time !== null) {
+      this.start_date_time = args.start_date_time;
+    }
+    if (args.interval_type !== undefined && args.interval_type !== null) {
+      this.interval_type = args.interval_type;
+    }
+    if (args.interval_count !== undefined && args.interval_count !== null) {
+      this.interval_count = args.interval_count;
+    }
+    if (args.last_refresh_time !== undefined && args.last_refresh_time !== null) {
+      this.last_refresh_time = args.last_refresh_time;
+    }
+    if (args.next_refresh_time !== undefined && args.next_refresh_time !== null) {
+      this.next_refresh_time = args.next_refresh_time;
+    }
+  }
+};
+TTableRefreshInfo.prototype = {};
+TTableRefreshInfo.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I32) {
+        this.update_type = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.timing_type = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.I64) {
+        this.start_date_time = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 4:
+      if (ftype == Thrift.Type.I32) {
+        this.interval_type = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 5:
+      if (ftype == Thrift.Type.I64) {
+        this.interval_count = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 6:
+      if (ftype == Thrift.Type.I64) {
+        this.last_refresh_time = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 7:
+      if (ftype == Thrift.Type.I64) {
+        this.next_refresh_time = input.readI64().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TTableRefreshInfo.prototype.write = function(output) {
+  output.writeStructBegin('TTableRefreshInfo');
+  if (this.update_type !== null && this.update_type !== undefined) {
+    output.writeFieldBegin('update_type', Thrift.Type.I32, 1);
+    output.writeI32(this.update_type);
+    output.writeFieldEnd();
+  }
+  if (this.timing_type !== null && this.timing_type !== undefined) {
+    output.writeFieldBegin('timing_type', Thrift.Type.I32, 2);
+    output.writeI32(this.timing_type);
+    output.writeFieldEnd();
+  }
+  if (this.start_date_time !== null && this.start_date_time !== undefined) {
+    output.writeFieldBegin('start_date_time', Thrift.Type.I64, 3);
+    output.writeI64(this.start_date_time);
+    output.writeFieldEnd();
+  }
+  if (this.interval_type !== null && this.interval_type !== undefined) {
+    output.writeFieldBegin('interval_type', Thrift.Type.I32, 4);
+    output.writeI32(this.interval_type);
+    output.writeFieldEnd();
+  }
+  if (this.interval_count !== null && this.interval_count !== undefined) {
+    output.writeFieldBegin('interval_count', Thrift.Type.I64, 5);
+    output.writeI64(this.interval_count);
+    output.writeFieldEnd();
+  }
+  if (this.last_refresh_time !== null && this.last_refresh_time !== undefined) {
+    output.writeFieldBegin('last_refresh_time', Thrift.Type.I64, 6);
+    output.writeI64(this.last_refresh_time);
+    output.writeFieldEnd();
+  }
+  if (this.next_refresh_time !== null && this.next_refresh_time !== undefined) {
+    output.writeFieldBegin('next_refresh_time', Thrift.Type.I64, 7);
+    output.writeI64(this.next_refresh_time);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 TTableDetails = function(args) {
   this.row_desc = null;
   this.fragment_size = null;
@@ -4223,6 +4388,8 @@ TTableDetails = function(args) {
   this.key_metainfo = null;
   this.is_temporary = null;
   this.partition_detail = null;
+  this.table_type = null;
+  this.refresh_info = null;
   if (args) {
     if (args.row_desc !== undefined && args.row_desc !== null) {
       this.row_desc = Thrift.copyList(args.row_desc, [TColumnType]);
@@ -4250,6 +4417,12 @@ TTableDetails = function(args) {
     }
     if (args.partition_detail !== undefined && args.partition_detail !== null) {
       this.partition_detail = args.partition_detail;
+    }
+    if (args.table_type !== undefined && args.table_type !== null) {
+      this.table_type = args.table_type;
+    }
+    if (args.refresh_info !== undefined && args.refresh_info !== null) {
+      this.refresh_info = new TTableRefreshInfo(args.refresh_info);
     }
   }
 };
@@ -4344,6 +4517,21 @@ TTableDetails.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 10:
+      if (ftype == Thrift.Type.I32) {
+        this.table_type = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 11:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.refresh_info = new TTableRefreshInfo();
+        this.refresh_info.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -4407,6 +4595,16 @@ TTableDetails.prototype.write = function(output) {
   if (this.partition_detail !== null && this.partition_detail !== undefined) {
     output.writeFieldBegin('partition_detail', Thrift.Type.I32, 9);
     output.writeI32(this.partition_detail);
+    output.writeFieldEnd();
+  }
+  if (this.table_type !== null && this.table_type !== undefined) {
+    output.writeFieldBegin('table_type', Thrift.Type.I32, 10);
+    output.writeI32(this.table_type);
+    output.writeFieldEnd();
+  }
+  if (this.refresh_info !== null && this.refresh_info !== undefined) {
+    output.writeFieldBegin('refresh_info', Thrift.Type.STRUCT, 11);
+    this.refresh_info.write(output);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
