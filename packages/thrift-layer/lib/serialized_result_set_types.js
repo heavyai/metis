@@ -14,7 +14,7 @@ TResultSetLayout = {
 TCountDistinctImplType = {
   'Invalid' : 0,
   'Bitmap' : 1,
-  'StdSet' : 2
+  'UnorderedSet' : 2
 };
 TAggKind = {
   'AVG' : 0,
