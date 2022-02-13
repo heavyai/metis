@@ -8270,3 +8270,69 @@ TQueryInfo.prototype.write = function(output) {
   return;
 };
 
+TLeafInfo = function(args) {
+  this.leaf_id = null;
+  this.num_leaves = null;
+  if (args) {
+    if (args.leaf_id !== undefined && args.leaf_id !== null) {
+      this.leaf_id = args.leaf_id;
+    }
+    if (args.num_leaves !== undefined && args.num_leaves !== null) {
+      this.num_leaves = args.num_leaves;
+    }
+  }
+};
+TLeafInfo.prototype = {};
+TLeafInfo.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.I32) {
+        this.leaf_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.num_leaves = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TLeafInfo.prototype.write = function(output) {
+  output.writeStructBegin('TLeafInfo');
+  if (this.leaf_id !== null && this.leaf_id !== undefined) {
+    output.writeFieldBegin('leaf_id', Thrift.Type.I32, 1);
+    output.writeI32(this.leaf_id);
+    output.writeFieldEnd();
+  }
+  if (this.num_leaves !== null && this.num_leaves !== undefined) {
+    output.writeFieldBegin('num_leaves', Thrift.Type.I32, 2);
+    output.writeI32(this.num_leaves);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
