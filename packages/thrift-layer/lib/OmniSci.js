@@ -10843,7 +10843,6 @@ OmniSci_create_table_args = function(args) {
   this.session = null;
   this.table_name = null;
   this.row_desc = null;
-  this.file_type = 0;
   this.create_params = null;
   if (args) {
     if (args.session !== undefined && args.session !== null) {
@@ -10854,9 +10853,6 @@ OmniSci_create_table_args = function(args) {
     }
     if (args.row_desc !== undefined && args.row_desc !== null) {
       this.row_desc = Thrift.copyList(args.row_desc, [TColumnType]);
-    }
-    if (args.file_type !== undefined && args.file_type !== null) {
-      this.file_type = args.file_type;
     }
     if (args.create_params !== undefined && args.create_params !== null) {
       this.create_params = new TCreateParams(args.create_params);
@@ -10913,13 +10909,6 @@ OmniSci_create_table_args.prototype.read = function(input) {
       }
       break;
       case 4:
-      if (ftype == Thrift.Type.I32) {
-        this.file_type = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 5:
       if (ftype == Thrift.Type.STRUCT) {
         this.create_params = new TCreateParams();
         this.create_params.read(input);
@@ -10962,13 +10951,8 @@ OmniSci_create_table_args.prototype.write = function(output) {
     output.writeListEnd();
     output.writeFieldEnd();
   }
-  if (this.file_type !== null && this.file_type !== undefined) {
-    output.writeFieldBegin('file_type', Thrift.Type.I32, 4);
-    output.writeI32(this.file_type);
-    output.writeFieldEnd();
-  }
   if (this.create_params !== null && this.create_params !== undefined) {
-    output.writeFieldBegin('create_params', Thrift.Type.STRUCT, 5);
+    output.writeFieldBegin('create_params', Thrift.Type.STRUCT, 4);
     this.create_params.write(output);
     output.writeFieldEnd();
   }
@@ -19221,20 +19205,19 @@ OmniSciClient.prototype.recv_detect_column_types = function() {
   }
   throw 'detect_column_types failed: unknown result';
 };
-OmniSciClient.prototype.create_table = function(session, table_name, row_desc, file_type, create_params, callback) {
-  this.send_create_table(session, table_name, row_desc, file_type, create_params, callback); 
+OmniSciClient.prototype.create_table = function(session, table_name, row_desc, create_params, callback) {
+  this.send_create_table(session, table_name, row_desc, create_params, callback); 
   if (!callback) {
   this.recv_create_table();
   }
 };
 
-OmniSciClient.prototype.send_create_table = function(session, table_name, row_desc, file_type, create_params, callback) {
+OmniSciClient.prototype.send_create_table = function(session, table_name, row_desc, create_params, callback) {
   this.output.writeMessageBegin('create_table', Thrift.MessageType.CALL, this.seqid);
   var args = new OmniSci_create_table_args();
   args.session = session;
   args.table_name = table_name;
   args.row_desc = row_desc;
-  args.file_type = file_type;
   args.create_params = create_params;
   args.write(this.output);
   this.output.writeMessageEnd();

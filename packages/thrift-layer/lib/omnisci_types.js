@@ -9,17 +9,11 @@ TExecuteMode = {
   'GPU' : 1,
   'CPU' : 2
 };
-TFileType = {
-  'DELIMITED' : 0,
-  'GEO' : 1,
-  'PARQUET' : 2,
-  'RASTER' : 3
-};
 TSourceType = {
-  'DELIMITED' : 0,
-  'GEO' : 1,
-  'PARQUET' : 2,
-  'RASTER' : 3,
+  'DELIMITED_FILE' : 0,
+  'GEO_FILE' : 1,
+  'PARQUET_FILE' : 2,
+  'RASTER_FILE' : 3,
   'ODBC' : 4
 };
 TPartitionDetail = {
@@ -1768,7 +1762,7 @@ TCopyParams = function(args) {
   this.array_begin = null;
   this.array_end = null;
   this.threads = null;
-  this.file_type = 0;
+  this.source_type = 0;
   this.s3_access_key = null;
   this.s3_secret_key = null;
   this.s3_region = null;
@@ -1789,8 +1783,6 @@ TCopyParams = function(args) {
   this.raster_point_transform = 1;
   this.raster_point_compute_angle = false;
   this.raster_import_dimensions = null;
-  this.use_source_type = false;
-  this.source_type = 0;
   this.odbc_dsn = null;
   this.odbc_connection_string = null;
   this.odbc_sql_select = null;
@@ -1832,8 +1824,8 @@ TCopyParams = function(args) {
     if (args.threads !== undefined && args.threads !== null) {
       this.threads = args.threads;
     }
-    if (args.file_type !== undefined && args.file_type !== null) {
-      this.file_type = args.file_type;
+    if (args.source_type !== undefined && args.source_type !== null) {
+      this.source_type = args.source_type;
     }
     if (args.s3_access_key !== undefined && args.s3_access_key !== null) {
       this.s3_access_key = args.s3_access_key;
@@ -1894,12 +1886,6 @@ TCopyParams = function(args) {
     }
     if (args.raster_import_dimensions !== undefined && args.raster_import_dimensions !== null) {
       this.raster_import_dimensions = args.raster_import_dimensions;
-    }
-    if (args.use_source_type !== undefined && args.use_source_type !== null) {
-      this.use_source_type = args.use_source_type;
-    }
-    if (args.source_type !== undefined && args.source_type !== null) {
-      this.source_type = args.source_type;
     }
     if (args.odbc_dsn !== undefined && args.odbc_dsn !== null) {
       this.odbc_dsn = args.odbc_dsn;
@@ -2017,7 +2003,7 @@ TCopyParams.prototype.read = function(input) {
       break;
       case 12:
       if (ftype == Thrift.Type.I32) {
-        this.file_type = input.readI32().value;
+        this.source_type = input.readI32().value;
       } else {
         input.skip(ftype);
       }
@@ -2163,62 +2149,48 @@ TCopyParams.prototype.read = function(input) {
       }
       break;
       case 33:
-      if (ftype == Thrift.Type.BOOL) {
-        this.use_source_type = input.readBool().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 34:
-      if (ftype == Thrift.Type.I32) {
-        this.source_type = input.readI32().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 35:
       if (ftype == Thrift.Type.STRING) {
         this.odbc_dsn = input.readString().value;
       } else {
         input.skip(ftype);
       }
       break;
-      case 36:
+      case 34:
       if (ftype == Thrift.Type.STRING) {
         this.odbc_connection_string = input.readString().value;
       } else {
         input.skip(ftype);
       }
       break;
-      case 37:
+      case 35:
       if (ftype == Thrift.Type.STRING) {
         this.odbc_sql_select = input.readString().value;
       } else {
         input.skip(ftype);
       }
       break;
-      case 38:
+      case 36:
       if (ftype == Thrift.Type.STRING) {
         this.odbc_username = input.readString().value;
       } else {
         input.skip(ftype);
       }
       break;
-      case 39:
+      case 37:
       if (ftype == Thrift.Type.STRING) {
         this.odbc_password = input.readString().value;
       } else {
         input.skip(ftype);
       }
       break;
-      case 40:
+      case 38:
       if (ftype == Thrift.Type.STRING) {
         this.odbc_credential_string = input.readString().value;
       } else {
         input.skip(ftype);
       }
       break;
-      case 41:
+      case 39:
       if (ftype == Thrift.Type.STRING) {
         this.add_metadata_columns = input.readString().value;
       } else {
@@ -2291,9 +2263,9 @@ TCopyParams.prototype.write = function(output) {
     output.writeI32(this.threads);
     output.writeFieldEnd();
   }
-  if (this.file_type !== null && this.file_type !== undefined) {
-    output.writeFieldBegin('file_type', Thrift.Type.I32, 12);
-    output.writeI32(this.file_type);
+  if (this.source_type !== null && this.source_type !== undefined) {
+    output.writeFieldBegin('source_type', Thrift.Type.I32, 12);
+    output.writeI32(this.source_type);
     output.writeFieldEnd();
   }
   if (this.s3_access_key !== null && this.s3_access_key !== undefined) {
@@ -2396,48 +2368,38 @@ TCopyParams.prototype.write = function(output) {
     output.writeString(this.raster_import_dimensions);
     output.writeFieldEnd();
   }
-  if (this.use_source_type !== null && this.use_source_type !== undefined) {
-    output.writeFieldBegin('use_source_type', Thrift.Type.BOOL, 33);
-    output.writeBool(this.use_source_type);
-    output.writeFieldEnd();
-  }
-  if (this.source_type !== null && this.source_type !== undefined) {
-    output.writeFieldBegin('source_type', Thrift.Type.I32, 34);
-    output.writeI32(this.source_type);
-    output.writeFieldEnd();
-  }
   if (this.odbc_dsn !== null && this.odbc_dsn !== undefined) {
-    output.writeFieldBegin('odbc_dsn', Thrift.Type.STRING, 35);
+    output.writeFieldBegin('odbc_dsn', Thrift.Type.STRING, 33);
     output.writeString(this.odbc_dsn);
     output.writeFieldEnd();
   }
   if (this.odbc_connection_string !== null && this.odbc_connection_string !== undefined) {
-    output.writeFieldBegin('odbc_connection_string', Thrift.Type.STRING, 36);
+    output.writeFieldBegin('odbc_connection_string', Thrift.Type.STRING, 34);
     output.writeString(this.odbc_connection_string);
     output.writeFieldEnd();
   }
   if (this.odbc_sql_select !== null && this.odbc_sql_select !== undefined) {
-    output.writeFieldBegin('odbc_sql_select', Thrift.Type.STRING, 37);
+    output.writeFieldBegin('odbc_sql_select', Thrift.Type.STRING, 35);
     output.writeString(this.odbc_sql_select);
     output.writeFieldEnd();
   }
   if (this.odbc_username !== null && this.odbc_username !== undefined) {
-    output.writeFieldBegin('odbc_username', Thrift.Type.STRING, 38);
+    output.writeFieldBegin('odbc_username', Thrift.Type.STRING, 36);
     output.writeString(this.odbc_username);
     output.writeFieldEnd();
   }
   if (this.odbc_password !== null && this.odbc_password !== undefined) {
-    output.writeFieldBegin('odbc_password', Thrift.Type.STRING, 39);
+    output.writeFieldBegin('odbc_password', Thrift.Type.STRING, 37);
     output.writeString(this.odbc_password);
     output.writeFieldEnd();
   }
   if (this.odbc_credential_string !== null && this.odbc_credential_string !== undefined) {
-    output.writeFieldBegin('odbc_credential_string', Thrift.Type.STRING, 40);
+    output.writeFieldBegin('odbc_credential_string', Thrift.Type.STRING, 38);
     output.writeString(this.odbc_credential_string);
     output.writeFieldEnd();
   }
   if (this.add_metadata_columns !== null && this.add_metadata_columns !== undefined) {
-    output.writeFieldBegin('add_metadata_columns', Thrift.Type.STRING, 41);
+    output.writeFieldBegin('add_metadata_columns', Thrift.Type.STRING, 39);
     output.writeString(this.add_metadata_columns);
     output.writeFieldEnd();
   }
