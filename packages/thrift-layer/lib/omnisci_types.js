@@ -4255,8 +4255,8 @@ TTableRefreshInfo.prototype.read = function(input) {
       }
       break;
       case 3:
-      if (ftype == Thrift.Type.I64) {
-        this.start_date_time = input.readI64().value;
+      if (ftype == Thrift.Type.STRING) {
+        this.start_date_time = input.readString().value;
       } else {
         input.skip(ftype);
       }
@@ -4276,15 +4276,15 @@ TTableRefreshInfo.prototype.read = function(input) {
       }
       break;
       case 6:
-      if (ftype == Thrift.Type.I64) {
-        this.last_refresh_time = input.readI64().value;
+      if (ftype == Thrift.Type.STRING) {
+        this.last_refresh_time = input.readString().value;
       } else {
         input.skip(ftype);
       }
       break;
       case 7:
-      if (ftype == Thrift.Type.I64) {
-        this.next_refresh_time = input.readI64().value;
+      if (ftype == Thrift.Type.STRING) {
+        this.next_refresh_time = input.readString().value;
       } else {
         input.skip(ftype);
       }
@@ -4311,8 +4311,8 @@ TTableRefreshInfo.prototype.write = function(output) {
     output.writeFieldEnd();
   }
   if (this.start_date_time !== null && this.start_date_time !== undefined) {
-    output.writeFieldBegin('start_date_time', Thrift.Type.I64, 3);
-    output.writeI64(this.start_date_time);
+    output.writeFieldBegin('start_date_time', Thrift.Type.STRING, 3);
+    output.writeString(this.start_date_time);
     output.writeFieldEnd();
   }
   if (this.interval_type !== null && this.interval_type !== undefined) {
@@ -4326,13 +4326,13 @@ TTableRefreshInfo.prototype.write = function(output) {
     output.writeFieldEnd();
   }
   if (this.last_refresh_time !== null && this.last_refresh_time !== undefined) {
-    output.writeFieldBegin('last_refresh_time', Thrift.Type.I64, 6);
-    output.writeI64(this.last_refresh_time);
+    output.writeFieldBegin('last_refresh_time', Thrift.Type.STRING, 6);
+    output.writeString(this.last_refresh_time);
     output.writeFieldEnd();
   }
   if (this.next_refresh_time !== null && this.next_refresh_time !== undefined) {
-    output.writeFieldBegin('next_refresh_time', Thrift.Type.I64, 7);
-    output.writeI64(this.next_refresh_time);
+    output.writeFieldBegin('next_refresh_time', Thrift.Type.STRING, 7);
+    output.writeString(this.next_refresh_time);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
