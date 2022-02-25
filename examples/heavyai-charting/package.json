@@ -6,8 +6,8 @@
     "start": "webpack-dev-server --content-base ./"
   },
   "dependencies": {
-    "@mapd/connector": "git://github.com/mapd/mapd-connector.git#develop",
-    "@mapd/mapdc": "git://github.com/mapd/mapd-charting.git#develop",
+    "@heavyai/connector": "git://github.com/mapd/mapd-connector.git#develop",
+    "@heavyai/charting": "git://github.com/mapd/mapd-charting.git#develop",
     "css-loader": "^0.28.4",
     "lodash": "^4.17.4",
     "mapbox-gl": "https://github.com/mapd/mapbox-gl-js/tarball/9c04de6949fe498c8c79f5c0627dfd6d6321f307",

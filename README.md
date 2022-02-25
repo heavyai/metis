@@ -2,7 +2,7 @@
 
 Tools for massively parallel and multi-variate data exploration.
 
-Quickly build interactive visualizations powered by the speed of MapD Core.
+Quickly build interactive visualizations powered by the speed of HeavyDB.
 
 * [dc.js Example](https://omnisci.github.io/metis/examples/dc/)
 * [Vega Example](https://omnisci.github.io/metis/examples/vega/)

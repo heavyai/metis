@@ -2,7 +2,7 @@
 
 * [**API Documentation**](docs/API.md)
 * [**Crossfiltering Vega Example**](https://omnisci.github.io/metis/examples/vega/)
-* [**MapD Raster Chart Example**](https://mapd.github.io/mapd-data-layer/example/mapd-charting)
+* [**HEAVY.AI Raster Chart Example**](https://mapd.github.io/mapd-data-layer/example/mapd-charting)
 
 Declaratively build SQL data pipelines. Based on the [Vega Transform API](https://vega.github.io/vega/docs/transforms/).
 
@@ -11,25 +11,25 @@ Declaratively build SQL data pipelines. Based on the [Vega Transform API](https:
 Using `npm`
 
 ```bash
-npm install mapd-data-layer --save
+npm install @heavyai/data-layer --save
 ```
 
 Or using `yarn`
 
 ```bash
-yarn add mapd-data-layer
+yarn add @heavyai/data-layer
 ```
 
 One can then import it:
 
 ```js
-import {createDataGraph} from "mapd-data-layer"
+import {createDataGraph} from "@heavyai/data-layer"
 ```
 
 Or use the bundled version:
 
 ```html
-<script src="/path/to/js/mapd-data-layer.min.js"></script>
+<script src="/path/to/js/data-layer.min.js"></script>
 ```
 
 # Development
@@ -48,7 +48,7 @@ The `flow` type-checker tool is used in development and type declarations can be
 
 # Contributing
 
-In order to clarify the intellectual property license granted with Contributions from any person or entity, MapD must have a Contributor License Agreement ("CLA") on file that has been signed by each Contributor, indicating agreement to the [Contributor License Agreement](CLA.md). If you have not already done so, please complete and sign, then scan and email a pdf file of this Agreement to [contributors@mapd.com](mailto:contributors@mapd.com). Please read the agreement carefully before signing and keep a copy for your records.
+In order to clarify the intellectual property license granted with Contributions from any person or entity, HEAVY.AI must have a Contributor License Agreement ("CLA") on file that has been signed by each Contributor, indicating agreement to the [Contributor License Agreement](CLA.md). If you have not already done so, please complete and sign, then scan and email a pdf file of this Agreement to [contributors@heavy.ai](mailto:contributors@heavy.ai). Please read the agreement carefully before signing and keep a copy for your records.
 
 # License
 

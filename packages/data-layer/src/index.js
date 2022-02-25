@@ -1,5 +1,5 @@
 /**
- * The exported `mapd-data-layer` module. Consists of a graph constructor and
+ * The exported `@heavyai/data-layer` module. Consists of a graph constructor and
  * helper functions to build expressions and transforms and to parse them
  * @namespace API
  */

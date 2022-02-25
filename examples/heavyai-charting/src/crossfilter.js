@@ -7,7 +7,7 @@ import {
   timeDimensionNode
 } from "./datagraph";
 
-import { d3 } from "@mapd/mapdc";
+import { d3 } from "@heavyai/charting";
 
 export const countDimension = {
   sizeAsync() {
@@ -144,7 +144,7 @@ export const lineDimension = {
     crossfilter.transform(filter => {
       filter[2] = {
         type: "crossfilter",
-        signal: "mapd",
+        signal: "heavyai",
         filter: [
           {
             type: "filter",

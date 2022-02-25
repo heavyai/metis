@@ -59,7 +59,7 @@ export const countGroupNode = graph.data({
     },
     {
       type: "resolvefilter",
-      filter: { signal: "mapd" },
+      filter: { signal: "heavyai" },
       ignore: ""
     }
   ]
@@ -106,7 +106,7 @@ export const pointmapNode = graph.data({
     },
     {
       type: "resolvefilter",
-      filter: { signal: "mapd" },
+      filter: { signal: "heavyai" },
       ignore: ""
     }
   ]

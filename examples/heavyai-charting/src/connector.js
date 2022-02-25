@@ -1,4 +1,4 @@
-const connection = new MapdCon()
+const connection = new DbCon()
   .protocol("https")
   .host("metis.mapd.com")
   .port("443")

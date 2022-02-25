@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@mapd/connector@git://github.com/mapd/mapd-connector.git#develop":
+"@heavyai/connector@git://github.com/mapd/mapd-connector.git#develop":
   version "1.0.0"
   resolved "git://github.com/mapd/mapd-connector.git#f7b6d281cf2011fd0ac57f3325fc534caf0ba884"
   dependencies:
@@ -10,18 +10,18 @@
     script-loader "^0.7.0"
     thrift "^0.10.0"
 
-"@mapd/mapd-draw@git://github.com/mapd/mapd-draw.git":
+"@heavyai/draw@git://github.com/mapd/mapd-draw.git":
   version "1.1.0"
   resolved "git://github.com/mapd/mapd-draw.git#3b13cb00335eadc1c3a77fe18f5ec65b5eb752d2"
   dependencies:
     css-element-queries "^0.4.0"
     gl-matrix "^2.3.2"
 
-"@mapd/mapdc@git://github.com/mapd/mapd-charting.git#develop":
+"@heavyai/charting@git://github.com/mapd/mapd-charting.git#develop":
   version "1.0.0"
   resolved "git://github.com/mapd/mapd-charting.git#defbabe88f04d4c224b35af196f1b71c81db69c5"
   dependencies:
-    "@mapd/mapd-draw" "git://github.com/mapd/mapd-draw.git"
+    "@heavyai/draw" "git://github.com/mapd/mapd-draw.git"
     d3 "^3.5.17"
     deep-equal "1.0.1"
     earcut "^2.1.1"

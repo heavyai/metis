@@ -1,8 +1,8 @@
 require("script-loader!mapbox-gl/dist/mapbox-gl.js");
 require("script-loader!mapbox-gl/dist/mapboxgl-overrides.js");
 require("mapbox-gl/dist/mapbox-gl.css");
-require("@mapd/mapdc/mapdc.css");
-require("@mapd/mapdc/scss/chart.scss");
+require("@heavyai/charting/charting.css");
+require("@heavyai/charting/scss/chart.scss");
 
 import { connect } from "./src/connector";
 import {
@@ -15,8 +15,8 @@ import {
   lineDimension
 } from "./src/crossfilter";
 import _ from "lodash";
-import * as dc from "@mapd/mapdc";
-const d3 = dc.d3;
+import * as hc from "@heavyai/charting";
+const d3 = hc.d3;
 
 function createCharts(crossFilter, con, tableName) {
   var w = document.documentElement.clientWidth - 30;
@@ -24,7 +24,7 @@ function createCharts(crossFilter, con, tableName) {
     Math.max(document.documentElement.clientHeight, window.innerHeight || 0) -
     200;
 
-  var dataCount = dc
+  var dataCount = hc
     .countWidget(".data-count")
     .dimension(countDimension)
     .group(countGroup);
@@ -117,14 +117,14 @@ function createCharts(crossFilter, con, tableName) {
   mapLangColors(40);
 
   var sizeScale = d3.scale.linear().domain([0, 5000]).range([2, 12]);
-  var pointMapChart = dc
+  var pointMapChart = hc
     .rasterChart(parent, true)
     .con(con)
     .height(h / 1.5)
     .width(w)
     .mapUpdateInterval(750);
   // .mapStyle('json/dark-v8.json')
-  var pointLayer = dc
+  var pointLayer = hc
     .rasterLayer("points")
     .dimension(pointMapDim)
     .group(pointMapDim)
@@ -182,7 +182,7 @@ function createCharts(crossFilter, con, tableName) {
     }
 
     return tweetTime.minMax().then(function(timeChartBounds) {
-      var dcTimeChart = dc
+      var hcTimeChart = hc
         .lineChart(".chart2-example")
         .width(w)
         .height(h / 2.5)
@@ -194,24 +194,24 @@ function createCharts(crossFilter, con, tableName) {
         .dimension(lineDimension)
         .group(lineDimension);
 
-      dcTimeChart.binParams({
+      hcTimeChart.binParams({
         extract: false,
         timeBin: "hour",
         numBins: 288, // 288 * 5 = number of minutes in a day
         binBounds: [timeChartBounds[0], timeChartBounds[1]]
       });
 
-      dcTimeChart
+      hcTimeChart
         .x(d3.time.scale.utc().domain([timeChartBounds[0], timeChartBounds[1]]))
         .yAxis()
         .ticks(5);
-      dcTimeChart
+      hcTimeChart
         .xAxis()
-        .scale(dcTimeChart.x())
-        .tickFormat(dc.utils.customTimeFormat)
+        .scale(hcTimeChart.x())
+        .tickFormat(hc.utils.customTimeFormat)
         .orient("top");
 
-      dc.renderAllAsync();
+      hc.renderAllAsync();
 
       window.addEventListener("resize", _.debounce(reSizeAll, 500));
       function reSizeAll() {
@@ -224,8 +224,8 @@ function createCharts(crossFilter, con, tableName) {
         pointMapChart.map().resize();
         pointMapChart.isNodeAnimate = false;
         pointMapChart.width(w).height(h / 1.5);
-        dcTimeChart.width(w).height(h / 2.5);
-        dc.redrawAllAsync();
+        hcTimeChart.width(w).height(h / 2.5);
+        hc.redrawAllAsync();
       }
     });
   });

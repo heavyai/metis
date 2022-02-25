@@ -4,7 +4,7 @@ var path = require("path");
 module.exports = {
   entry: {
     app: [
-      "script-loader!@mapd/connector/dist/browser-connector.js",
+      "script-loader!@heavyai/connector/dist/browser-connector.js",
       "./index.js"
     ]
   },
@@ -23,7 +23,7 @@ module.exports = {
           path.resolve(__dirname, "../../index.js"),
           path.resolve(__dirname, "index.js"),
           path.resolve(__dirname, "./src"),
-          path.resolve(__dirname, "node_modules/@mapd/mapdc")
+          path.resolve(__dirname, "node_modules/@heavyai/charting")
         ],
         loader: "babel-loader"
       },
