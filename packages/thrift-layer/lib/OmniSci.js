@@ -15539,6 +15539,480 @@ OmniSci_register_runtime_extension_functions_result.prototype.write = function(o
   return;
 };
 
+OmniSci_get_table_function_names_args = function(args) {
+  this.session = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+  }
+};
+OmniSci_get_table_function_names_args.prototype = {};
+OmniSci_get_table_function_names_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+OmniSci_get_table_function_names_args.prototype.write = function(output) {
+  output.writeStructBegin('OmniSci_get_table_function_names_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+OmniSci_get_table_function_names_result = function(args) {
+  this.success = null;
+  this.e = null;
+  if (args instanceof TOmniSciException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = Thrift.copyList(args.success, [null]);
+    }
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+OmniSci_get_table_function_names_result.prototype = {};
+OmniSci_get_table_function_names_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.LIST) {
+        var _size784 = 0;
+        var _rtmp3788;
+        this.success = [];
+        var _etype787 = 0;
+        _rtmp3788 = input.readListBegin();
+        _etype787 = _rtmp3788.etype;
+        _size784 = _rtmp3788.size;
+        for (var _i789 = 0; _i789 < _size784; ++_i789)
+        {
+          var elem790 = null;
+          elem790 = input.readString().value;
+          this.success.push(elem790);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TOmniSciException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+OmniSci_get_table_function_names_result.prototype.write = function(output) {
+  output.writeStructBegin('OmniSci_get_table_function_names_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRING, this.success.length);
+    for (var iter791 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter791))
+      {
+        iter791 = this.success[iter791];
+        output.writeString(iter791);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+OmniSci_get_runtime_table_function_names_args = function(args) {
+  this.session = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+  }
+};
+OmniSci_get_runtime_table_function_names_args.prototype = {};
+OmniSci_get_runtime_table_function_names_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+OmniSci_get_runtime_table_function_names_args.prototype.write = function(output) {
+  output.writeStructBegin('OmniSci_get_runtime_table_function_names_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+OmniSci_get_runtime_table_function_names_result = function(args) {
+  this.success = null;
+  this.e = null;
+  if (args instanceof TOmniSciException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = Thrift.copyList(args.success, [null]);
+    }
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+OmniSci_get_runtime_table_function_names_result.prototype = {};
+OmniSci_get_runtime_table_function_names_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.LIST) {
+        var _size792 = 0;
+        var _rtmp3796;
+        this.success = [];
+        var _etype795 = 0;
+        _rtmp3796 = input.readListBegin();
+        _etype795 = _rtmp3796.etype;
+        _size792 = _rtmp3796.size;
+        for (var _i797 = 0; _i797 < _size792; ++_i797)
+        {
+          var elem798 = null;
+          elem798 = input.readString().value;
+          this.success.push(elem798);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TOmniSciException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+OmniSci_get_runtime_table_function_names_result.prototype.write = function(output) {
+  output.writeStructBegin('OmniSci_get_runtime_table_function_names_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRING, this.success.length);
+    for (var iter799 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter799))
+      {
+        iter799 = this.success[iter799];
+        output.writeString(iter799);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+OmniSci_get_table_function_details_args = function(args) {
+  this.session = null;
+  this.udtf_names = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+    if (args.udtf_names !== undefined && args.udtf_names !== null) {
+      this.udtf_names = Thrift.copyList(args.udtf_names, [null]);
+    }
+  }
+};
+OmniSci_get_table_function_details_args.prototype = {};
+OmniSci_get_table_function_details_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.LIST) {
+        var _size800 = 0;
+        var _rtmp3804;
+        this.udtf_names = [];
+        var _etype803 = 0;
+        _rtmp3804 = input.readListBegin();
+        _etype803 = _rtmp3804.etype;
+        _size800 = _rtmp3804.size;
+        for (var _i805 = 0; _i805 < _size800; ++_i805)
+        {
+          var elem806 = null;
+          elem806 = input.readString().value;
+          this.udtf_names.push(elem806);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+OmniSci_get_table_function_details_args.prototype.write = function(output) {
+  output.writeStructBegin('OmniSci_get_table_function_details_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  if (this.udtf_names !== null && this.udtf_names !== undefined) {
+    output.writeFieldBegin('udtf_names', Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.STRING, this.udtf_names.length);
+    for (var iter807 in this.udtf_names)
+    {
+      if (this.udtf_names.hasOwnProperty(iter807))
+      {
+        iter807 = this.udtf_names[iter807];
+        output.writeString(iter807);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+OmniSci_get_table_function_details_result = function(args) {
+  this.success = null;
+  this.e = null;
+  if (args instanceof TOmniSciException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = Thrift.copyList(args.success, [TUserDefinedTableFunction]);
+    }
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+OmniSci_get_table_function_details_result.prototype = {};
+OmniSci_get_table_function_details_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.LIST) {
+        var _size808 = 0;
+        var _rtmp3812;
+        this.success = [];
+        var _etype811 = 0;
+        _rtmp3812 = input.readListBegin();
+        _etype811 = _rtmp3812.etype;
+        _size808 = _rtmp3812.size;
+        for (var _i813 = 0; _i813 < _size808; ++_i813)
+        {
+          var elem814 = null;
+          elem814 = new TUserDefinedTableFunction();
+          elem814.read(input);
+          this.success.push(elem814);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TOmniSciException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+OmniSci_get_table_function_details_result.prototype.write = function(output) {
+  output.writeStructBegin('OmniSci_get_table_function_details_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
+    for (var iter815 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter815))
+      {
+        iter815 = this.success[iter815];
+        iter815.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 OmniSciClient = function(input, output) {
     this.input = input;
     this.output = (!output) ? input : output;
@@ -20691,4 +21165,161 @@ OmniSciClient.prototype.recv_register_runtime_extension_functions = function() {
     throw result.e;
   }
   return;
+};
+OmniSciClient.prototype.get_table_function_names = function(session, callback) {
+  this.send_get_table_function_names(session, callback); 
+  if (!callback) {
+    return this.recv_get_table_function_names();
+  }
+};
+
+OmniSciClient.prototype.send_get_table_function_names = function(session, callback) {
+  this.output.writeMessageBegin('get_table_function_names', Thrift.MessageType.CALL, this.seqid);
+  var args = new OmniSci_get_table_function_names_args();
+  args.session = session;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_get_table_function_names();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+OmniSciClient.prototype.recv_get_table_function_names = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new OmniSci_get_table_function_names_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'get_table_function_names failed: unknown result';
+};
+OmniSciClient.prototype.get_runtime_table_function_names = function(session, callback) {
+  this.send_get_runtime_table_function_names(session, callback); 
+  if (!callback) {
+    return this.recv_get_runtime_table_function_names();
+  }
+};
+
+OmniSciClient.prototype.send_get_runtime_table_function_names = function(session, callback) {
+  this.output.writeMessageBegin('get_runtime_table_function_names', Thrift.MessageType.CALL, this.seqid);
+  var args = new OmniSci_get_runtime_table_function_names_args();
+  args.session = session;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_get_runtime_table_function_names();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+OmniSciClient.prototype.recv_get_runtime_table_function_names = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new OmniSci_get_runtime_table_function_names_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'get_runtime_table_function_names failed: unknown result';
+};
+OmniSciClient.prototype.get_table_function_details = function(session, udtf_names, callback) {
+  this.send_get_table_function_details(session, udtf_names, callback); 
+  if (!callback) {
+    return this.recv_get_table_function_details();
+  }
+};
+
+OmniSciClient.prototype.send_get_table_function_details = function(session, udtf_names, callback) {
+  this.output.writeMessageBegin('get_table_function_details', Thrift.MessageType.CALL, this.seqid);
+  var args = new OmniSci_get_table_function_details_args();
+  args.session = session;
+  args.udtf_names = udtf_names;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_get_table_function_details();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+OmniSciClient.prototype.recv_get_table_function_details = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new OmniSci_get_table_function_details_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'get_table_function_details failed: unknown result';
 };

@@ -50,7 +50,9 @@ TExtArgumentType = {
   'ColumnListDouble' : 41,
   'ColumnListBool' : 42,
   'ColumnTextEncodingDict' : 43,
-  'ColumnListTextEncodingDict' : 44
+  'ColumnListTextEncodingDict' : 44,
+  'ColumnTimestamp' : 45,
+  'Timestamp' : 46
 };
 TOutputBufferSizeType = {
   'kConstant' : 0,
