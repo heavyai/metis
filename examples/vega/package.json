@@ -2,7 +2,7 @@
   "name": "vega-example",
   "dependencies": {
     "d3": "^4.10.2",
-    "vega": "^3.0.2",
+    "vega": "^5.17.3",
     "vega-lite": "^2.0.0-rc3"
   }
 }
