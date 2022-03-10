@@ -1696,7 +1696,7 @@ TDBInfo.prototype.write = function(output) {
   return;
 };
 
-TOmniSciException = function(args) {
+TDBException = function(args) {
   this.error_msg = null;
   if (args) {
     if (args.error_msg !== undefined && args.error_msg !== null) {
@@ -1704,9 +1704,9 @@ TOmniSciException = function(args) {
     }
   }
 };
-Thrift.inherits(TOmniSciException, Thrift.TException);
-TOmniSciException.prototype.name = 'TOmniSciException';
-TOmniSciException.prototype.read = function(input) {
+Thrift.inherits(TDBException, Thrift.TException);
+TDBException.prototype.name = 'TDBException';
+TDBException.prototype.read = function(input) {
   input.readStructBegin();
   while (true)
   {
@@ -1738,8 +1738,8 @@ TOmniSciException.prototype.read = function(input) {
   return;
 };
 
-TOmniSciException.prototype.write = function(output) {
-  output.writeStructBegin('TOmniSciException');
+TDBException.prototype.write = function(output) {
+  output.writeStructBegin('TDBException');
   if (this.error_msg !== null && this.error_msg !== undefined) {
     output.writeFieldBegin('error_msg', Thrift.Type.STRING, 1);
     output.writeString(this.error_msg);

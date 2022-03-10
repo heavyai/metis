@@ -92,7 +92,7 @@ OmniSci_connect_args.prototype.write = function(output) {
 OmniSci_connect_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -128,7 +128,7 @@ OmniSci_connect_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -229,7 +229,7 @@ OmniSci_krb5_connect_args.prototype.write = function(output) {
 OmniSci_krb5_connect_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -266,7 +266,7 @@ OmniSci_krb5_connect_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -353,7 +353,7 @@ OmniSci_disconnect_args.prototype.write = function(output) {
 
 OmniSci_disconnect_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -379,7 +379,7 @@ OmniSci_disconnect_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -477,7 +477,7 @@ OmniSci_switch_database_args.prototype.write = function(output) {
 
 OmniSci_switch_database_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -503,7 +503,7 @@ OmniSci_switch_database_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -589,7 +589,7 @@ OmniSci_clone_session_args.prototype.write = function(output) {
 OmniSci_clone_session_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -625,7 +625,7 @@ OmniSci_clone_session_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -713,7 +713,7 @@ OmniSci_get_server_status_args.prototype.write = function(output) {
 OmniSci_get_server_status_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -750,7 +750,7 @@ OmniSci_get_server_status_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -838,7 +838,7 @@ OmniSci_get_status_args.prototype.write = function(output) {
 OmniSci_get_status_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -888,7 +888,7 @@ OmniSci_get_status_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -985,7 +985,7 @@ OmniSci_get_hardware_info_args.prototype.write = function(output) {
 OmniSci_get_hardware_info_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -1022,7 +1022,7 @@ OmniSci_get_hardware_info_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -1110,7 +1110,7 @@ OmniSci_get_tables_args.prototype.write = function(output) {
 OmniSci_get_tables_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -1159,7 +1159,7 @@ OmniSci_get_tables_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -1269,7 +1269,7 @@ OmniSci_get_tables_for_database_args.prototype.write = function(output) {
 OmniSci_get_tables_for_database_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -1318,7 +1318,7 @@ OmniSci_get_tables_for_database_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -1415,7 +1415,7 @@ OmniSci_get_physical_tables_args.prototype.write = function(output) {
 OmniSci_get_physical_tables_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -1464,7 +1464,7 @@ OmniSci_get_physical_tables_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -1561,7 +1561,7 @@ OmniSci_get_views_args.prototype.write = function(output) {
 OmniSci_get_views_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -1610,7 +1610,7 @@ OmniSci_get_views_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -1707,7 +1707,7 @@ OmniSci_get_tables_meta_args.prototype.write = function(output) {
 OmniSci_get_tables_meta_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -1757,7 +1757,7 @@ OmniSci_get_tables_meta_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -1867,7 +1867,7 @@ OmniSci_get_table_details_args.prototype.write = function(output) {
 OmniSci_get_table_details_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -1904,7 +1904,7 @@ OmniSci_get_table_details_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -2021,7 +2021,7 @@ OmniSci_get_table_details_for_database_args.prototype.write = function(output) {
 OmniSci_get_table_details_for_database_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -2058,7 +2058,7 @@ OmniSci_get_table_details_for_database_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -2175,7 +2175,7 @@ OmniSci_get_internal_table_details_args.prototype.write = function(output) {
 OmniSci_get_internal_table_details_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -2212,7 +2212,7 @@ OmniSci_get_internal_table_details_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -2329,7 +2329,7 @@ OmniSci_get_internal_table_details_for_database_args.prototype.write = function(
 OmniSci_get_internal_table_details_for_database_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -2366,7 +2366,7 @@ OmniSci_get_internal_table_details_for_database_result.prototype.read = function
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -2454,7 +2454,7 @@ OmniSci_get_users_args.prototype.write = function(output) {
 OmniSci_get_users_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -2503,7 +2503,7 @@ OmniSci_get_users_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -2600,7 +2600,7 @@ OmniSci_get_databases_args.prototype.write = function(output) {
 OmniSci_get_databases_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -2650,7 +2650,7 @@ OmniSci_get_databases_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -2722,7 +2722,7 @@ OmniSci_get_version_args.prototype.write = function(output) {
 OmniSci_get_version_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -2758,7 +2758,7 @@ OmniSci_get_version_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -2845,7 +2845,7 @@ OmniSci_start_heap_profile_args.prototype.write = function(output) {
 
 OmniSci_start_heap_profile_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -2871,7 +2871,7 @@ OmniSci_start_heap_profile_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -2956,7 +2956,7 @@ OmniSci_stop_heap_profile_args.prototype.write = function(output) {
 
 OmniSci_stop_heap_profile_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -2982,7 +2982,7 @@ OmniSci_stop_heap_profile_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -3068,7 +3068,7 @@ OmniSci_get_heap_profile_args.prototype.write = function(output) {
 OmniSci_get_heap_profile_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -3104,7 +3104,7 @@ OmniSci_get_heap_profile_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -3205,7 +3205,7 @@ OmniSci_get_memory_args.prototype.write = function(output) {
 OmniSci_get_memory_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -3255,7 +3255,7 @@ OmniSci_get_memory_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -3351,7 +3351,7 @@ OmniSci_clear_cpu_memory_args.prototype.write = function(output) {
 
 OmniSci_clear_cpu_memory_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -3377,7 +3377,7 @@ OmniSci_clear_cpu_memory_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -3462,7 +3462,7 @@ OmniSci_clear_gpu_memory_args.prototype.write = function(output) {
 
 OmniSci_clear_gpu_memory_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -3488,7 +3488,7 @@ OmniSci_clear_gpu_memory_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -3634,7 +3634,7 @@ OmniSci_set_cur_session_args.prototype.write = function(output) {
 
 OmniSci_set_cur_session_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -3660,7 +3660,7 @@ OmniSci_set_cur_session_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -3806,7 +3806,7 @@ OmniSci_invalidate_cur_session_args.prototype.write = function(output) {
 
 OmniSci_invalidate_cur_session_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -3832,7 +3832,7 @@ OmniSci_invalidate_cur_session_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -3962,7 +3962,7 @@ OmniSci_set_table_epoch_args.prototype.write = function(output) {
 
 OmniSci_set_table_epoch_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -3988,7 +3988,7 @@ OmniSci_set_table_epoch_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -4102,7 +4102,7 @@ OmniSci_set_table_epoch_by_name_args.prototype.write = function(output) {
 
 OmniSci_set_table_epoch_by_name_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -4128,7 +4128,7 @@ OmniSci_set_table_epoch_by_name_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -4759,7 +4759,7 @@ OmniSci_get_session_info_args.prototype.write = function(output) {
 OmniSci_get_session_info_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -4796,7 +4796,7 @@ OmniSci_get_session_info_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -4884,7 +4884,7 @@ OmniSci_get_queries_info_args.prototype.write = function(output) {
 OmniSci_get_queries_info_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -4934,7 +4934,7 @@ OmniSci_get_queries_info_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -5044,7 +5044,7 @@ OmniSci_set_leaf_info_args.prototype.write = function(output) {
 
 OmniSci_set_leaf_info_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -5070,7 +5070,7 @@ OmniSci_set_leaf_info_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -5233,7 +5233,7 @@ OmniSci_sql_execute_args.prototype.write = function(output) {
 OmniSci_sql_execute_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -5270,7 +5270,7 @@ OmniSci_sql_execute_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -5435,7 +5435,7 @@ OmniSci_sql_execute_df_args.prototype.write = function(output) {
 OmniSci_sql_execute_df_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -5472,7 +5472,7 @@ OmniSci_sql_execute_df_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -5605,7 +5605,7 @@ OmniSci_sql_execute_gdf_args.prototype.write = function(output) {
 OmniSci_sql_execute_gdf_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -5642,7 +5642,7 @@ OmniSci_sql_execute_gdf_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -5775,7 +5775,7 @@ OmniSci_deallocate_df_args.prototype.write = function(output) {
 
 OmniSci_deallocate_df_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -5801,7 +5801,7 @@ OmniSci_deallocate_df_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -5899,7 +5899,7 @@ OmniSci_interrupt_args.prototype.write = function(output) {
 
 OmniSci_interrupt_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -5925,7 +5925,7 @@ OmniSci_interrupt_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -6024,7 +6024,7 @@ OmniSci_sql_validate_args.prototype.write = function(output) {
 OmniSci_sql_validate_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -6074,7 +6074,7 @@ OmniSci_sql_validate_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -6200,7 +6200,7 @@ OmniSci_get_completion_hints_args.prototype.write = function(output) {
 OmniSci_get_completion_hints_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -6250,7 +6250,7 @@ OmniSci_get_completion_hints_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -6359,7 +6359,7 @@ OmniSci_set_execution_mode_args.prototype.write = function(output) {
 
 OmniSci_set_execution_mode_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -6385,7 +6385,7 @@ OmniSci_set_execution_mode_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -6532,7 +6532,7 @@ OmniSci_render_vega_args.prototype.write = function(output) {
 OmniSci_render_vega_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -6569,7 +6569,7 @@ OmniSci_render_vega_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -6805,7 +6805,7 @@ OmniSci_get_result_row_for_pixel_args.prototype.write = function(output) {
 OmniSci_get_result_row_for_pixel_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -6842,7 +6842,7 @@ OmniSci_get_result_row_for_pixel_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -6944,7 +6944,7 @@ OmniSci_create_custom_expression_args.prototype.write = function(output) {
 OmniSci_create_custom_expression_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -6980,7 +6980,7 @@ OmniSci_create_custom_expression_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -7068,7 +7068,7 @@ OmniSci_get_custom_expressions_args.prototype.write = function(output) {
 OmniSci_get_custom_expressions_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -7118,7 +7118,7 @@ OmniSci_get_custom_expressions_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -7243,7 +7243,7 @@ OmniSci_update_custom_expression_args.prototype.write = function(output) {
 
 OmniSci_update_custom_expression_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -7269,7 +7269,7 @@ OmniSci_update_custom_expression_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -7405,7 +7405,7 @@ OmniSci_delete_custom_expressions_args.prototype.write = function(output) {
 
 OmniSci_delete_custom_expressions_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -7431,7 +7431,7 @@ OmniSci_delete_custom_expressions_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -7530,7 +7530,7 @@ OmniSci_get_dashboard_args.prototype.write = function(output) {
 OmniSci_get_dashboard_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -7567,7 +7567,7 @@ OmniSci_get_dashboard_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -7655,7 +7655,7 @@ OmniSci_get_dashboards_args.prototype.write = function(output) {
 OmniSci_get_dashboards_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -7705,7 +7705,7 @@ OmniSci_get_dashboards_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -7863,7 +7863,7 @@ OmniSci_create_dashboard_args.prototype.write = function(output) {
 OmniSci_create_dashboard_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -7899,7 +7899,7 @@ OmniSci_create_dashboard_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -8079,7 +8079,7 @@ OmniSci_replace_dashboard_args.prototype.write = function(output) {
 
 OmniSci_replace_dashboard_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -8105,7 +8105,7 @@ OmniSci_replace_dashboard_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -8203,7 +8203,7 @@ OmniSci_delete_dashboard_args.prototype.write = function(output) {
 
 OmniSci_delete_dashboard_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -8229,7 +8229,7 @@ OmniSci_delete_dashboard_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -8404,7 +8404,7 @@ OmniSci_share_dashboards_args.prototype.write = function(output) {
 
 OmniSci_share_dashboards_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -8430,7 +8430,7 @@ OmniSci_share_dashboards_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -8550,7 +8550,7 @@ OmniSci_delete_dashboards_args.prototype.write = function(output) {
 
 OmniSci_delete_dashboards_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -8576,7 +8576,7 @@ OmniSci_delete_dashboards_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -8783,7 +8783,7 @@ OmniSci_share_dashboard_args.prototype.write = function(output) {
 
 OmniSci_share_dashboard_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -8809,7 +8809,7 @@ OmniSci_share_dashboard_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -9000,7 +9000,7 @@ OmniSci_unshare_dashboard_args.prototype.write = function(output) {
 
 OmniSci_unshare_dashboard_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -9026,7 +9026,7 @@ OmniSci_unshare_dashboard_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -9201,7 +9201,7 @@ OmniSci_unshare_dashboards_args.prototype.write = function(output) {
 
 OmniSci_unshare_dashboards_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -9227,7 +9227,7 @@ OmniSci_unshare_dashboards_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -9326,7 +9326,7 @@ OmniSci_get_dashboard_grantees_args.prototype.write = function(output) {
 OmniSci_get_dashboard_grantees_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -9376,7 +9376,7 @@ OmniSci_get_dashboard_grantees_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -9486,7 +9486,7 @@ OmniSci_get_link_view_args.prototype.write = function(output) {
 OmniSci_get_link_view_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -9523,7 +9523,7 @@ OmniSci_get_link_view_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -9640,7 +9640,7 @@ OmniSci_create_link_args.prototype.write = function(output) {
 OmniSci_create_link_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -9676,7 +9676,7 @@ OmniSci_create_link_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -9853,7 +9853,7 @@ OmniSci_load_table_binary_args.prototype.write = function(output) {
 
 OmniSci_load_table_binary_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -9879,7 +9879,7 @@ OmniSci_load_table_binary_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -10054,7 +10054,7 @@ OmniSci_load_table_binary_columnar_args.prototype.write = function(output) {
 
 OmniSci_load_table_binary_columnar_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -10080,7 +10080,7 @@ OmniSci_load_table_binary_columnar_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -10271,7 +10271,7 @@ OmniSci_load_table_binary_columnar_polys_args.prototype.write = function(output)
 
 OmniSci_load_table_binary_columnar_polys_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -10297,7 +10297,7 @@ OmniSci_load_table_binary_columnar_polys_result.prototype.read = function(input)
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -10427,7 +10427,7 @@ OmniSci_load_table_binary_arrow_args.prototype.write = function(output) {
 
 OmniSci_load_table_binary_arrow_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -10453,7 +10453,7 @@ OmniSci_load_table_binary_arrow_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -10628,7 +10628,7 @@ OmniSci_load_table_args.prototype.write = function(output) {
 
 OmniSci_load_table_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -10654,7 +10654,7 @@ OmniSci_load_table_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -10770,7 +10770,7 @@ OmniSci_detect_column_types_args.prototype.write = function(output) {
 OmniSci_detect_column_types_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -10807,7 +10807,7 @@ OmniSci_detect_column_types_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -10963,7 +10963,7 @@ OmniSci_create_table_args.prototype.write = function(output) {
 
 OmniSci_create_table_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -10989,7 +10989,7 @@ OmniSci_create_table_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -11120,7 +11120,7 @@ OmniSci_import_table_args.prototype.write = function(output) {
 
 OmniSci_import_table_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -11146,7 +11146,7 @@ OmniSci_import_table_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -11333,7 +11333,7 @@ OmniSci_import_geo_table_args.prototype.write = function(output) {
 
 OmniSci_import_geo_table_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -11359,7 +11359,7 @@ OmniSci_import_geo_table_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -11458,7 +11458,7 @@ OmniSci_import_table_status_args.prototype.write = function(output) {
 OmniSci_import_table_status_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -11495,7 +11495,7 @@ OmniSci_import_table_status_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -11613,7 +11613,7 @@ OmniSci_get_first_geo_file_in_archive_args.prototype.write = function(output) {
 OmniSci_get_first_geo_file_in_archive_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -11649,7 +11649,7 @@ OmniSci_get_first_geo_file_in_archive_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -11767,7 +11767,7 @@ OmniSci_get_all_files_in_archive_args.prototype.write = function(output) {
 OmniSci_get_all_files_in_archive_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -11816,7 +11816,7 @@ OmniSci_get_all_files_in_archive_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -11943,7 +11943,7 @@ OmniSci_get_layers_in_geo_file_args.prototype.write = function(output) {
 OmniSci_get_layers_in_geo_file_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -11993,7 +11993,7 @@ OmniSci_get_layers_in_geo_file_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -12103,7 +12103,7 @@ OmniSci_query_get_outer_fragment_count_args.prototype.write = function(output) {
 OmniSci_query_get_outer_fragment_count_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -12139,7 +12139,7 @@ OmniSci_query_get_outer_fragment_count_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -12240,7 +12240,7 @@ OmniSci_check_table_consistency_args.prototype.write = function(output) {
 OmniSci_check_table_consistency_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -12277,7 +12277,7 @@ OmniSci_check_table_consistency_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -12464,7 +12464,7 @@ OmniSci_start_query_args.prototype.write = function(output) {
 OmniSci_start_query_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -12501,7 +12501,7 @@ OmniSci_start_query_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -12619,7 +12619,7 @@ OmniSci_execute_query_step_args.prototype.write = function(output) {
 OmniSci_execute_query_step_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -12656,7 +12656,7 @@ OmniSci_execute_query_step_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -12828,7 +12828,7 @@ OmniSci_broadcast_serialized_rows_args.prototype.write = function(output) {
 
 OmniSci_broadcast_serialized_rows_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -12854,7 +12854,7 @@ OmniSci_broadcast_serialized_rows_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -12985,7 +12985,7 @@ OmniSci_start_render_query_args.prototype.write = function(output) {
 OmniSci_start_render_query_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -13022,7 +13022,7 @@ OmniSci_start_render_query_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -13275,7 +13275,7 @@ OmniSci_execute_next_render_step_args.prototype.write = function(output) {
 OmniSci_execute_next_render_step_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -13312,7 +13312,7 @@ OmniSci_execute_next_render_step_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -13413,7 +13413,7 @@ OmniSci_insert_data_args.prototype.write = function(output) {
 
 OmniSci_insert_data_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -13439,7 +13439,7 @@ OmniSci_insert_data_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -13538,7 +13538,7 @@ OmniSci_insert_chunks_args.prototype.write = function(output) {
 
 OmniSci_insert_chunks_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -13564,7 +13564,7 @@ OmniSci_insert_chunks_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -13662,7 +13662,7 @@ OmniSci_checkpoint_args.prototype.write = function(output) {
 
 OmniSci_checkpoint_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -13688,7 +13688,7 @@ OmniSci_checkpoint_result.prototype.read = function(input) {
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -13774,7 +13774,7 @@ OmniSci_get_roles_args.prototype.write = function(output) {
 OmniSci_get_roles_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -13823,7 +13823,7 @@ OmniSci_get_roles_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -13933,7 +13933,7 @@ OmniSci_get_db_objects_for_grantee_args.prototype.write = function(output) {
 OmniSci_get_db_objects_for_grantee_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -13983,7 +13983,7 @@ OmniSci_get_db_objects_for_grantee_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -14109,7 +14109,7 @@ OmniSci_get_db_object_privs_args.prototype.write = function(output) {
 OmniSci_get_db_object_privs_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -14159,7 +14159,7 @@ OmniSci_get_db_object_privs_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -14269,7 +14269,7 @@ OmniSci_get_all_roles_for_user_args.prototype.write = function(output) {
 OmniSci_get_all_roles_for_user_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -14318,7 +14318,7 @@ OmniSci_get_all_roles_for_user_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -14428,7 +14428,7 @@ OmniSci_get_all_effective_roles_for_user_args.prototype.write = function(output)
 OmniSci_get_all_effective_roles_for_user_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -14477,7 +14477,7 @@ OmniSci_get_all_effective_roles_for_user_result.prototype.read = function(input)
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -14603,7 +14603,7 @@ OmniSci_has_role_args.prototype.write = function(output) {
 OmniSci_has_role_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -14639,7 +14639,7 @@ OmniSci_has_role_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -14789,7 +14789,7 @@ OmniSci_has_object_privilege_args.prototype.write = function(output) {
 OmniSci_has_object_privilege_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -14825,7 +14825,7 @@ OmniSci_has_object_privilege_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -14942,7 +14942,7 @@ OmniSci_set_license_key_args.prototype.write = function(output) {
 OmniSci_set_license_key_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -14979,7 +14979,7 @@ OmniSci_set_license_key_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -15080,7 +15080,7 @@ OmniSci_get_license_claims_args.prototype.write = function(output) {
 OmniSci_get_license_claims_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -15117,7 +15117,7 @@ OmniSci_get_license_claims_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -15205,7 +15205,7 @@ OmniSci_get_device_parameters_args.prototype.write = function(output) {
 OmniSci_get_device_parameters_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -15263,7 +15263,7 @@ OmniSci_get_device_parameters_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -15483,7 +15483,7 @@ OmniSci_register_runtime_extension_functions_args.prototype.write = function(out
 
 OmniSci_register_runtime_extension_functions_result = function(args) {
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -15509,7 +15509,7 @@ OmniSci_register_runtime_extension_functions_result.prototype.read = function(in
     {
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -15595,7 +15595,7 @@ OmniSci_get_table_function_names_args.prototype.write = function(output) {
 OmniSci_get_table_function_names_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -15644,7 +15644,7 @@ OmniSci_get_table_function_names_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -15741,7 +15741,7 @@ OmniSci_get_runtime_table_function_names_args.prototype.write = function(output)
 OmniSci_get_runtime_table_function_names_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -15790,7 +15790,7 @@ OmniSci_get_runtime_table_function_names_result.prototype.read = function(input)
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
@@ -15922,7 +15922,7 @@ OmniSci_get_table_function_details_args.prototype.write = function(output) {
 OmniSci_get_table_function_details_result = function(args) {
   this.success = null;
   this.e = null;
-  if (args instanceof TOmniSciException) {
+  if (args instanceof TDBException) {
     this.e = args;
     return;
   }
@@ -15972,7 +15972,7 @@ OmniSci_get_table_function_details_result.prototype.read = function(input) {
       break;
       case 1:
       if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TOmniSciException();
+        this.e = new TDBException();
         this.e.read(input);
       } else {
         input.skip(ftype);
