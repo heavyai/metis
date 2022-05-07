@@ -16013,6 +16013,480 @@ Heavy_get_table_function_details_result.prototype.write = function(output) {
   return;
 };
 
+Heavy_get_function_names_args = function(args) {
+  this.session = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+  }
+};
+Heavy_get_function_names_args.prototype = {};
+Heavy_get_function_names_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_get_function_names_args.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_get_function_names_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Heavy_get_function_names_result = function(args) {
+  this.success = null;
+  this.e = null;
+  if (args instanceof TDBException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = Thrift.copyList(args.success, [null]);
+    }
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+Heavy_get_function_names_result.prototype = {};
+Heavy_get_function_names_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.LIST) {
+        var _size816 = 0;
+        var _rtmp3820;
+        this.success = [];
+        var _etype819 = 0;
+        _rtmp3820 = input.readListBegin();
+        _etype819 = _rtmp3820.etype;
+        _size816 = _rtmp3820.size;
+        for (var _i821 = 0; _i821 < _size816; ++_i821)
+        {
+          var elem822 = null;
+          elem822 = input.readString().value;
+          this.success.push(elem822);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TDBException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_get_function_names_result.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_get_function_names_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRING, this.success.length);
+    for (var iter823 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter823))
+      {
+        iter823 = this.success[iter823];
+        output.writeString(iter823);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Heavy_get_runtime_function_names_args = function(args) {
+  this.session = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+  }
+};
+Heavy_get_runtime_function_names_args.prototype = {};
+Heavy_get_runtime_function_names_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_get_runtime_function_names_args.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_get_runtime_function_names_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Heavy_get_runtime_function_names_result = function(args) {
+  this.success = null;
+  this.e = null;
+  if (args instanceof TDBException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = Thrift.copyList(args.success, [null]);
+    }
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+Heavy_get_runtime_function_names_result.prototype = {};
+Heavy_get_runtime_function_names_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.LIST) {
+        var _size824 = 0;
+        var _rtmp3828;
+        this.success = [];
+        var _etype827 = 0;
+        _rtmp3828 = input.readListBegin();
+        _etype827 = _rtmp3828.etype;
+        _size824 = _rtmp3828.size;
+        for (var _i829 = 0; _i829 < _size824; ++_i829)
+        {
+          var elem830 = null;
+          elem830 = input.readString().value;
+          this.success.push(elem830);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TDBException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_get_runtime_function_names_result.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_get_runtime_function_names_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRING, this.success.length);
+    for (var iter831 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter831))
+      {
+        iter831 = this.success[iter831];
+        output.writeString(iter831);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Heavy_get_function_details_args = function(args) {
+  this.session = null;
+  this.udf_names = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+    if (args.udf_names !== undefined && args.udf_names !== null) {
+      this.udf_names = Thrift.copyList(args.udf_names, [null]);
+    }
+  }
+};
+Heavy_get_function_details_args.prototype = {};
+Heavy_get_function_details_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.LIST) {
+        var _size832 = 0;
+        var _rtmp3836;
+        this.udf_names = [];
+        var _etype835 = 0;
+        _rtmp3836 = input.readListBegin();
+        _etype835 = _rtmp3836.etype;
+        _size832 = _rtmp3836.size;
+        for (var _i837 = 0; _i837 < _size832; ++_i837)
+        {
+          var elem838 = null;
+          elem838 = input.readString().value;
+          this.udf_names.push(elem838);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_get_function_details_args.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_get_function_details_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  if (this.udf_names !== null && this.udf_names !== undefined) {
+    output.writeFieldBegin('udf_names', Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.STRING, this.udf_names.length);
+    for (var iter839 in this.udf_names)
+    {
+      if (this.udf_names.hasOwnProperty(iter839))
+      {
+        iter839 = this.udf_names[iter839];
+        output.writeString(iter839);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Heavy_get_function_details_result = function(args) {
+  this.success = null;
+  this.e = null;
+  if (args instanceof TDBException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = Thrift.copyList(args.success, [TUserDefinedFunction]);
+    }
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+Heavy_get_function_details_result.prototype = {};
+Heavy_get_function_details_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.LIST) {
+        var _size840 = 0;
+        var _rtmp3844;
+        this.success = [];
+        var _etype843 = 0;
+        _rtmp3844 = input.readListBegin();
+        _etype843 = _rtmp3844.etype;
+        _size840 = _rtmp3844.size;
+        for (var _i845 = 0; _i845 < _size840; ++_i845)
+        {
+          var elem846 = null;
+          elem846 = new TUserDefinedFunction();
+          elem846.read(input);
+          this.success.push(elem846);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TDBException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_get_function_details_result.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_get_function_details_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
+    for (var iter847 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter847))
+      {
+        iter847 = this.success[iter847];
+        iter847.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 HeavyClient = function(input, output) {
     this.input = input;
     this.output = (!output) ? input : output;
@@ -21322,4 +21796,161 @@ HeavyClient.prototype.recv_get_table_function_details = function() {
     return result.success;
   }
   throw 'get_table_function_details failed: unknown result';
+};
+HeavyClient.prototype.get_function_names = function(session, callback) {
+  this.send_get_function_names(session, callback); 
+  if (!callback) {
+    return this.recv_get_function_names();
+  }
+};
+
+HeavyClient.prototype.send_get_function_names = function(session, callback) {
+  this.output.writeMessageBegin('get_function_names', Thrift.MessageType.CALL, this.seqid);
+  var args = new Heavy_get_function_names_args();
+  args.session = session;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_get_function_names();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+HeavyClient.prototype.recv_get_function_names = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new Heavy_get_function_names_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'get_function_names failed: unknown result';
+};
+HeavyClient.prototype.get_runtime_function_names = function(session, callback) {
+  this.send_get_runtime_function_names(session, callback); 
+  if (!callback) {
+    return this.recv_get_runtime_function_names();
+  }
+};
+
+HeavyClient.prototype.send_get_runtime_function_names = function(session, callback) {
+  this.output.writeMessageBegin('get_runtime_function_names', Thrift.MessageType.CALL, this.seqid);
+  var args = new Heavy_get_runtime_function_names_args();
+  args.session = session;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_get_runtime_function_names();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+HeavyClient.prototype.recv_get_runtime_function_names = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new Heavy_get_runtime_function_names_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'get_runtime_function_names failed: unknown result';
+};
+HeavyClient.prototype.get_function_details = function(session, udf_names, callback) {
+  this.send_get_function_details(session, udf_names, callback); 
+  if (!callback) {
+    return this.recv_get_function_details();
+  }
+};
+
+HeavyClient.prototype.send_get_function_details = function(session, udf_names, callback) {
+  this.output.writeMessageBegin('get_function_details', Thrift.MessageType.CALL, this.seqid);
+  var args = new Heavy_get_function_details_args();
+  args.session = session;
+  args.udf_names = udf_names;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_get_function_details();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+HeavyClient.prototype.recv_get_function_details = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new Heavy_get_function_details_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'get_function_details failed: unknown result';
 };
