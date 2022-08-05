@@ -29,7 +29,9 @@ TDatumType = {
   'MULTIPOLYGON' : 16,
   'TINYINT' : 17,
   'GEOMETRY' : 18,
-  'GEOGRAPHY' : 19
+  'GEOGRAPHY' : 19,
+  'MULTILINESTRING' : 20,
+  'MULTIPOINT' : 21
 };
 TEncodingType = {
   'NONE' : 0,
@@ -39,7 +41,9 @@ TEncodingType = {
   'DICT' : 4,
   'SPARSE' : 5,
   'GEOINT' : 6,
-  'DATE_IN_DAYS' : 7
+  'DATE_IN_DAYS' : 7,
+  'ARRAY' : 8,
+  'ARRAY_DICT' : 9
 };
 TTypeInfo = function(args) {
   this.type = null;
