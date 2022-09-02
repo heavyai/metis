@@ -76,7 +76,9 @@ TExtArgumentType = {
   'ArrayTextEncodingDict' : 67,
   'ColumnArrayTextEncodingDict' : 68,
   'ColumnListArrayTextEncodingDict' : 69,
-  'GeoMultiPoint' : 70
+  'GeoMultiPoint' : 70,
+  'DayTimeInterval' : 71,
+  'YearMonthTimeInterval' : 72
 };
 TOutputBufferSizeType = {
   'kConstant' : 0,
