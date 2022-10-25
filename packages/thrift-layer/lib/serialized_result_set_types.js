@@ -24,7 +24,9 @@ TAggKind = {
   'COUNT' : 4,
   'APPROX_COUNT_DISTINCT' : 5,
   'SAMPLE' : 6,
-  'SINGLE_VALUE' : 7
+  'SINGLE_VALUE' : 7,
+  'COUNT_IF' : 8,
+  'SUM_IF' : 9
 };
 TSlotSize = function(args) {
   this.padded = null;

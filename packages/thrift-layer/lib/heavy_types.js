@@ -4616,6 +4616,7 @@ TColumnRange = function(args) {
   this.bucket = null;
   this.fp_min = null;
   this.fp_max = null;
+  this.db_id = null;
   if (args) {
     if (args.type !== undefined && args.type !== null) {
       this.type = args.type;
@@ -4643,6 +4644,9 @@ TColumnRange = function(args) {
     }
     if (args.fp_max !== undefined && args.fp_max !== null) {
       this.fp_max = args.fp_max;
+    }
+    if (args.db_id !== undefined && args.db_id !== null) {
+      this.db_id = args.db_id;
     }
   }
 };
@@ -4723,6 +4727,13 @@ TColumnRange.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 10:
+      if (ftype == Thrift.Type.I32) {
+        this.db_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -4779,6 +4790,11 @@ TColumnRange.prototype.write = function(output) {
     output.writeDouble(this.fp_max);
     output.writeFieldEnd();
   }
+  if (this.db_id !== null && this.db_id !== undefined) {
+    output.writeFieldBegin('db_id', Thrift.Type.I32, 10);
+    output.writeI32(this.db_id);
+    output.writeFieldEnd();
+  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
@@ -4787,12 +4803,16 @@ TColumnRange.prototype.write = function(output) {
 TDictionaryGeneration = function(args) {
   this.dict_id = null;
   this.entry_count = null;
+  this.db_id = null;
   if (args) {
     if (args.dict_id !== undefined && args.dict_id !== null) {
       this.dict_id = args.dict_id;
     }
     if (args.entry_count !== undefined && args.entry_count !== null) {
       this.entry_count = args.entry_count;
+    }
+    if (args.db_id !== undefined && args.db_id !== null) {
+      this.db_id = args.db_id;
     }
   }
 };
@@ -4824,6 +4844,13 @@ TDictionaryGeneration.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 3:
+      if (ftype == Thrift.Type.I32) {
+        this.db_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -4845,6 +4872,11 @@ TDictionaryGeneration.prototype.write = function(output) {
     output.writeI64(this.entry_count);
     output.writeFieldEnd();
   }
+  if (this.db_id !== null && this.db_id !== undefined) {
+    output.writeFieldBegin('db_id', Thrift.Type.I32, 3);
+    output.writeI32(this.db_id);
+    output.writeFieldEnd();
+  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
@@ -4854,6 +4886,7 @@ TTableGeneration = function(args) {
   this.table_id = null;
   this.tuple_count = null;
   this.start_rowid = null;
+  this.db_id = null;
   if (args) {
     if (args.table_id !== undefined && args.table_id !== null) {
       this.table_id = args.table_id;
@@ -4863,6 +4896,9 @@ TTableGeneration = function(args) {
     }
     if (args.start_rowid !== undefined && args.start_rowid !== null) {
       this.start_rowid = args.start_rowid;
+    }
+    if (args.db_id !== undefined && args.db_id !== null) {
+      this.db_id = args.db_id;
     }
   }
 };
@@ -4901,6 +4937,13 @@ TTableGeneration.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 4:
+      if (ftype == Thrift.Type.I32) {
+        this.db_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -4927,6 +4970,11 @@ TTableGeneration.prototype.write = function(output) {
     output.writeI64(this.start_rowid);
     output.writeFieldEnd();
   }
+  if (this.db_id !== null && this.db_id !== undefined) {
+    output.writeFieldBegin('db_id', Thrift.Type.I32, 4);
+    output.writeI32(this.db_id);
+    output.writeFieldEnd();
+  }
   output.writeFieldStop();
   output.writeStructEnd();
   return;
@@ -4934,10 +4982,14 @@ TTableGeneration.prototype.write = function(output) {
 
 TTableCacheStatus = function(args) {
   this.table_id = null;
+  this.db_id = null;
   this.is_cached_on_disk = null;
   if (args) {
     if (args.table_id !== undefined && args.table_id !== null) {
       this.table_id = args.table_id;
+    }
+    if (args.db_id !== undefined && args.db_id !== null) {
+      this.db_id = args.db_id;
     }
     if (args.is_cached_on_disk !== undefined && args.is_cached_on_disk !== null) {
       this.is_cached_on_disk = args.is_cached_on_disk;
@@ -4965,7 +5017,14 @@ TTableCacheStatus.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
-      case 4:
+      case 2:
+      if (ftype == Thrift.Type.I32) {
+        this.db_id = input.readI32().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
       if (ftype == Thrift.Type.BOOL) {
         this.is_cached_on_disk = input.readBool().value;
       } else {
@@ -4988,8 +5047,13 @@ TTableCacheStatus.prototype.write = function(output) {
     output.writeI32(this.table_id);
     output.writeFieldEnd();
   }
+  if (this.db_id !== null && this.db_id !== undefined) {
+    output.writeFieldBegin('db_id', Thrift.Type.I32, 2);
+    output.writeI32(this.db_id);
+    output.writeFieldEnd();
+  }
   if (this.is_cached_on_disk !== null && this.is_cached_on_disk !== undefined) {
-    output.writeFieldBegin('is_cached_on_disk', Thrift.Type.BOOL, 4);
+    output.writeFieldBegin('is_cached_on_disk', Thrift.Type.BOOL, 3);
     output.writeBool(this.is_cached_on_disk);
     output.writeFieldEnd();
   }
