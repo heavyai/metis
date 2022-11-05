@@ -867,19 +867,19 @@ Heavy_get_status_result.prototype.read = function(input) {
     {
       case 0:
       if (ftype == Thrift.Type.LIST) {
-        var _size322 = 0;
-        var _rtmp3326;
+        var _size330 = 0;
+        var _rtmp3334;
         this.success = [];
-        var _etype325 = 0;
-        _rtmp3326 = input.readListBegin();
-        _etype325 = _rtmp3326.etype;
-        _size322 = _rtmp3326.size;
-        for (var _i327 = 0; _i327 < _size322; ++_i327)
+        var _etype333 = 0;
+        _rtmp3334 = input.readListBegin();
+        _etype333 = _rtmp3334.etype;
+        _size330 = _rtmp3334.size;
+        for (var _i335 = 0; _i335 < _size330; ++_i335)
         {
-          var elem328 = null;
-          elem328 = new TServerStatus();
-          elem328.read(input);
-          this.success.push(elem328);
+          var elem336 = null;
+          elem336 = new TServerStatus();
+          elem336.read(input);
+          this.success.push(elem336);
         }
         input.readListEnd();
       } else {
@@ -908,12 +908,12 @@ Heavy_get_status_result.prototype.write = function(output) {
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.LIST, 0);
     output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
-    for (var iter329 in this.success)
+    for (var iter337 in this.success)
     {
-      if (this.success.hasOwnProperty(iter329))
+      if (this.success.hasOwnProperty(iter337))
       {
-        iter329 = this.success[iter329];
-        iter329.write(output);
+        iter337 = this.success[iter337];
+        iter337.write(output);
       }
     }
     output.writeListEnd();
@@ -1139,18 +1139,18 @@ Heavy_get_tables_result.prototype.read = function(input) {
     {
       case 0:
       if (ftype == Thrift.Type.LIST) {
-        var _size330 = 0;
-        var _rtmp3334;
+        var _size338 = 0;
+        var _rtmp3342;
         this.success = [];
-        var _etype333 = 0;
-        _rtmp3334 = input.readListBegin();
-        _etype333 = _rtmp3334.etype;
-        _size330 = _rtmp3334.size;
-        for (var _i335 = 0; _i335 < _size330; ++_i335)
+        var _etype341 = 0;
+        _rtmp3342 = input.readListBegin();
+        _etype341 = _rtmp3342.etype;
+        _size338 = _rtmp3342.size;
+        for (var _i343 = 0; _i343 < _size338; ++_i343)
         {
-          var elem336 = null;
-          elem336 = input.readString().value;
-          this.success.push(elem336);
+          var elem344 = null;
+          elem344 = input.readString().value;
+          this.success.push(elem344);
         }
         input.readListEnd();
       } else {
@@ -1179,12 +1179,12 @@ Heavy_get_tables_result.prototype.write = function(output) {
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.LIST, 0);
     output.writeListBegin(Thrift.Type.STRING, this.success.length);
-    for (var iter337 in this.success)
+    for (var iter345 in this.success)
     {
-      if (this.success.hasOwnProperty(iter337))
+      if (this.success.hasOwnProperty(iter345))
       {
-        iter337 = this.success[iter337];
-        output.writeString(iter337);
+        iter345 = this.success[iter345];
+        output.writeString(iter345);
       }
     }
     output.writeListEnd();
@@ -1298,18 +1298,18 @@ Heavy_get_tables_for_database_result.prototype.read = function(input) {
     {
       case 0:
       if (ftype == Thrift.Type.LIST) {
-        var _size338 = 0;
-        var _rtmp3342;
+        var _size346 = 0;
+        var _rtmp3350;
         this.success = [];
-        var _etype341 = 0;
-        _rtmp3342 = input.readListBegin();
-        _etype341 = _rtmp3342.etype;
-        _size338 = _rtmp3342.size;
-        for (var _i343 = 0; _i343 < _size338; ++_i343)
+        var _etype349 = 0;
+        _rtmp3350 = input.readListBegin();
+        _etype349 = _rtmp3350.etype;
+        _size346 = _rtmp3350.size;
+        for (var _i351 = 0; _i351 < _size346; ++_i351)
         {
-          var elem344 = null;
-          elem344 = input.readString().value;
-          this.success.push(elem344);
+          var elem352 = null;
+          elem352 = input.readString().value;
+          this.success.push(elem352);
         }
         input.readListEnd();
       } else {
@@ -1338,12 +1338,12 @@ Heavy_get_tables_for_database_result.prototype.write = function(output) {
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.LIST, 0);
     output.writeListBegin(Thrift.Type.STRING, this.success.length);
-    for (var iter345 in this.success)
+    for (var iter353 in this.success)
     {
-      if (this.success.hasOwnProperty(iter345))
+      if (this.success.hasOwnProperty(iter353))
       {
-        iter345 = this.success[iter345];
-        output.writeString(iter345);
+        iter353 = this.success[iter353];
+        output.writeString(iter353);
       }
     }
     output.writeListEnd();
@@ -1444,18 +1444,18 @@ Heavy_get_physical_tables_result.prototype.read = function(input) {
     {
       case 0:
       if (ftype == Thrift.Type.LIST) {
-        var _size346 = 0;
-        var _rtmp3350;
+        var _size354 = 0;
+        var _rtmp3358;
         this.success = [];
-        var _etype349 = 0;
-        _rtmp3350 = input.readListBegin();
-        _etype349 = _rtmp3350.etype;
-        _size346 = _rtmp3350.size;
-        for (var _i351 = 0; _i351 < _size346; ++_i351)
+        var _etype357 = 0;
+        _rtmp3358 = input.readListBegin();
+        _etype357 = _rtmp3358.etype;
+        _size354 = _rtmp3358.size;
+        for (var _i359 = 0; _i359 < _size354; ++_i359)
         {
-          var elem352 = null;
-          elem352 = input.readString().value;
-          this.success.push(elem352);
+          var elem360 = null;
+          elem360 = input.readString().value;
+          this.success.push(elem360);
         }
         input.readListEnd();
       } else {
@@ -1484,12 +1484,12 @@ Heavy_get_physical_tables_result.prototype.write = function(output) {
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.LIST, 0);
     output.writeListBegin(Thrift.Type.STRING, this.success.length);
-    for (var iter353 in this.success)
+    for (var iter361 in this.success)
     {
-      if (this.success.hasOwnProperty(iter353))
+      if (this.success.hasOwnProperty(iter361))
       {
-        iter353 = this.success[iter353];
-        output.writeString(iter353);
+        iter361 = this.success[iter361];
+        output.writeString(iter361);
       }
     }
     output.writeListEnd();
@@ -1590,18 +1590,18 @@ Heavy_get_views_result.prototype.read = function(input) {
     {
       case 0:
       if (ftype == Thrift.Type.LIST) {
-        var _size354 = 0;
-        var _rtmp3358;
+        var _size362 = 0;
+        var _rtmp3366;
         this.success = [];
-        var _etype357 = 0;
-        _rtmp3358 = input.readListBegin();
-        _etype357 = _rtmp3358.etype;
-        _size354 = _rtmp3358.size;
-        for (var _i359 = 0; _i359 < _size354; ++_i359)
+        var _etype365 = 0;
+        _rtmp3366 = input.readListBegin();
+        _etype365 = _rtmp3366.etype;
+        _size362 = _rtmp3366.size;
+        for (var _i367 = 0; _i367 < _size362; ++_i367)
         {
-          var elem360 = null;
-          elem360 = input.readString().value;
-          this.success.push(elem360);
+          var elem368 = null;
+          elem368 = input.readString().value;
+          this.success.push(elem368);
         }
         input.readListEnd();
       } else {
@@ -1630,12 +1630,12 @@ Heavy_get_views_result.prototype.write = function(output) {
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.LIST, 0);
     output.writeListBegin(Thrift.Type.STRING, this.success.length);
-    for (var iter361 in this.success)
+    for (var iter369 in this.success)
     {
-      if (this.success.hasOwnProperty(iter361))
+      if (this.success.hasOwnProperty(iter369))
       {
-        iter361 = this.success[iter361];
-        output.writeString(iter361);
+        iter369 = this.success[iter369];
+        output.writeString(iter369);
       }
     }
     output.writeListEnd();
@@ -1736,19 +1736,19 @@ Heavy_get_tables_meta_result.prototype.read = function(input) {
     {
       case 0:
       if (ftype == Thrift.Type.LIST) {
-        var _size362 = 0;
-        var _rtmp3366;
+        var _size370 = 0;
+        var _rtmp3374;
         this.success = [];
-        var _etype365 = 0;
-        _rtmp3366 = input.readListBegin();
-        _etype365 = _rtmp3366.etype;
-        _size362 = _rtmp3366.size;
-        for (var _i367 = 0; _i367 < _size362; ++_i367)
+        var _etype373 = 0;
+        _rtmp3374 = input.readListBegin();
+        _etype373 = _rtmp3374.etype;
+        _size370 = _rtmp3374.size;
+        for (var _i375 = 0; _i375 < _size370; ++_i375)
         {
-          var elem368 = null;
-          elem368 = new TTableMeta();
-          elem368.read(input);
-          this.success.push(elem368);
+          var elem376 = null;
+          elem376 = new TTableMeta();
+          elem376.read(input);
+          this.success.push(elem376);
         }
         input.readListEnd();
       } else {
@@ -1777,12 +1777,12 @@ Heavy_get_tables_meta_result.prototype.write = function(output) {
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.LIST, 0);
     output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
-    for (var iter369 in this.success)
+    for (var iter377 in this.success)
     {
-      if (this.success.hasOwnProperty(iter369))
+      if (this.success.hasOwnProperty(iter377))
       {
-        iter369 = this.success[iter369];
-        iter369.write(output);
+        iter377 = this.success[iter377];
+        iter377.write(output);
       }
     }
     output.writeListEnd();
@@ -2483,18 +2483,18 @@ Heavy_get_users_result.prototype.read = function(input) {
     {
       case 0:
       if (ftype == Thrift.Type.LIST) {
-        var _size370 = 0;
-        var _rtmp3374;
+        var _size378 = 0;
+        var _rtmp3382;
         this.success = [];
-        var _etype373 = 0;
-        _rtmp3374 = input.readListBegin();
-        _etype373 = _rtmp3374.etype;
-        _size370 = _rtmp3374.size;
-        for (var _i375 = 0; _i375 < _size370; ++_i375)
+        var _etype381 = 0;
+        _rtmp3382 = input.readListBegin();
+        _etype381 = _rtmp3382.etype;
+        _size378 = _rtmp3382.size;
+        for (var _i383 = 0; _i383 < _size378; ++_i383)
         {
-          var elem376 = null;
-          elem376 = input.readString().value;
-          this.success.push(elem376);
+          var elem384 = null;
+          elem384 = input.readString().value;
+          this.success.push(elem384);
         }
         input.readListEnd();
       } else {
@@ -2523,159 +2523,12 @@ Heavy_get_users_result.prototype.write = function(output) {
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.LIST, 0);
     output.writeListBegin(Thrift.Type.STRING, this.success.length);
-    for (var iter377 in this.success)
-    {
-      if (this.success.hasOwnProperty(iter377))
-      {
-        iter377 = this.success[iter377];
-        output.writeString(iter377);
-      }
-    }
-    output.writeListEnd();
-    output.writeFieldEnd();
-  }
-  if (this.e !== null && this.e !== undefined) {
-    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
-    this.e.write(output);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-Heavy_get_databases_args = function(args) {
-  this.session = null;
-  if (args) {
-    if (args.session !== undefined && args.session !== null) {
-      this.session = args.session;
-    }
-  }
-};
-Heavy_get_databases_args.prototype = {};
-Heavy_get_databases_args.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 1:
-      if (ftype == Thrift.Type.STRING) {
-        this.session = input.readString().value;
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 0:
-        input.skip(ftype);
-        break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-Heavy_get_databases_args.prototype.write = function(output) {
-  output.writeStructBegin('Heavy_get_databases_args');
-  if (this.session !== null && this.session !== undefined) {
-    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
-    output.writeString(this.session);
-    output.writeFieldEnd();
-  }
-  output.writeFieldStop();
-  output.writeStructEnd();
-  return;
-};
-
-Heavy_get_databases_result = function(args) {
-  this.success = null;
-  this.e = null;
-  if (args instanceof TDBException) {
-    this.e = args;
-    return;
-  }
-  if (args) {
-    if (args.success !== undefined && args.success !== null) {
-      this.success = Thrift.copyList(args.success, [TDBInfo]);
-    }
-    if (args.e !== undefined && args.e !== null) {
-      this.e = args.e;
-    }
-  }
-};
-Heavy_get_databases_result.prototype = {};
-Heavy_get_databases_result.prototype.read = function(input) {
-  input.readStructBegin();
-  while (true)
-  {
-    var ret = input.readFieldBegin();
-    var fname = ret.fname;
-    var ftype = ret.ftype;
-    var fid = ret.fid;
-    if (ftype == Thrift.Type.STOP) {
-      break;
-    }
-    switch (fid)
-    {
-      case 0:
-      if (ftype == Thrift.Type.LIST) {
-        var _size378 = 0;
-        var _rtmp3382;
-        this.success = [];
-        var _etype381 = 0;
-        _rtmp3382 = input.readListBegin();
-        _etype381 = _rtmp3382.etype;
-        _size378 = _rtmp3382.size;
-        for (var _i383 = 0; _i383 < _size378; ++_i383)
-        {
-          var elem384 = null;
-          elem384 = new TDBInfo();
-          elem384.read(input);
-          this.success.push(elem384);
-        }
-        input.readListEnd();
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      case 1:
-      if (ftype == Thrift.Type.STRUCT) {
-        this.e = new TDBException();
-        this.e.read(input);
-      } else {
-        input.skip(ftype);
-      }
-      break;
-      default:
-        input.skip(ftype);
-    }
-    input.readFieldEnd();
-  }
-  input.readStructEnd();
-  return;
-};
-
-Heavy_get_databases_result.prototype.write = function(output) {
-  output.writeStructBegin('Heavy_get_databases_result');
-  if (this.success !== null && this.success !== undefined) {
-    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
-    output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
     for (var iter385 in this.success)
     {
       if (this.success.hasOwnProperty(iter385))
       {
         iter385 = this.success[iter385];
-        iter385.write(output);
+        output.writeString(iter385);
       }
     }
     output.writeListEnd();
@@ -16487,6 +16340,587 @@ Heavy_get_function_details_result.prototype.write = function(output) {
   return;
 };
 
+Heavy_put_immerse_users_metadata_args = function(args) {
+  this.session = null;
+  this.immerse_user_metadata_list = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+    if (args.immerse_user_metadata_list !== undefined && args.immerse_user_metadata_list !== null) {
+      this.immerse_user_metadata_list = Thrift.copyList(args.immerse_user_metadata_list, [TImmerseUserMetadata]);
+    }
+  }
+};
+Heavy_put_immerse_users_metadata_args.prototype = {};
+Heavy_put_immerse_users_metadata_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.LIST) {
+        var _size856 = 0;
+        var _rtmp3860;
+        this.immerse_user_metadata_list = [];
+        var _etype859 = 0;
+        _rtmp3860 = input.readListBegin();
+        _etype859 = _rtmp3860.etype;
+        _size856 = _rtmp3860.size;
+        for (var _i861 = 0; _i861 < _size856; ++_i861)
+        {
+          var elem862 = null;
+          elem862 = new TImmerseUserMetadata();
+          elem862.read(input);
+          this.immerse_user_metadata_list.push(elem862);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_put_immerse_users_metadata_args.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_put_immerse_users_metadata_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  if (this.immerse_user_metadata_list !== null && this.immerse_user_metadata_list !== undefined) {
+    output.writeFieldBegin('immerse_user_metadata_list', Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.STRUCT, this.immerse_user_metadata_list.length);
+    for (var iter863 in this.immerse_user_metadata_list)
+    {
+      if (this.immerse_user_metadata_list.hasOwnProperty(iter863))
+      {
+        iter863 = this.immerse_user_metadata_list[iter863];
+        iter863.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Heavy_put_immerse_users_metadata_result = function(args) {
+  this.e = null;
+  if (args instanceof TDBException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+Heavy_put_immerse_users_metadata_result.prototype = {};
+Heavy_put_immerse_users_metadata_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TDBException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_put_immerse_users_metadata_result.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_put_immerse_users_metadata_result');
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Heavy_put_immerse_database_metadata_args = function(args) {
+  this.session = null;
+  this.immerse_metadata_json = null;
+  this.database_name = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+    if (args.immerse_metadata_json !== undefined && args.immerse_metadata_json !== null) {
+      this.immerse_metadata_json = args.immerse_metadata_json;
+    }
+    if (args.database_name !== undefined && args.database_name !== null) {
+      this.database_name = args.database_name;
+    }
+  }
+};
+Heavy_put_immerse_database_metadata_args.prototype = {};
+Heavy_put_immerse_database_metadata_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.immerse_metadata_json = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.database_name = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_put_immerse_database_metadata_args.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_put_immerse_database_metadata_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  if (this.immerse_metadata_json !== null && this.immerse_metadata_json !== undefined) {
+    output.writeFieldBegin('immerse_metadata_json', Thrift.Type.STRING, 2);
+    output.writeString(this.immerse_metadata_json);
+    output.writeFieldEnd();
+  }
+  if (this.database_name !== null && this.database_name !== undefined) {
+    output.writeFieldBegin('database_name', Thrift.Type.STRING, 3);
+    output.writeString(this.database_name);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Heavy_put_immerse_database_metadata_result = function(args) {
+  this.e = null;
+  if (args instanceof TDBException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+Heavy_put_immerse_database_metadata_result.prototype = {};
+Heavy_put_immerse_database_metadata_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TDBException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_put_immerse_database_metadata_result.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_put_immerse_database_metadata_result');
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Heavy_get_users_info_args = function(args) {
+  this.session = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+  }
+};
+Heavy_get_users_info_args.prototype = {};
+Heavy_get_users_info_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_get_users_info_args.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_get_users_info_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Heavy_get_users_info_result = function(args) {
+  this.success = null;
+  this.e = null;
+  if (args instanceof TDBException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = Thrift.copyList(args.success, [TUserInfo]);
+    }
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+Heavy_get_users_info_result.prototype = {};
+Heavy_get_users_info_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.LIST) {
+        var _size864 = 0;
+        var _rtmp3868;
+        this.success = [];
+        var _etype867 = 0;
+        _rtmp3868 = input.readListBegin();
+        _etype867 = _rtmp3868.etype;
+        _size864 = _rtmp3868.size;
+        for (var _i869 = 0; _i869 < _size864; ++_i869)
+        {
+          var elem870 = null;
+          elem870 = new TUserInfo();
+          elem870.read(input);
+          this.success.push(elem870);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TDBException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_get_users_info_result.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_get_users_info_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
+    for (var iter871 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter871))
+      {
+        iter871 = this.success[iter871];
+        iter871.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Heavy_get_databases_args = function(args) {
+  this.session = null;
+  if (args) {
+    if (args.session !== undefined && args.session !== null) {
+      this.session = args.session;
+    }
+  }
+};
+Heavy_get_databases_args.prototype = {};
+Heavy_get_databases_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.session = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_get_databases_args.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_get_databases_args');
+  if (this.session !== null && this.session !== undefined) {
+    output.writeFieldBegin('session', Thrift.Type.STRING, 1);
+    output.writeString(this.session);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+Heavy_get_databases_result = function(args) {
+  this.success = null;
+  this.e = null;
+  if (args instanceof TDBException) {
+    this.e = args;
+    return;
+  }
+  if (args) {
+    if (args.success !== undefined && args.success !== null) {
+      this.success = Thrift.copyList(args.success, [TDBInfo]);
+    }
+    if (args.e !== undefined && args.e !== null) {
+      this.e = args.e;
+    }
+  }
+};
+Heavy_get_databases_result.prototype = {};
+Heavy_get_databases_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.LIST) {
+        var _size872 = 0;
+        var _rtmp3876;
+        this.success = [];
+        var _etype875 = 0;
+        _rtmp3876 = input.readListBegin();
+        _etype875 = _rtmp3876.etype;
+        _size872 = _rtmp3876.size;
+        for (var _i877 = 0; _i877 < _size872; ++_i877)
+        {
+          var elem878 = null;
+          elem878 = new TDBInfo();
+          elem878.read(input);
+          this.success.push(elem878);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 1:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.e = new TDBException();
+        this.e.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+Heavy_get_databases_result.prototype.write = function(output) {
+  output.writeStructBegin('Heavy_get_databases_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.LIST, 0);
+    output.writeListBegin(Thrift.Type.STRUCT, this.success.length);
+    for (var iter879 in this.success)
+    {
+      if (this.success.hasOwnProperty(iter879))
+      {
+        iter879 = this.success[iter879];
+        iter879.write(output);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.e !== null && this.e !== undefined) {
+    output.writeFieldBegin('e', Thrift.Type.STRUCT, 1);
+    this.e.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 HeavyClient = function(input, output) {
     this.input = input;
     this.output = (!output) ? input : output;
@@ -17434,58 +17868,6 @@ HeavyClient.prototype.recv_get_users = function() {
     return result.success;
   }
   throw 'get_users failed: unknown result';
-};
-HeavyClient.prototype.get_databases = function(session, callback) {
-  this.send_get_databases(session, callback); 
-  if (!callback) {
-    return this.recv_get_databases();
-  }
-};
-
-HeavyClient.prototype.send_get_databases = function(session, callback) {
-  this.output.writeMessageBegin('get_databases', Thrift.MessageType.CALL, this.seqid);
-  var args = new Heavy_get_databases_args();
-  args.session = session;
-  args.write(this.output);
-  this.output.writeMessageEnd();
-  if (callback) {
-    var self = this;
-    this.output.getTransport().flush(true, function() {
-      var result = null;
-      try {
-        result = self.recv_get_databases();
-      } catch (e) {
-        result = e;
-      }
-      callback(result);
-    });
-  } else {
-    return this.output.getTransport().flush();
-  }
-};
-
-HeavyClient.prototype.recv_get_databases = function() {
-  var ret = this.input.readMessageBegin();
-  var fname = ret.fname;
-  var mtype = ret.mtype;
-  var rseqid = ret.rseqid;
-  if (mtype == Thrift.MessageType.EXCEPTION) {
-    var x = new Thrift.TApplicationException();
-    x.read(this.input);
-    this.input.readMessageEnd();
-    throw x;
-  }
-  var result = new Heavy_get_databases_result();
-  result.read(this.input);
-  this.input.readMessageEnd();
-
-  if (null !== result.e) {
-    throw result.e;
-  }
-  if (null !== result.success) {
-    return result.success;
-  }
-  throw 'get_databases failed: unknown result';
 };
 HeavyClient.prototype.get_version = function(callback) {
   this.send_get_version(callback); 
@@ -21953,4 +22335,209 @@ HeavyClient.prototype.recv_get_function_details = function() {
     return result.success;
   }
   throw 'get_function_details failed: unknown result';
+};
+HeavyClient.prototype.put_immerse_users_metadata = function(session, immerse_user_metadata_list, callback) {
+  this.send_put_immerse_users_metadata(session, immerse_user_metadata_list, callback); 
+  if (!callback) {
+  this.recv_put_immerse_users_metadata();
+  }
+};
+
+HeavyClient.prototype.send_put_immerse_users_metadata = function(session, immerse_user_metadata_list, callback) {
+  this.output.writeMessageBegin('put_immerse_users_metadata', Thrift.MessageType.CALL, this.seqid);
+  var args = new Heavy_put_immerse_users_metadata_args();
+  args.session = session;
+  args.immerse_user_metadata_list = immerse_user_metadata_list;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_put_immerse_users_metadata();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+HeavyClient.prototype.recv_put_immerse_users_metadata = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new Heavy_put_immerse_users_metadata_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  return;
+};
+HeavyClient.prototype.put_immerse_database_metadata = function(session, immerse_metadata_json, database_name, callback) {
+  this.send_put_immerse_database_metadata(session, immerse_metadata_json, database_name, callback); 
+  if (!callback) {
+  this.recv_put_immerse_database_metadata();
+  }
+};
+
+HeavyClient.prototype.send_put_immerse_database_metadata = function(session, immerse_metadata_json, database_name, callback) {
+  this.output.writeMessageBegin('put_immerse_database_metadata', Thrift.MessageType.CALL, this.seqid);
+  var args = new Heavy_put_immerse_database_metadata_args();
+  args.session = session;
+  args.immerse_metadata_json = immerse_metadata_json;
+  args.database_name = database_name;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_put_immerse_database_metadata();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+HeavyClient.prototype.recv_put_immerse_database_metadata = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new Heavy_put_immerse_database_metadata_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  return;
+};
+HeavyClient.prototype.get_users_info = function(session, callback) {
+  this.send_get_users_info(session, callback); 
+  if (!callback) {
+    return this.recv_get_users_info();
+  }
+};
+
+HeavyClient.prototype.send_get_users_info = function(session, callback) {
+  this.output.writeMessageBegin('get_users_info', Thrift.MessageType.CALL, this.seqid);
+  var args = new Heavy_get_users_info_args();
+  args.session = session;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_get_users_info();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+HeavyClient.prototype.recv_get_users_info = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new Heavy_get_users_info_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'get_users_info failed: unknown result';
+};
+HeavyClient.prototype.get_databases = function(session, callback) {
+  this.send_get_databases(session, callback); 
+  if (!callback) {
+    return this.recv_get_databases();
+  }
+};
+
+HeavyClient.prototype.send_get_databases = function(session, callback) {
+  this.output.writeMessageBegin('get_databases', Thrift.MessageType.CALL, this.seqid);
+  var args = new Heavy_get_databases_args();
+  args.session = session;
+  args.write(this.output);
+  this.output.writeMessageEnd();
+  if (callback) {
+    var self = this;
+    this.output.getTransport().flush(true, function() {
+      var result = null;
+      try {
+        result = self.recv_get_databases();
+      } catch (e) {
+        result = e;
+      }
+      callback(result);
+    });
+  } else {
+    return this.output.getTransport().flush();
+  }
+};
+
+HeavyClient.prototype.recv_get_databases = function() {
+  var ret = this.input.readMessageBegin();
+  var fname = ret.fname;
+  var mtype = ret.mtype;
+  var rseqid = ret.rseqid;
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(this.input);
+    this.input.readMessageEnd();
+    throw x;
+  }
+  var result = new Heavy_get_databases_result();
+  result.read(this.input);
+  this.input.readMessageEnd();
+
+  if (null !== result.e) {
+    throw result.e;
+  }
+  if (null !== result.success) {
+    return result.success;
+  }
+  throw 'get_databases failed: unknown result';
 };

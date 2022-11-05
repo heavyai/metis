@@ -1633,12 +1633,16 @@ TDataFrame.prototype.write = function(output) {
 TDBInfo = function(args) {
   this.db_name = null;
   this.db_owner = null;
+  this.immerse_metadata_json = null;
   if (args) {
     if (args.db_name !== undefined && args.db_name !== null) {
       this.db_name = args.db_name;
     }
     if (args.db_owner !== undefined && args.db_owner !== null) {
       this.db_owner = args.db_owner;
+    }
+    if (args.immerse_metadata_json !== undefined && args.immerse_metadata_json !== null) {
+      this.immerse_metadata_json = args.immerse_metadata_json;
     }
   }
 };
@@ -1670,6 +1674,13 @@ TDBInfo.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.immerse_metadata_json = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -1689,6 +1700,11 @@ TDBInfo.prototype.write = function(output) {
   if (this.db_owner !== null && this.db_owner !== undefined) {
     output.writeFieldBegin('db_owner', Thrift.Type.STRING, 2);
     output.writeString(this.db_owner);
+    output.writeFieldEnd();
+  }
+  if (this.immerse_metadata_json !== null && this.immerse_metadata_json !== undefined) {
+    output.writeFieldBegin('immerse_metadata_json', Thrift.Type.STRING, 3);
+    output.writeString(this.immerse_metadata_json);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -8492,6 +8508,176 @@ TLeafInfo.prototype.write = function(output) {
   if (this.num_leaves !== null && this.num_leaves !== undefined) {
     output.writeFieldBegin('num_leaves', Thrift.Type.I32, 2);
     output.writeI32(this.num_leaves);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TImmerseUserMetadata = function(args) {
+  this.username = null;
+  this.immerse_metadata_json = null;
+  if (args) {
+    if (args.username !== undefined && args.username !== null) {
+      this.username = args.username;
+    }
+    if (args.immerse_metadata_json !== undefined && args.immerse_metadata_json !== null) {
+      this.immerse_metadata_json = args.immerse_metadata_json;
+    }
+  }
+};
+TImmerseUserMetadata.prototype = {};
+TImmerseUserMetadata.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.username = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.immerse_metadata_json = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TImmerseUserMetadata.prototype.write = function(output) {
+  output.writeStructBegin('TImmerseUserMetadata');
+  if (this.username !== null && this.username !== undefined) {
+    output.writeFieldBegin('username', Thrift.Type.STRING, 1);
+    output.writeString(this.username);
+    output.writeFieldEnd();
+  }
+  if (this.immerse_metadata_json !== null && this.immerse_metadata_json !== undefined) {
+    output.writeFieldBegin('immerse_metadata_json', Thrift.Type.STRING, 2);
+    output.writeString(this.immerse_metadata_json);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+TUserInfo = function(args) {
+  this.username = null;
+  this.roles = null;
+  this.immerse_metadata_json = null;
+  if (args) {
+    if (args.username !== undefined && args.username !== null) {
+      this.username = args.username;
+    }
+    if (args.roles !== undefined && args.roles !== null) {
+      this.roles = Thrift.copyList(args.roles, [null]);
+    }
+    if (args.immerse_metadata_json !== undefined && args.immerse_metadata_json !== null) {
+      this.immerse_metadata_json = args.immerse_metadata_json;
+    }
+  }
+};
+TUserInfo.prototype = {};
+TUserInfo.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.username = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.LIST) {
+        var _size322 = 0;
+        var _rtmp3326;
+        this.roles = [];
+        var _etype325 = 0;
+        _rtmp3326 = input.readListBegin();
+        _etype325 = _rtmp3326.etype;
+        _size322 = _rtmp3326.size;
+        for (var _i327 = 0; _i327 < _size322; ++_i327)
+        {
+          var elem328 = null;
+          elem328 = input.readString().value;
+          this.roles.push(elem328);
+        }
+        input.readListEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.immerse_metadata_json = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TUserInfo.prototype.write = function(output) {
+  output.writeStructBegin('TUserInfo');
+  if (this.username !== null && this.username !== undefined) {
+    output.writeFieldBegin('username', Thrift.Type.STRING, 1);
+    output.writeString(this.username);
+    output.writeFieldEnd();
+  }
+  if (this.roles !== null && this.roles !== undefined) {
+    output.writeFieldBegin('roles', Thrift.Type.LIST, 2);
+    output.writeListBegin(Thrift.Type.STRING, this.roles.length);
+    for (var iter329 in this.roles)
+    {
+      if (this.roles.hasOwnProperty(iter329))
+      {
+        iter329 = this.roles[iter329];
+        output.writeString(iter329);
+      }
+    }
+    output.writeListEnd();
+    output.writeFieldEnd();
+  }
+  if (this.immerse_metadata_json !== null && this.immerse_metadata_json !== undefined) {
+    output.writeFieldBegin('immerse_metadata_json', Thrift.Type.STRING, 3);
+    output.writeString(this.immerse_metadata_json);
     output.writeFieldEnd();
   }
   output.writeFieldStop();

@@ -78,7 +78,19 @@ TExtArgumentType = {
   'ColumnListArrayTextEncodingDict' : 69,
   'GeoMultiPoint' : 70,
   'DayTimeInterval' : 71,
-  'YearMonthTimeInterval' : 72
+  'YearMonthTimeInterval' : 72,
+  'ColumnGeoPoint' : 73,
+  'ColumnGeoLineString' : 74,
+  'ColumnGeoPolygon' : 75,
+  'ColumnGeoMultiPoint' : 76,
+  'ColumnGeoMultiLineString' : 77,
+  'ColumnGeoMultiPolygon' : 78,
+  'ColumnListGeoPoint' : 79,
+  'ColumnListGeoLineString' : 80,
+  'ColumnListGeoPolygon' : 81,
+  'ColumnListGeoMultiPoint' : 82,
+  'ColumnListGeoMultiLineString' : 83,
+  'ColumnListGeoMultiPolygon' : 84
 };
 TOutputBufferSizeType = {
   'kConstant' : 0,
