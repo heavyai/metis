@@ -2,6 +2,18 @@
 # yarn lockfile v1
 
 
+"@heavyai/charting@git://github.com/mapd/mapd-charting.git#develop":
+  version "1.0.0"
+  resolved "git://github.com/mapd/mapd-charting.git#defbabe88f04d4c224b35af196f1b71c81db69c5"
+  dependencies:
+    "@heavyai/draw" "git://github.com/mapd/mapd-draw.git"
+    d3 "^3.5.17"
+    deep-equal "1.0.1"
+    earcut "^2.1.1"
+    moment "2.13.0"
+    ramda "0.21.0"
+    simplify-js "^1.2.1"
+
 "@heavyai/connector@git://github.com/mapd/mapd-connector.git#develop":
   version "1.0.0"
   resolved "git://github.com/mapd/mapd-connector.git#f7b6d281cf2011fd0ac57f3325fc534caf0ba884"
@@ -16,18 +28,6 @@
   dependencies:
     css-element-queries "^0.4.0"
     gl-matrix "^2.3.2"
-
-"@heavyai/charting@git://github.com/mapd/mapd-charting.git#develop":
-  version "1.0.0"
-  resolved "git://github.com/mapd/mapd-charting.git#defbabe88f04d4c224b35af196f1b71c81db69c5"
-  dependencies:
-    "@heavyai/draw" "git://github.com/mapd/mapd-draw.git"
-    d3 "^3.5.17"
-    deep-equal "1.0.1"
-    earcut "^2.1.1"
-    moment "2.13.0"
-    ramda "0.21.0"
-    simplify-js "^1.2.1"
 
 "JSV@>= 4.0.x":
   version "4.0.2"
@@ -2035,9 +2035,9 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-lodash@^4.0.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.4:
-  version "4.17.4"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
+lodash@^4.0.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
 
 lodash@~4.16.4:
   version "4.16.6"
