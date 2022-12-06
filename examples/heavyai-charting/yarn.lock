@@ -2,6 +2,18 @@
 # yarn lockfile v1
 
 
+"@heavyai/charting@git://github.com/mapd/mapd-charting.git#develop":
+  version "1.0.0"
+  resolved "git://github.com/mapd/mapd-charting.git#defbabe88f04d4c224b35af196f1b71c81db69c5"
+  dependencies:
+    "@heavyai/draw" "git://github.com/mapd/mapd-draw.git"
+    d3 "^3.5.17"
+    deep-equal "1.0.1"
+    earcut "^2.1.1"
+    moment "2.13.0"
+    ramda "0.21.0"
+    simplify-js "^1.2.1"
+
 "@heavyai/connector@git://github.com/mapd/mapd-connector.git#develop":
   version "1.0.0"
   resolved "git://github.com/mapd/mapd-connector.git#f7b6d281cf2011fd0ac57f3325fc534caf0ba884"
@@ -16,18 +28,6 @@
   dependencies:
     css-element-queries "^0.4.0"
     gl-matrix "^2.3.2"
-
-"@heavyai/charting@git://github.com/mapd/mapd-charting.git#develop":
-  version "1.0.0"
-  resolved "git://github.com/mapd/mapd-charting.git#defbabe88f04d4c224b35af196f1b71c81db69c5"
-  dependencies:
-    "@heavyai/draw" "git://github.com/mapd/mapd-draw.git"
-    d3 "^3.5.17"
-    deep-equal "1.0.1"
-    earcut "^2.1.1"
-    moment "2.13.0"
-    ramda "0.21.0"
-    simplify-js "^1.2.1"
 
 "JSV@>= 4.0.x":
   version "4.0.2"
@@ -2973,8 +2973,8 @@ qs@6.4.0, qs@~6.4.0:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
 qs@~6.3.0:
-  version "6.3.2"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.3.2.tgz#e75bd5f6e268122a2a0e0bda630b2550c166502c"
+  version "6.3.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.3.3.tgz#645c23bd6def4d552f258f0aadfeea6fd57f5a86"
 
 query-string@^4.1.0:
   version "4.3.4"
