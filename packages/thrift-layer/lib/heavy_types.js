@@ -1793,6 +1793,7 @@ TCopyParams = function(args) {
   this.add_metadata_columns = null;
   this.trim_spaces = true;
   this.geo_validate_geometry = false;
+  this.raster_drop_if_all_null = false;
   if (args) {
     if (args.delimiter !== undefined && args.delimiter !== null) {
       this.delimiter = args.delimiter;
@@ -1919,6 +1920,9 @@ TCopyParams = function(args) {
     }
     if (args.geo_validate_geometry !== undefined && args.geo_validate_geometry !== null) {
       this.geo_validate_geometry = args.geo_validate_geometry;
+    }
+    if (args.raster_drop_if_all_null !== undefined && args.raster_drop_if_all_null !== null) {
+      this.raster_drop_if_all_null = args.raster_drop_if_all_null;
     }
   }
 };
@@ -2230,6 +2234,13 @@ TCopyParams.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 43:
+      if (ftype == Thrift.Type.BOOL) {
+        this.raster_drop_if_all_null = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -2449,6 +2460,11 @@ TCopyParams.prototype.write = function(output) {
   if (this.geo_validate_geometry !== null && this.geo_validate_geometry !== undefined) {
     output.writeFieldBegin('geo_validate_geometry', Thrift.Type.BOOL, 42);
     output.writeBool(this.geo_validate_geometry);
+    output.writeFieldEnd();
+  }
+  if (this.raster_drop_if_all_null !== null && this.raster_drop_if_all_null !== undefined) {
+    output.writeFieldBegin('raster_drop_if_all_null', Thrift.Type.BOOL, 43);
+    output.writeBool(this.raster_drop_if_all_null);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
