@@ -368,6 +368,7 @@ TColumnType = function(args) {
   this.is_physical = null;
   this.col_id = null;
   this.default_value = null;
+  this.comment = null;
   if (args) {
     if (args.col_name !== undefined && args.col_name !== null) {
       this.col_name = args.col_name;
@@ -392,6 +393,9 @@ TColumnType = function(args) {
     }
     if (args.default_value !== undefined && args.default_value !== null) {
       this.default_value = args.default_value;
+    }
+    if (args.comment !== undefined && args.comment !== null) {
+      this.comment = args.comment;
     }
   }
 };
@@ -466,6 +470,13 @@ TColumnType.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 9:
+      if (ftype == Thrift.Type.STRING) {
+        this.comment = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -515,6 +526,11 @@ TColumnType.prototype.write = function(output) {
   if (this.default_value !== null && this.default_value !== undefined) {
     output.writeFieldBegin('default_value', Thrift.Type.STRING, 8);
     output.writeString(this.default_value);
+    output.writeFieldEnd();
+  }
+  if (this.comment !== null && this.comment !== undefined) {
+    output.writeFieldBegin('comment', Thrift.Type.STRING, 9);
+    output.writeString(this.comment);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -4433,6 +4449,7 @@ TTableDetails = function(args) {
   this.table_type = null;
   this.refresh_info = null;
   this.sharded_column_name = null;
+  this.comment = null;
   if (args) {
     if (args.row_desc !== undefined && args.row_desc !== null) {
       this.row_desc = Thrift.copyList(args.row_desc, [TColumnType]);
@@ -4469,6 +4486,9 @@ TTableDetails = function(args) {
     }
     if (args.sharded_column_name !== undefined && args.sharded_column_name !== null) {
       this.sharded_column_name = args.sharded_column_name;
+    }
+    if (args.comment !== undefined && args.comment !== null) {
+      this.comment = args.comment;
     }
   }
 };
@@ -4585,6 +4605,13 @@ TTableDetails.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 13:
+      if (ftype == Thrift.Type.STRING) {
+        this.comment = input.readString().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -4663,6 +4690,11 @@ TTableDetails.prototype.write = function(output) {
   if (this.sharded_column_name !== null && this.sharded_column_name !== undefined) {
     output.writeFieldBegin('sharded_column_name', Thrift.Type.STRING, 12);
     output.writeString(this.sharded_column_name);
+    output.writeFieldEnd();
+  }
+  if (this.comment !== null && this.comment !== undefined) {
+    output.writeFieldBegin('comment', Thrift.Type.STRING, 13);
+    output.writeString(this.comment);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
