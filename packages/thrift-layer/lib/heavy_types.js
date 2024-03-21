@@ -100,7 +100,8 @@ TDBObjectType = {
   'TableDBObjectType' : 2,
   'DashboardDBObjectType' : 3,
   'ViewDBObjectType' : 4,
-  'ServerDBObjectType' : 5
+  'ServerDBObjectType' : 5,
+  'ColumnDBObjectType' : 6
 };
 TDataSourceType = {
   'TABLE' : 0
@@ -7335,12 +7336,66 @@ TServerPermissions.prototype.write = function(output) {
   return;
 };
 
+TColumnPermissions = function(args) {
+  this.select_ = null;
+  if (args) {
+    if (args.select_ !== undefined && args.select_ !== null) {
+      this.select_ = args.select_;
+    }
+  }
+};
+TColumnPermissions.prototype = {};
+TColumnPermissions.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.BOOL) {
+        this.select_ = input.readBool().value;
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+TColumnPermissions.prototype.write = function(output) {
+  output.writeStructBegin('TColumnPermissions');
+  if (this.select_ !== null && this.select_ !== undefined) {
+    output.writeFieldBegin('select_', Thrift.Type.BOOL, 1);
+    output.writeBool(this.select_);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 TDBObjectPermissions = function(args) {
   this.database_permissions_ = null;
   this.table_permissions_ = null;
   this.dashboard_permissions_ = null;
   this.view_permissions_ = null;
   this.server_permissions_ = null;
+  this.column_permissions_ = null;
   if (args) {
     if (args.database_permissions_ !== undefined && args.database_permissions_ !== null) {
       this.database_permissions_ = new TDatabasePermissions(args.database_permissions_);
@@ -7356,6 +7411,9 @@ TDBObjectPermissions = function(args) {
     }
     if (args.server_permissions_ !== undefined && args.server_permissions_ !== null) {
       this.server_permissions_ = new TServerPermissions(args.server_permissions_);
+    }
+    if (args.column_permissions_ !== undefined && args.column_permissions_ !== null) {
+      this.column_permissions_ = new TColumnPermissions(args.column_permissions_);
     }
   }
 };
@@ -7413,6 +7471,14 @@ TDBObjectPermissions.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 6:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.column_permissions_ = new TColumnPermissions();
+        this.column_permissions_.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -7447,6 +7513,11 @@ TDBObjectPermissions.prototype.write = function(output) {
   if (this.server_permissions_ !== null && this.server_permissions_ !== undefined) {
     output.writeFieldBegin('server_permissions_', Thrift.Type.STRUCT, 5);
     this.server_permissions_.write(output);
+    output.writeFieldEnd();
+  }
+  if (this.column_permissions_ !== null && this.column_permissions_ !== undefined) {
+    output.writeFieldBegin('column_permissions_', Thrift.Type.STRUCT, 6);
+    this.column_permissions_.write(output);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
