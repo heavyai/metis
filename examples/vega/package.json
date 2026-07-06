@@ -2,7 +2,12 @@
   "name": "vega-example",
   "dependencies": {
     "d3": "^4.10.2",
-    "vega": "^3.0.2",
-    "vega-lite": "^2.0.0-rc3"
+    "vega": "^5.33.1",
+    "vega-lite": "^2.7.0"
+  },
+  "resolutions": {
+    "minimist": "1.2.8",
+    "static-eval": "2.1.1",
+    "yargs-parser": "13.1.2"
   }
 }

@@ -25,7 +25,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "codecov": "^2.3.0",
     "cross-env": "^5.0.5",
-    "nyc": "^11.2.1",
+    "nyc": "^17.1.0",
     "prettier": "^1.7.0",
     "rimraf": "^2.6.2",
     "rollup": "^0.43.0",
@@ -34,7 +34,7 @@
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-uglify": "^2.0.1",
     "script-loader": "^0.7.1",
-    "tape": "^4.8.0",
+    "tape": "^5.10.2",
     "webpack": "^2.6.1",
     "webpack-dev-server": "^2.4.5"
   },
@@ -45,5 +45,10 @@
   },
   "dependencies": {
     "flow-bin": "^0.55.0"
+  },
+  "overrides": {
+    "fsevents": "2.3.3",
+    "minimist": "1.2.8",
+    "yargs-parser": "13.1.2"
   }
 }
