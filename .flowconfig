@@ -1,0 +1,13 @@
+[ignore]
+.*node_modules/jsonlint-lines-primitives/
+.*node_modules/mapbox-gl-style-spec/
+.*node_modules/unflowify/
+
+[include]
+
+[libs]
+./packages/data-layer/src/types/expression-type.js
+./packages/data-layer/src/types/transform-type.js
+./packages/data-layer/src/index.js.flow
+
+[options]

@@ -1,0 +1,39 @@
+// SPDX-FileCopyrightText: Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+// @flow
+import tape from "tape";
+import parseLimit from "../../src/parser/parse-limit";
+
+tape("parseLimit", assert => {
+  assert.plan(1);
+  assert.deepEqual(
+    parseLimit(
+      {
+        select: [],
+        from: "",
+        where: [],
+        groupby: [],
+        having: [],
+        orderby: [],
+        limit: "",
+        offset: ""
+      },
+      {
+        type: "limit",
+        row: 1000,
+        offset: 10
+      }
+    ),
+    {
+      select: [],
+      from: "",
+      where: [],
+      groupby: [],
+      having: [],
+      orderby: [],
+      limit: "1000",
+      offset: "10"
+    }
+  );
+});

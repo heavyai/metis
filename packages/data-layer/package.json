@@ -1,0 +1,29 @@
+{
+  "name": "@heavyai/data-layer",
+  "version": "0.0.25",
+  "description": "SQL data-layer for the HEAVY.AI frontend",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "jsnext:main": "es/index.js",
+  "files": [
+    "dist",
+    "lib",
+    "es",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heavyai/metis.git"
+  },
+  "authors": [
+    "HEAVY.AI",
+    "Jonathan Huang <grokut@gmail.com> (https://github.com/mrblueblue)"
+  ],
+  "license": "Apache-2.0",
+  "scripts": {
+    "pretty": "find . -name \"*.js\" | grep -v -f .gitignore | grep -v src/index.js | xargs prettier --write"
+  },
+  "dependencies": {
+    "invariant": "^2.2.2"
+  }
+}

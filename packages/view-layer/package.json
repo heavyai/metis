@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "d3-dispatch": "^1.0.3"
+  }
+}
