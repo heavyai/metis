@@ -32,8 +32,6 @@ Or use the bundled version:
 
 To get started, first install the dependencies using the `yarn` command.
 
-Each example folder also has its own set of dependencies, which can also be installed by using `yarn`. Running the `npm start` command in each example folder will start a `webpack-dev-server` serving that example.
-
 The `flow` type-checker tool is used in development and type declarations can be found in each file. Expression and transform types are declared in `src/types`.
 
 # Prior Art
